@@ -1,0 +1,82 @@
+\chapter{Lezione 1}
+
+
+\section{Definizione sistema dinamico}
+
+Un sistema dinamico 
+è composta da uno stato \(x \in \mathbb{R}^{n}\)
+e da una legge di evoluzione
+\[\dot{x}(t) = f(x(t), u(t), t)\]
+
+\section{Definizione sistema autonomo}
+
+Un sistema dinamico è detto autonomo se la
+sua evoluzione non dipende esplicitamente
+dall'ingresso \(u(t)\), cioè:
+\[\dot{x}(t) = f(x(t),t)\]
+
+Se il sistema è sia autonomo che tempo invariante
+allora si ha:
+\[\dot{x}(t) = f(x(t))\]
+\section{Definizione stabilità}
+
+Un sistema dinamico 
+tempo invariante è detto stabile se 
+
+\[\forall \varepsilon > 0, 
+\exists \delta > 0 : x_{0} 
+\in B_{\delta}(\bar{x})
+\Rightarrow |x_{x_{0}}(t) - \bar{x}| \le \varepsilon, \forall t \geq 0\]
+
+Dove con \(x_{x_{0}}(t)\) si intende 
+la traiettoria del sistema 
+che parte da \(x_{0}\).
+
+
+Ora dimostriamo che \(\delta \le 
+\varepsilon ,
+\forall \varepsilon > 0\).
+Supponiamo per assurdo che 
+esista un \(\varepsilon >0 \)
+per cui si ha  
+che la \(\delta\)
+per cui è rispettata la 
+definizione di stabilità sia
+tale che
+\(\delta > \varepsilon\).
+Allora si ha che per
+le 
+\(x_{0} \in B_{\delta}(\bar{x}) \backslash
+B_{\varepsilon}(\bar{x})\)
+vale:
+\[|x_{x_{0}}(0) - \bar{x}| 
+= \left|x_{0} -\bar{x}\right|> \varepsilon\]
+Ma questo è assurdo perché
+\(x_{0} 
+\in B_{\delta}(\bar{x})\)
+dunque rispetta la definizione 
+di stabilità per cui
+si dovrebbe avere :
+\[|x_{x_{0}}(0) - \bar{x}| 
+= \left|x_{0} - \bar{x}\right|
+\le \varepsilon
+\]
+Dunque siamo arrivati ad un assurdo.
+
+
+
+% ...existing code...
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=1, >=stealth]
+    % assi con sole etichette x1 e x2
+    \draw[->] (-3,0) -- (3,0) node[right] {$x_1$};
+    \draw[->] (0,-3) -- (0,3) node[above] {$x_2$};
+    % punto nero con circonferenza in alto a destra
+    \filldraw (2,2) circle (1.8pt);
+    \draw (2,2) circle (0.35);
+  \end{tikzpicture}
+  \caption{Assi con etichette $x_1$ e $x_2$.}
+  \label{fig:assi-x1-x2}
+\end{figure}
+% ...existing code...
