@@ -1,6 +1,0 @@
-\babel@toc {italian}{}\relax 
-\babel@toc {italian}{}\relax 
-\contentsline {chapter}{\numberline {1}Lezione 1}{2}{}%
-\contentsline {section}{\numberline {1.1}Definizione sistema dinamico}{2}{}%
-\contentsline {section}{\numberline {1.2}Definizione sistema autonomo}{2}{}%
-\contentsline {section}{\numberline {1.3}Definizione stabilità}{2}{}%
