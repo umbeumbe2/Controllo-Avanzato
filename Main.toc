@@ -1,6 +1,0 @@
-\babel@toc {italian}{}\relax 
-\babel@toc {italian}{}\relax 
-\contentsline {chapter}{\numberline {1}Stabilità nei sistemi dinamici}{2}{}%
-\contentsline {section}{\numberline {1.1}Definizione sistema dinamico e punti di equilibrio}{2}{}%
-\contentsline {section}{\numberline {1.2}Definizione stabilità}{2}{}%
-\contentsline {section}{\numberline {1.3}Stabilità nei sistemi lineari}{3}{}%
