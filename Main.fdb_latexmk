@@ -1,17 +1,17 @@
 # Fdb version 3
-["bibtex Main"] 1758834092 "Main.aux" "Main.bbl" "Main" 1758834092
+["bibtex Main"] 1758834114 "Main.aux" "Main.bbl" "Main" 1758834118
   "Bibliografia.bib" 0 -1 0 ""
-  "Main.aux" 1758834089 1203 74a18792c965b4bfb5de217e2e0ee6ab "pdflatex"
+  "Main.aux" 1758834116 1203 74a18792c965b4bfb5de217e2e0ee6ab "pdflatex"
   "c:/texlive/2022/texmf-dist/bibtex/bst/base/unsrt.bst" 1668265213 18030 1376b4b231b50c66211e47e42eda2875 ""
   (generated)
   "Main.bbl"
   "Main.blg"
-["pdflatex"] 1758834087 "c:/Users/ubald/OneDrive/Documents/UbaldoVitielloVita/Federico2/PrimoAnnoMagistrale/Controllo-Avanzato/Main.tex" "Main.pdf" "Main" 1758834092
-  "Lezione1.tex" 1758834086 3537 d4f5f9177a84933434d54126bfef4aa1 ""
-  "Main.aux" 1758834089 1203 74a18792c965b4bfb5de217e2e0ee6ab "pdflatex"
+["pdflatex"] 1758834114 "c:/Users/ubald/OneDrive/Documents/UbaldoVitielloVita/Federico2/PrimoAnnoMagistrale/Controllo-Avanzato/Main.tex" "Main.pdf" "Main" 1758834118
+  "Lezione1.tex" 1758834113 3547 8ffa05f76e35fae9968b93e90095c7d5 ""
+  "Main.aux" 1758834116 1203 74a18792c965b4bfb5de217e2e0ee6ab "pdflatex"
   "Main.bbl" 0 -1 0 "bibtex Main"
   "Main.tex" 1758832924 2384 502c41d54bf6f817d54400dd995102d4 ""
-  "Main.toc" 1758834089 387 95b0feaf68f0fff5214c0ffabc676315 "pdflatex"
+  "Main.toc" 1758834116 387 95b0feaf68f0fff5214c0ffabc676315 "pdflatex"
   "c:/Users/ubald/OneDrive/Documents/UbaldoVitielloVita/Federico2/PrimoAnnoMagistrale/Controllo-Avanzato/Main.tex" 1758832924 2384 502c41d54bf6f817d54400dd995102d4 ""
   "c:/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1668266819 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2022/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1668264677 1004 54797486969f23fa377b128694d548df ""
