@@ -53,7 +53,16 @@
 
 
 
-\newtheorem{definition}{Definizione}[chapter]
+% 1. Definizione dello stile per Teoremi e Lemmi (Titolo grassetto, corpo corsivo)
+\theoremstyle{plain}
+\newtheorem{teorema}{Teorema}[section] % La numerazione riparte ad ogni sezione
+\newtheorem{lemma}[teorema]{Lemma}     % Il lemma usa lo stesso contatore del teorema
+
+% 2. Definizione dello stile per le Definizioni (Titolo grassetto, corpo normale)
+\theoremstyle{definition}
+\newtheorem{definizione}[teorema]{Definizione} % Condivide la numerazione con teorema
+
+
 
 
 \pgfplotsset{width=10cm,compat=1.9}
@@ -97,7 +106,8 @@
 
 \large
 
-\input{Lezione1.tex}
+\input{Capitolo1.tex}
+\input{Capitolo2.tex}
 
 \bibliography{Bibliografia}
 
