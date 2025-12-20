@@ -6,3 +6,6 @@
 \contentsline {section}{\numberline {1.3}Stabilità nei sistemi lineari}{3}{}%
 \contentsline {section}{\numberline {1.4}Sistema nel dominio di Laplace}{4}{}%
 \contentsline {section}{\numberline {1.5}Teorema di Lyapunov}{5}{}%
+\contentsline {section}{\numberline {1.6}SVD (Singular Value Decomposition)}{6}{}%
+\contentsline {section}{\numberline {1.7}Poli e zeri per sistemi MIMO }{7}{}%
+\contentsline {chapter}{\numberline {2}Stabilità Robusta}{9}{}%
