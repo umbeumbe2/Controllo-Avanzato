@@ -211,7 +211,7 @@ evoluzione libera}:
 \left(sI - A\right)^{-1}x(0)} \]
 
 
-\section{Teorema di Lyapunov}
+\section{Stabilità tramite l'approccio alla Lyapunov}
 
 Ora ci interessa introdurre un metodo per studiare la stabilità
 dei sistemi dinamici che prende il nome di \textbf{approccio di Lyapunov},
@@ -262,10 +262,11 @@ continua e derivabile in \(D\), tale che:
   \end{cases}\]
   \item \(\dot{V}(x)\) è semidefinita negativa in \(\bar{x}\), cioè:
   \[\begin{cases}
-    V_{\bar{x}} = 0 \\
-    \exists \delta : \dot{V}(x) = \nabla V(x) \cdot 
+    V(\bar{x}) = 0 \\
+    \exists \delta > 0: \dot{V}(x) = \nabla V(x) \cdot 
     \displaystyle 
-    \frac{dx}{dt} = \nabla V(x(t)) f(x(t)) \le 0, \quad \forall x \in B_{\delta}(\bar{x})
+    \frac{dx}{dt} = \nabla V(x(t)) f(x(t)) \le 0, \quad \forall x \in B_{\delta}(\bar{x}),
+    \forall t > t_0 
   \end{cases}\]
 \end{itemize}
 Allora si ha che il punto di equilibrio \(\bar{x}\) è stabile.
@@ -278,27 +279,81 @@ tale che se \(x_{0} \in B_{\delta}(\bar{x})\) allora
 la traiettoria \(x(t)\) che parte da \(x_{0}\)
 rimane confinata in \(B_{\varepsilon}(\bar{x})\).
 Dunque partiamo con il fissare un generico \(\varepsilon > 0\).
-Consideriamo l'insieme \(S = \left\{x \in \mathbb{R}^{n} : \left|\left|x\right|\right| =
-\varepsilon \right\} \).
-
-Deve esistere una curva di livello di \(V(x)\) di valore \(\bar{V}\)
-completamente contenuta in \(B_{\varepsilon}(\bar{x})\), come 
-in Figura \ref{fig:lyapunov-curve-level}. Ora chiamiamo \(\delta\)
+Prendiamo la curva di livello (della funzione \(V(x)\)) 
+a valore maggiore e completamente contenuta in \(B_{\varepsilon}(\bar{x})\), come 
+in Figura \ref{fig:lyapunov-proof}. Ora chiamiamo \(\delta\)
 la distanza minima tra \(\bar{x}\) e la curva di livello di valore \(\bar{V}\).
 Ora consideriamo una \(x(t)\)
 che parte da un punto \(x_{0} \in B_{\delta}(\bar{x})\) 
-\((x(0) = x_{0})\). A noi interessa dimostrare che \(\bar{x}\) è
+\((x(t_{0}) = x_{0})\). A noi interessa dimostrare che \(\bar{x}\) è
 stabile, cioè che \(\forall x_0 \in B_{\delta}(\bar{x})\)
-la traiettoria \(x(t)\) rimane confinata nella curva di livello di valore \(\bar{V}
-\forall t \ge 0\),
-questo implica che \(x(t)\) rimane confinata anche all'interno di 
-\(B_{\varepsilon}(\bar{x})\) ( questo perché \(\bar{V}\) 
-è completamente contenuta all'interno di \(B_{\varepsilon}(\bar{x})\)).
-Dunque per dimostrare la stabilità dobbiamo dimostrare che
-\(x(t)\) non può uscire dalla curva di livello
-(ricoridamo che \(V(x)\) è funzione di \(x\) quindi una curva di livello
-è una curva nello spazio di stato) di valore \(\bar{V}\). Poichè \(\dot{V}(x) \le 0\)
-allora \(V(x(t))\) è una funzione decrescente nel tempo,
+la traiettoria \(x(t)\) rimane confinata all'interno di \(B_{\varepsilon}(\bar{x})\)
+\(\forall t \ge 0\). Per dimostrare che \(x(t)\) rimane confinata in
+\(B_{\varepsilon}(\bar{x})\) distinguiamo due casi:
+\begin{itemize}
+  \item Nel caso in cui si ha \(\dot{V}(x) = 0\) la traiettoria \(x(t)\) al massimo può 
+  rimanre sulla curva di livello a valore \(\bar{V}\) (dunque
+  rimane confinata in \(B_{\varepsilon}(\bar{x})\)) 
+  \item  Se  \(\dot{V}(x) < 0\) allora la traiettoria \(x(t)\) si muove verso l'interno
+  della curva di livello a valore \(\bar{V}\) 
+  (dunque rimane confinata in \(B_{\varepsilon}(\bar{x})\))
+\end{itemize}
+Quindi in entrambi i casi la traiettoria \(x(t)\)
+rimane confinata in \(B_{\varepsilon}(\bar{x})\). 
+Dunque abbiamo dimostrato che per ogni \(\varepsilon > 0\)
+esiste un \(\delta > 0\) tale che se \(x_{0} \in B_{\delta}(\bar{x})\)
+allora la traiettoria \(x(t)\) rimane confinata in
+\(B_{\varepsilon}(\bar{x})\) \(\forall t \ge t_{0}\),
+ma questa è proprio la definizione di stabilità. 
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[>=stealth, scale=1.3]
+
+        % 1. Parametri geometrici
+        \coordinate (XBAR) at (3, 2.5);
+        
+        % Raggio Epsilon (Cerchio esterno limite)
+        \def\Reps{2.5}
+        % Raggio Delta (Cerchio interno)
+        \def\Rdelta{1.0} 
+
+        % 2. Assi
+        \draw[->, thick] (-1, 0) -- (7, 0) node[right] {$x_1$};
+        \draw[->, thick] (0, -1) -- (0, 6) node[above] {$x_2$};
+
+        % 3. Centro x_bar
+        \fill (XBAR) circle (2pt) node[below left] {$\bar{x}$};
+
+        % 4. Circonferenza Epsilon (Nera - Esterna)
+        \draw[thick] (XBAR) circle (\Reps);
+        \draw[dashed, ->] (XBAR) -- ++(45:\Reps) node[midway, above left] {$\epsilon$};
+        
+        % 5. Curva di livello V_bar di forma CASUALE (Blu)
+        % Utilizziamo 'plot smooth cycle' definendo dei punti di controllo attorno a XBAR.
+        % L'importante è che la distanza di questi punti da XBAR sia sempre < Reps (2.5)
+        % Usiamo coordinate polari relative: ([shift=(angolo:raggio)]Centro)
+        \draw[blue, thick] plot [smooth cycle, tension=0.7] coordinates {
+            ([shift=(0:2.2)]XBAR)   % Est, vicino al bordo
+            ([shift=(50:1.5)]XBAR)  % Nord-Est, rientranza
+            ([shift=(90:2.1)]XBAR)  % Nord
+            ([shift=(140:1.7)]XBAR) % Nord-Ovest
+            ([shift=(180:2.3)]XBAR) % Ovest, vicino al bordo
+            ([shift=(230:1.6)]XBAR) % Sud-Ovest
+            ([shift=(270:1.9)]XBAR) % Sud
+            ([shift=(320:1.4)]XBAR) % Sud-Est, rientranza marcata
+        };
+        % Etichetta V_bar
+        \node[blue, right] at ($(XBAR) + (2.2, 0.2)$) {$\bar{V}$};
+
+        % 6. Circonferenza Delta (Rossa - Interna)
+        % Contenuta nella curva casuale
+        \draw[red, thick] (XBAR) circle (\Rdelta);
+        \draw[red, dashed, ->] (XBAR) -- ++(135:\Rdelta) node[midway, right] {$\delta$};
+
+    \end{tikzpicture}
+    \caption{Visualizzazione con una curva di livello $\bar{V}$ (blu) di forma generica non ellittica, strettamente contenuta all'interno della circonferenza di raggio $\epsilon$ (nera).}
+    \label{fig:livello_casuale}
+\end{figure}
 
 \end{proof}
 
@@ -478,4 +533,20 @@ Come si vede la norma 2 di \(A\)
     \label{fig:cerchio_assi}
 \end{figure}
 
+
+\section{Guadagno}
+Definiamo gli spazi \(L^{p}\)
+come gli spazi delle funzioni \(p\)-sommabili,
+cioè in cui esiste la norma \(p\)-esima finita:
+\[L^{p}(\mathbb{R^{n}}) = 
+\left\{f : \mathbb{R} \to \mathbb{R}^{n} : 
+\int_{-\infty}^{+\infty} \left|\left|f(\tau)
+\right|\right|^{p}_{p} \, d\tau < \infty \right\}\]
+Dove essendo \(f\) una funzione vettoriale a variabile reale
+la norma \(p\)-esima è definita come:
+\[\left|\left|f(\tau)\right|\right|_{p} =
+\left( \sum_{i=1}^{n} |f_{i}(\tau)|^{p} \right)^{\frac{1}{p}}\]
+Dove con \(f_{i}(\tau)\) si intende la \(i\)-esima componente del vettore
+\(f(\tau)\) (che è un vettore di \(n\) componenti in cui ognuna è una funzione 
+di \(\tau\))
 \section{Poli e zeri per sistemi MIMO }
