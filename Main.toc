@@ -11,3 +11,7 @@
 \contentsline {section}{\numberline {1.8}Poli e zeri per sistemi MIMO }{9}{}%
 \contentsline {chapter}{\numberline {2}Stabilità Robusta}{10}{}%
 \contentsline {chapter}{\numberline {3}Stabilità Robusta}{11}{}%
+\contentsline {chapter}{\numberline {4}Assegnamento degli autovalori con feedback di stato}{12}{}%
+\contentsline {section}{\numberline {4.1}Caso MIMO}{12}{}%
+\contentsline {section}{\numberline {4.2}Metodo della forma canonica di controllabilità}{12}{}%
+\contentsline {section}{\numberline {4.3}Metodo dell'equazione di Sylvester}{14}{}%

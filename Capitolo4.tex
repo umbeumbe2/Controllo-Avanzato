@@ -1,0 +1,169 @@
+\chapter{Assegnamento degli autovalori con feedback di stato}
+
+
+
+\section{Caso MIMO}
+Consideriamo un sistema LTI descritto dalle equazioni di stato:
+\[
+\dot{x}(t) = Ax(t) + Bu(t)
+\]
+con \(A \in \mathbb{R}^{n \times n}\), 
+\(B \in \mathbb{R}^{n \times m}\), 
+\(x \in \mathbb{R}^n\) e \(u \in \mathbb{R}^m\). 
+Il nostro obiettivo  è attraverso un feedback di stato del tipo:
+\begin{equation}
+    u(t) = Kx(t)
+\end{equation}
+con \(K \in \mathbb{R}^{m \times n}\)
+(dunque \(Kx \in \mathbb{R}^{ m\times 1}\)) riuscire ad 
+assegnare gli autovalori del sistema con matrice della dinamica:
+\begin{equation}
+    A+BK
+\end{equation}
+indicheremo l'insieme degli autovalori 
+di una matrice \(A\) con \(\sigma(A)\),
+dunque noi vogliamo scegliere \(K\) in modo tale da 
+poter assegnare l'insieme \(\sigma(A+BK)\) a piacere:
+\[\sigma(A+BK) = 
+\left\{\lambda_1, \lambda_2, \ldots, \lambda_n
+\right\}\]
+
+
+\section{Metodo della forma canonica di controllabilità}
+Per sistemi MIMO se la coppia \((A,B)\) è 
+completamente controllabile allora è possibile trovare 
+una matrice di trasformazione \(T\) che porta il sistema
+in una forma canonica di controllabilità a blocchi,
+detta forma di Brunovsky:
+\[
+z = T^{-1}x \Longleftrightarrow x = Tz 
+\]
+
+Con le matrici del sistema nella nuova base che valgono:
+\begin{equation}
+    A_{c} = T^{-1}AT  =
+    \begin{pmatrix}
+        A_{c1} & 0 & \cdots & 0 \\
+        0 & A_{c2} & \cdots & 0 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \cdots & A_{cm}
+    \end{pmatrix}
+    , \quad B_{c} = T^{-1}B
+    = \begin{pmatrix}
+        B_{c1} & 0 & \cdots & 0 \\
+        0 & B_{c2} & \cdots & 0 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \cdots & B_{cm}
+\end{pmatrix}
+\end{equation}
+Con \(A_{ci} \in \mathbb{R}^{n_{i} \times n_{i}}\)
+e \(B_{ci} \in \mathbb{R}^{n_{i} \times 1}\) che valgono:
+\[
+A_{ci} =
+\begin{pmatrix}
+    0 & 1 & 0 & \cdots & 0 \\
+    0 & 0 & 1 & \cdots & 0 \\
+    \vdots & \vdots & \vdots & \ddots & \vdots \\
+    -a_{i1} & -a_{i2} & -a_{i3} & \cdots & -a_{in_i} \\
+\end{pmatrix}
+, \quad
+B_{ci} =
+\begin{pmatrix}
+    0 \\
+    0 \\
+    \vdots \\
+    0 \\
+    1
+\end{pmatrix}
+\]
+Inoltre si ha che \(n_{1} + n_{2} + \dots + n_{m} = n\). 
+Notiamo che ogni coppia \((A_{ci}, B_{ci})\) rappresenta una 
+forma canonica di controllabilità rispetto all'ingresso \(u_{i}\).
+Notiamo 
+che per come è scritta la matrice \(A_{c}\) con una retroazione 
+di stato del tipo:
+\[u = K_{c}z\]
+con \(K_{c} \in \mathbb{R}^{m \times n}\):
+\[
+K_{c} =
+\begin{pmatrix}
+    k_{c1} & 0 & \cdots & 0 \\
+    0 & k_{c2} & \cdots & 0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & \cdots & k_{cm}
+\end{pmatrix}
+\]
+con \(k_{ci} \in \mathbb{R}^{1 \times n_{i}}\).
+Con \(K_{c}\) scritto in questo modo 
+si ha che la matrice della dinamica del sistema 
+in retroazione di stato è:
+\[
+A_{c} + B_{c}K_{c} =
+\begin{pmatrix}
+    A_{c1} & 0 & \cdots & 0 \\
+    0 & A_{c2} & \cdots & 0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & \cdots & A_{cm}
+\end{pmatrix}
++
+ \begin{pmatrix}
+        B_{c1} & 0 & \cdots & 0 \\
+        0 & B_{c2} & \cdots & 0 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \cdots & B_{cm}
+\end{pmatrix}
+\begin{pmatrix}
+    k_{c1} & 0 & \cdots & 0 \\
+    0 & k_{c2} & \cdots & 0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & \cdots & k_{cm}
+\end{pmatrix}
+\]
+Notando che \(B_{ci} k_{ci} \in \mathbb{R}^{n_{i} \times n_{i}}\)
+si ha che:
+\[
+A_{c} + B_{c}K_{c} =
+\begin{pmatrix}
+    A_{c1} + B_{c1}k_{c1} & 0 & \cdots & 0 \\
+    0 & A_{c2} + B_{c2}k_{c2} & \cdots & 0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & \cdots & A_{cm} + B_{cm}k_{cm}
+\end{pmatrix}
+\]
+Ma la matrice \(A_{c} + B_{c} + K_{c}\)
+è diagonale a blocchi dunque si ha che
+gli autovalori della matrice sono gli autovalori
+dei blocchi diagonali:
+\[
+\sigma(A_{c} + B_{c}K_{c}) =
+\bigcup_{i=1}^{m}
+\sigma(A_{ci} + B_{ci}k_{ci})
+\]
+Ma ogni singolo blocco diagonale 
+\(A_{ci} + B_{ci}k_{ci}\) rappresenta un sistema SISO
+in forma canonica di controllabilità, e la coppia \((A_{ci}, B_{ci})\)
+è completamente controllabile per ipotesi (essendo 
+controllabile il sistema originale \((A,B)\)),
+dunque per il teorema di assegnamento degli autovalori
+applicato ai sistemi SISO esiste \(k_{ci}\)
+tale che possiamo assegnare gli autovalori
+di ogni blocco diagonale \(A_{ci} + B_{ci}k_{ci}\).
+Questo \(k_{ci}\) si trova imponendo
+che il polinomio caratteristico del blocco
+\(A_{ci} + B_{ci}k_{ci}\)
+sia uguale al polinomio caratteristico
+desiderato:
+\[\det(sI - (A_{ci} + B_{ci}k_{ci})) =
+    s^{n_{i}} + \alpha_{i1}s^{n_{i}-1} +
+     \alpha_{i2}s^{n_{i}-2} + \ldots + \alpha_{in_{i}}
+\]
+Ovviamente questo va fatto \(\forall i=1, \dots , m\).
+Una volta trovati tutti i \(k_{ci}\)
+possiamo costruire la matrice \(K_{c}\), 
+per riportarla nella base originale del sistema
+basta ricordare:
+\[u=K_{c} z= K_{c} T^{-1}x \Longrightarrow 
+K= K_{c}T^{-1}\]
+
+
+\section{Metodo dell'equazione di Sylvester}
