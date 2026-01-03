@@ -27,7 +27,17 @@ poter assegnare l'insieme \(\sigma(A+BK)\) a piacere:
 \[\sigma(A+BK) = 
 \left\{\lambda_1, \lambda_2, \ldots, \lambda_n
 \right\}\]
-
+Per i sistemi MIMO esistono infinite soluzioni al problema di assegnamento 
+degli autovalori, cioè esistono infinite matrici \(K\)
+tali che l'insieme degli autovalori di \(A+BK\) sia uguale
+all'insieme desiderato. Noi andremo a vedere delle soluzioni operative che 
+ci permettono di trovare alcune di queste infinite matrici \(K\) soluzioni del problema,
+nello specifico vedremo i seguenti 3 metodi:
+\begin{itemize}
+    \item Metodo della forma canonica di controllabilità
+    \item Metodo dell'equazione di Sylvester
+    \item Metodo di Kautsky-Nichols-Van Dooren
+\end{itemize}
 
 \section{Metodo della forma canonica di controllabilità}
 Per sistemi MIMO se la coppia \((A,B)\) è 
@@ -167,3 +177,80 @@ K= K_{c}T^{-1}\]
 
 
 \section{Metodo dell'equazione di Sylvester}
+Un altro metodo per l'assegnamento degli autovalori 
+per sistemi MIMO è il metodo dell'equazione di Sylvester.
+L'equazione di Sylvester è la seguente equazione matriciale:
+\begin{equation}
+    AX + XB = C
+\end{equation}
+in cui \(A \in \mathbb{R}^{n \times n}\),
+\(B \in \mathbb{R}^{m \times m}\) e \(C \in \mathbb{R}^{n \times m}\)
+sono matrici note, mentre \(X \in \mathbb{R}^{n \times m}\)
+è la matrice incognita da trovare. Andiamo ad analizzare 
+questa equazione:
+\begin{itemize}
+    \item \textbf{Unicità della soluzione}: L'equazione di Sylvester ammettete
+    una soluzione unica se e solo se gli insiemi degli spettri di \(A\) e \(-B\)
+    sono disgiunti, cioè hanno intersezione uguale all'insieme vuoto:
+    \[\sigma(A) \cap \sigma(-B) = \emptyset \Longleftrightarrow 
+    \lambda_{i}(A) + \lambda_{j}(B) \neq 0 \quad \forall i,j\]
+    in parole povere le matrici \(A\) e \(B\) non devono avere autovalori
+    con segni opposti, cioè \(A\) e \(-B\) non devono avere autovalori in comune.
+    Ad esempio se \(A\) ha un autovalore \(\lambda_{A} = 2\) e \(B\) ha un autovalore 
+    \(\lambda_{B} = -2\) allora l'equazione di Sylvester non ammette una soluzione unica.
+    \item \textbf{Esistenza della soluzione}: L'equazione di Sylvester ammette almeno
+    una soluzione se e solo se:
+    \[vec(C) \in Im \left(I_{m} \otimes A + B^{T} \otimes I_{n}\right)\]
+    cioè se la matrice \(C\) appartiene all'immagine dell'operatore \(L(X)\):
+    \[L(X) = AX + XB\]
+    cioè esiste un \(X\) tale che \(L(X) = C\).
+\end{itemize}
+
+Ora torniamo al nostro problema di assegnamento degli autovalori
+per sistemi MIMO. Ricordiamo che il nostro obiettivo è trovare 
+la matrice \(K\) tale che:
+\[\sigma(A + BK) =
+\left\{\lambda_{1}, \lambda_{2}, \ldots, \lambda_{n}\right\}\]
+Ma se esiste questa \(K\) allora costruita una matrice \(T\)
+che ha sulle colonne gli autovettori associati agli autovalori
+desiderati si ha che per 
+la definizione di autovettore e autovalore (poichè
+il prodotto \((A+BK)T\) equivale a moltiplicare la matrice
+\(A+BK\) per ogni autovettore sulle colonne di \(T\)):
+\[(A + BK)T = T \Lambda \]
+con \(\Lambda\) matrice diagonale(o a blocchi) con gli autovalori desiderati sulla diagonale.
+
+\section{Diagonalizzare}
+
+Sia dato un sistema LTI descritto dalle equazioni di stato:
+\[
+\dot{x}(t) = Ax(t) + Bu(t)
+\]
+quando noi diamo un sistema in questa forma diamo per assodato che il vettore 
+\(x\) sia scritto nella base canonica di \(\mathbb{R}^{n}\).
+Se la matrice \(A\) è diagonalizzabile, ci poniamo il problema di portare \(x\)
+in un nuovo stato \(\hat{x}\) in cui \(A\) è diagonale. 
+Dunque cerchiamo una matrice di trasformazione \(T\) tale che:
+\[ x = T \hat{x} \Longrightarrow
+\hat{A} = T^{-1} A T \textnormal{ è diagonale}\] 
+Ma come si può immediatamente notare la matrice \(T\) è la matrice del cambiamento 
+di base dalla base canonica alla base che diagonalizza \(A\).
+Quindi a noi basta trovare la matrice che permette di portare il vettore \(\hat{x}\),
+scritto nella base che diagonalizza \(A\), 
+nel vettore \(x\) scritto nella base canonica.
+Ma la base che diagonalizza \(A\) è formata dagli autovettori di \(A\),
+dunque scegliamo un insieme di autovettori linearmente indipendenti di \(A\):
+\[ \hat{B} = \left\{v_{1}, v_{2}, \ldots, v_{n}\right\} \] 
+Per calcolare \(T\) dobbiamo ricordare che la matrice del cambiamento di base
+si calcola attraverso l'applicazione identità (che è un applicazione lineare),
+dunque applichiamo l'identità agli autovettori scelti:
+\[ Id(\hat{B}) =\left\{v_{1} , v_{2} , \ldots , v_{n}\right\} \]
+Ora scomponiamo i vettori rispetto alla base canonica 
+ed incolonniamoli come colonne della matrice \(T\)(
+la base canonica è molto comoda perchè ci permette di scrivere i vettori
+proprio come sono), dunque la matrice \(T\) vale:
+\[ T = \begin{pmatrix}
+    v_{1} & v_{2} & \ldots & v_{n}
+\end{pmatrix}\]
+In cui i vettori \(v_{1}, v_{2}, \ldots , v_{n} \in \mathbb{R}^{n \times 1}\)
+sono vettori colonna \(n \times 1\), dunque la matrice \(T \in \mathbb{R}^{n \times n}\).
