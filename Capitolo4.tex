@@ -203,7 +203,7 @@ questa equazione:
     \[vec(C) \in Im \left(I_{m} \otimes A + B^{T} \otimes I_{n}\right)\]
     cioè se la matrice \(C\) appartiene all'immagine dell'operatore \(L(X)\):
     \[L(X) = AX + XB\]
-    cioè esiste un \(X\) tale che \(L(X) = C\).
+    cioè esiste una matrice \(X \in \mathbb{R}^{n \times m}\) tale che \(L(X) = C\).
 \end{itemize}
 
 Ora torniamo al nostro problema di assegnamento degli autovalori
@@ -219,6 +219,41 @@ il prodotto \((A+BK)T\) equivale a moltiplicare la matrice
 \(A+BK\) per ogni autovettore sulle colonne di \(T\)):
 \[(A + BK)T = T \Lambda \]
 con \(\Lambda\) matrice diagonale(o a blocchi) con gli autovalori desiderati sulla diagonale.
+Andando a sviluppare i calcoli si hanno
+\[AT + BKT = T \Lambda \]
+Portando il termine \(T \Lambda\) a sinistra e \(BKT\) a destra si ha:
+\[AT - T \Lambda = - BKT \]
+In cui ponendo \(F=-KT\) si ha:
+\[AT - T \Lambda = B F \]
+Questa è un'equazione di Sylvester
+(a meno del segno del secondo termine a primo membro) in cui \(X=T\).
+Dunque se riusciamo a risolvere l'equazione di Sylvester
+troviamo una \(X\) che ci permette di ricavare una matrice \(K\)
+tale che la matrice \(A+BK\) abbia gli autovalori desiderati,
+la matrice \(K\) si ricava come:
+\[F=-KT=-KX \Longrightarrow K=-F X^{-1} = -F T^{-1}\]
+
+
+Nella pratica per assegnare gli autovlari tramite l'equazione di Sylvester
+si seguono i seguenti passi:
+\begin{enumerate}
+    \item Si scelgono gli autovalori desiderati
+    \(\left\{\lambda_{1}, \lambda_{2}, \ldots, \lambda_{n}\right\}\)
+    e si costruisce la matrice \(\Lambda\) con questi autovalori
+    sulla diagonale (o a blocchi).
+    \item Si costruisce una matrice \(F \in \mathbb{R}^{m \times n}\)
+    a piacere (ad esempio con elementi casuali).
+    \item Si risolve l'equazione di Sylvester:
+    \[AX - X \Lambda = B F \]
+    la soluzione \(X\) trovata è proprio la matrice \(T\) degli autovettori
+    associati agli autovalori desiderati.
+    \item Si calcola la matrice \(K\) come:
+    \[K = - F X^{-1} = - F T^{-1}\]
+\end{enumerate}
+Ovviamente al variare della matrice \(F\) si ottengono
+differenti matrici \(K\) che risolvono il problema, dunque 
+è sulla matrice \(F\) che possiamo agire per ottenere
+differenti soluzioni del problema di assegnamento degli autovalori.
 
 \section{Diagonalizzare}
 
@@ -244,7 +279,7 @@ dunque scegliamo un insieme di autovettori linearmente indipendenti di \(A\):
 Per calcolare \(T\) dobbiamo ricordare che la matrice del cambiamento di base
 si calcola attraverso l'applicazione identità (che è un applicazione lineare),
 dunque applichiamo l'identità agli autovettori scelti:
-\[ Id(\hat{B}) =\left\{v_{1} , v_{2} , \ldots , v_{n}\right\} \]
+\[ id(\hat{B}) =\left\{v_{1} , v_{2} , \ldots , v_{n}\right\} \]
 Ora scomponiamo i vettori rispetto alla base canonica 
 ed incolonniamoli come colonne della matrice \(T\)(
 la base canonica è molto comoda perchè ci permette di scrivere i vettori
@@ -254,3 +289,6 @@ proprio come sono), dunque la matrice \(T\) vale:
 \end{pmatrix}\]
 In cui i vettori \(v_{1}, v_{2}, \ldots , v_{n} \in \mathbb{R}^{n \times 1}\)
 sono vettori colonna \(n \times 1\), dunque la matrice \(T \in \mathbb{R}^{n \times n}\).
+
+
+
