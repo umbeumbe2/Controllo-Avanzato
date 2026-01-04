@@ -254,6 +254,111 @@ Ovviamente al variare della matrice \(F\) si ottengono
 differenti matrici \(K\) che risolvono il problema, dunque 
 è sulla matrice \(F\) che possiamo agire per ottenere
 differenti soluzioni del problema di assegnamento degli autovalori.
+Andiamo ora a definire il condizionamento di una matrice.
+    A noi interessa anche che la matrice \(K\) non vari troppo al variare
+delle matrici \(A\), \(B\) e \(\Lambda\), dunque ci interessa
+che trovare un parametro per valutare la sensibilità numerica della matrice \(K\)
+al variare delle matrici \(A\), \(B\) e \(\Lambda\). Ovviamente la 
+sensibilità numerica di \(K\) dipende dalla sensibilità numerica
+della matrice \(X\).
+
+\begin{definizione}
+Questo parametro prende il nome di condizionamento di una matrice ed è definito come:
+\begin{equation}
+    cond(X) = \|X\| \|X^{-1}\|
+\end{equation}
+Maggiore è il condizionamento di una matrice,
+maggiore è la sensibilità numerica della matrice, dunque il nostro 
+obiettivo è trovare una matrice \(X\) con condizionamento il più basso possibile.
+\end{definizione}
+
+
+Andiamo ora trasformare la condizione di esistenza della soluzione
+dell'equazione di Sylvester in una condizione sulla coppia \((A,B)\).
+Nello specifico la soluzione dell'equazione di Sylvester esiste se e solo se
+la coppia \((A,B)\) è completamente raggiungibile.
+Infatti, se la coppia \((A,B)\) non è completamente raggiungibile,
+il sistema può essere portato nella forma di Kalman 
+di controllabilità, in cui \(\bar{A}\) e 
+\(\bar{B}\) valgono:
+\[
+\bar{A} =
+\begin{pmatrix}
+    A_{C} & A_{12} \\
+    0 & A_{NC}
+\end{pmatrix}
+, \quad
+\bar{B} =
+\begin{pmatrix}
+    B_{C} \\
+    0
+\end{pmatrix}
+\]
+dove:
+\begin{itemize}
+    \item La coppia \((A_{C}, B_{C})\) è completamente controllabile
+    \item \(A_{NC}\) rappresenta la parte non raggiungibile del sistema.
+\end{itemize}
+Quindi se andiamo a scrivere l'equazione di Sylvester
+per \(\bar{A}\) e \(\bar{B}\) si ha:
+\[\bar{A}X - X \Lambda = \bar{B} F \]
+Dove le equazioni nelle righe di \(\bar{A}\) e \(\bar{B}\)
+in cui il sistema non è controllabile si riducono a:
+\[A_{NC} X_{NC} - X_{NC} \Lambda = 0 \]
+Ma l'ultima equazione è soddisfatta solo se gli autovalori 
+di \(A_{NC}\) e \(\Lambda\) sono uguali, cioè 
+se non cambiamo gli autovalori della parte non controllabile del sistema.
+Facciamo ora una considerazione sulla scelta degli autovalori.
+Se siamo obbligati a scegliere autovalori di \(\Lambda\)
+uguali ad autovalori di \(A\),per soddisfare delle specifiche di progetto,
+ allora l'equazione di Sylvester non ammette più soluzione unica,
+e i casi possibili sono due:
+\begin{itemize}
+    \item L'equazione di Sylvester non ammette soluzioni (il sistema non è raggiungibile)
+    \item L'equazione di Sylvester ammette infinite soluzioni (il sistema è raggiungibile)
+\end{itemize}
+Nel primo caso abbiamo che non esiste una \(X\) che risolve l'equazione
+di Sylvester, dunque non possiamo seguire questa strada per trovare \(K\).
+Nel secondo caso invece esistono infinite matrici \(X\), dunque infinite
+matrici \(K\) che risolvono il problema di assegnamento degli autovalori.
+Per garantire un condizionamento migliore del problema invece di scegliere 
+autovalori di \(\Lambda\) uguali ad autovalori di \(A\) 
+è meglio scegliere autovalori di \(\Lambda\) vicini, ma non proprio uguali 
+agli autovalori di \(A\).
+
+\section{Metodo di Kautsky-Nichols-Van Dooren}
+Il metodo di Kautsky-Nichols-Van Dooren è un metodo iterativo 
+per ottenere una matrice \(K\) ,che risolve il problema di assegnamento
+degli autovalori per sistemi MIMO, con un buon condizionamento. Ma il condizionamento
+di \(K\) ricordiamo dipendere dal condizionamento della matrice \(X\)
+(matrice di autovettori)
+che risolve l'equazione di Sylvester. 
+Il metodo di Kautsky-Nichols-Van Dooren consiste dei seguenti passaggi:
+\begin{enumerate}
+    \item Si scelgono gli autovalori desiderati
+    \(\left\{\lambda_{1}, \lambda_{2}, \ldots, \lambda_{n}\right\}\)
+    e si costruisce la matrice \(\Lambda\) con questi autovalori
+    sulla diagonale (o a blocchi).
+    \item Si scelgono i vettori \(f_{i}\) in modo casuale (uno per ogni autovalore)
+    \item Per ogni \(i\) si risolve il sistema di equazioni:
+    \[ \left(A - \lambda_{i} I\right)x_{i} = -Bf_{i}\]
+    Ottendendo così per ogni \(i\) un vettore \(x_{i}\).
+    \item Si costruisce la matrice \(X\) con i vettori \(x_{i}\) come colonne:
+    \[ X = \begin{pmatrix}
+        x_{1} & x_{2} & \ldots & x_{n}
+    \end{pmatrix}\]
+    \item Si valuta il condizionamento di \(X\):
+    \[ cond(X) = \|X\| \|X^{-1}\|\]
+    \item Se il condizionamento di \(X\) non è accettabile si 
+    ritorna al passo 2 e si scelgono nuovi vettori \(f_{i}\).
+    Mentre se il condizionamento è accettabile si procede con il passo successivo.
+    \item Si calcola la matrice \(F\) come:
+    \[ F = \begin{pmatrix}
+        f_{1} & f_{2} & \ldots & f_{n}
+    \end{pmatrix}\]
+    \item Si calcola la matrice \(K\) come:
+    \[ K = - F X^{-1} \]
+\end{enumerate}
 
 \section{Diagonalizzare}
 

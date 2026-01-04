@@ -15,4 +15,5 @@
 \contentsline {section}{\numberline {4.1}Caso MIMO}{12}{}%
 \contentsline {section}{\numberline {4.2}Metodo della forma canonica di controllabilità}{12}{}%
 \contentsline {section}{\numberline {4.3}Metodo dell'equazione di Sylvester}{14}{}%
-\contentsline {section}{\numberline {4.4}Diagonalizzare}{16}{}%
+\contentsline {section}{\numberline {4.4}Metodo di Kautsky-Nichols-Van Dooren}{16}{}%
+\contentsline {section}{\numberline {4.5}Diagonalizzare}{17}{}%
