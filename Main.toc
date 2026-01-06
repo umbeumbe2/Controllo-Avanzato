@@ -6,14 +6,7 @@
 \contentsline {section}{\numberline {1.3}Stabilità nei sistemi lineari}{3}{}%
 \contentsline {section}{\numberline {1.4}Sistema nel dominio di Laplace}{4}{}%
 \contentsline {section}{\numberline {1.5}Stabilità tramite l'approccio alla Lyapunov}{5}{}%
-\contentsline {section}{\numberline {1.6}SVD (Singular Value Decomposition)}{7}{}%
-\contentsline {section}{\numberline {1.7}Guadagno}{9}{}%
-\contentsline {section}{\numberline {1.8}Poli e zeri per sistemi MIMO }{9}{}%
-\contentsline {chapter}{\numberline {2}Stabilità Robusta}{10}{}%
-\contentsline {chapter}{\numberline {3}Stabilità Robusta}{11}{}%
-\contentsline {chapter}{\numberline {4}Assegnamento degli autovalori con feedback di stato}{12}{}%
-\contentsline {section}{\numberline {4.1}Caso MIMO}{12}{}%
-\contentsline {section}{\numberline {4.2}Metodo della forma canonica di controllabilità}{12}{}%
-\contentsline {section}{\numberline {4.3}Metodo dell'equazione di Sylvester}{14}{}%
-\contentsline {section}{\numberline {4.4}Metodo di Kautsky-Nichols-Van Dooren}{16}{}%
-\contentsline {section}{\numberline {4.5}Diagonalizzare}{17}{}%
+\contentsline {section}{\numberline {1.6}Lyapunov per Sistemi LTI}{6}{}%
+\contentsline {section}{\numberline {1.7}SVD (Singular Value Decomposition)}{9}{}%
+\contentsline {section}{\numberline {1.8}Guadagno}{11}{}%
+\contentsline {section}{\numberline {1.9}Poli e zeri per sistemi MIMO }{12}{}%

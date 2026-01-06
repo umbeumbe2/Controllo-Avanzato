@@ -50,8 +50,8 @@ stato-ingresso tale che:
 
 \begin{definizione}
 
-Un sistema dinamico 
-tempo invariante è detto stabile se 
+Un punto di equilibrio \(\bar{x}\) di un sistema dinamico 
+tempo invariante è detto stabile se:
 
 \begin{equation}
   \forall \varepsilon > 0, 
@@ -280,7 +280,8 @@ la traiettoria \(x(t)\) che parte da \(x_{0}\)
 rimane confinata in \(B_{\varepsilon}(\bar{x})\).
 Dunque partiamo con il fissare un generico \(\varepsilon > 0\).
 Prendiamo la curva di livello (della funzione \(V(x)\)) 
-a valore maggiore e completamente contenuta in \(B_{\varepsilon}(\bar{x})\), come 
+a valore maggiore e completamente contenuta in \(\bar{B}_{\varepsilon}(\bar{x})\) 
+(con il trattino sopra intendiamo la chiusura), come 
 in Figura \ref{fig:lyapunov-proof}. Ora chiamiamo \(\delta\)
 la distanza minima tra \(\bar{x}\) e la curva di livello di valore \(\bar{V}\).
 Ora consideriamo una \(x(t)\)
@@ -291,10 +292,13 @@ la traiettoria \(x(t)\) rimane confinata all'interno di \(B_{\varepsilon}(\bar{x
 \(\forall t \ge 0\). Per dimostrare che \(x(t)\) rimane confinata in
 \(B_{\varepsilon}(\bar{x})\) distinguiamo due casi:
 \begin{itemize}
-  \item Nel caso in cui si ha \(\dot{V}(x) = 0\) la traiettoria \(x(t)\) al massimo può 
-  rimanre sulla curva di livello a valore \(\bar{V}\) (dunque
-  rimane confinata in \(B_{\varepsilon}(\bar{x})\)) 
-  \item  Se  \(\dot{V}(x) < 0\) allora la traiettoria \(x(t)\) si muove verso l'interno
+  \item Nel caso in cui si ha \(\dot{V}(x) = 0\) la traiettoria \(x(t)\) nel peggiore 
+  casi rimane confinata sulla curva di livello a valore \(\bar{V}\), o su un'altra 
+  curva di livello a valore minore di \(\bar{V}\) (dunque rimane confinata in
+  \(B_{\varepsilon}(\bar{x})\)).
+  \item  Se  \(\dot{V}(x) < 0\) allora la traiettoria \(x(t)\) si muove 
+  in modo tale da far diminuire il valore di \(V(x(t))\), quindi si muove
+   verso l'interno   (essendo \(\bar{V}\) la curva di livello a valore massimo)
   della curva di livello a valore \(\bar{V}\) 
   (dunque rimane confinata in \(B_{\varepsilon}(\bar{x})\))
 \end{itemize}
@@ -363,6 +367,132 @@ Se \( f \in C^{1}(D) \) allora è anche sicuramente
 in  \(D\) (poichè se una funzione è \(C^{1}\) allora 
 il suo gradiente è limitato) cioè:
 \[\exists L >0  : \|f(x) - f(y)\| \le L \|x - y\|, \quad \forall x,y \in I\] 
+
+\section{Lyapunov per Sistemi LTI}
+Per i sistemi lineari tempo invarianti possiamo 
+utilizzare il metodo di Lyapunov per studiare l'asintotica stabilità
+del sistema. 
+Consideriamo il sistema LTI:
+\[\dot{x} = Ax + Bu\]
+Ricordiamo che per tutti i sistemi linerari l'asintotica stabilità è una proprietà 
+del sistema, cioè se un punto di equilibrio è asintoticamente stabile allora lo sono tutti.
+Tutti i sistemi LTI ammettono come punto di equilibrio l'origine
+\((\bar{x}, \bar{u}) = (0,0)\), 
+e quindi possiamo anche andare a studiare direttamente 
+la stabilità di questo punto di equilibrio (che ci 
+permette di non considerare gli ingressi). Dunque consideriamo direttamente
+il sistema autonomo (che si evolve senza ingressi):
+\[\dot{x} = Ax\]
+Studiamo con il metodo di Lyapunov la stabilità dell'origine (nello spazio 
+dello stato e degli ingressi) come 
+punto di equilibrio. Per i sistemi LTI vale il seguente teorema:
+\begin{teorema}
+Teorema di Lyapunov per sistemi LTI. 
+Il sistema LTI:
+\[\dot{x} = Ax\]
+è stabile se e solo se per ogni matrice \(Q \) simmetrica definita positiva (\(Q=Q^{T} > 0\)),
+esiste una matrice simmetrica definita positiva \(P=P^{T} > 0\)
+tale che:
+\begin{equation}  
+  A^{T}P + PA = -Q
+\end{equation}
+quest'ultima equazione prende il nome di \textbf{equazione di Lyapunov}.
+\end{teorema}
+Dimostriamo il seguente teorema.
+\begin{proof}
+  Partiamo con il mostrare che l'esistenza di \(P\) 
+  che soddisfa l'equazione di Lyapunov è una \textbf{condizione necessaria}
+  alla asintotica stabilità. Prendiamo una generica \(Q=Q^{T}>0\), 
+  vogliamo dimostrare che supposto il sistema sia asintoticamente stabile, allora deve 
+  esistere una \(P=P^{T}>0\) che soddisfa l'equazione di Lyapunov:
+  \[  A^{T}P + PA = -Q \]
+  Consideriamo la \(P\) definita come:
+  \[ P =\int_{0}^{+\infty} e^{A^{T}t} Q e^{At} dt \]
+  Per prima cosa diciamo che questa \(P\) è ben definita (l'integrale converge 
+  \(\forall Q\)) poichè il sistema è asintoticamente stabile, dunque 
+  gli esponenziali che usciranno nei calcoli avranno tutti 
+  esponenti negativi, dunque si avrà \(e^{\lambda t} \to 0\) per \(t \to +\infty\)
+  (poichè \(\lambda <0 \)).
+
+  Per costruzione questa \(P\) è simmetrica.
+  Dimostriamo ora che questa \(P\) è definita positiva. Preso un generico
+  \(x \in \mathbb{R}^{n} - \left\{0\right\}\) vogliamo dimostrare che \(x^{T}Px > 0\).
+  Calcoliamo:
+  \[ x^{T}Px = x^{T} \left( \int_{0}^{+\infty} e^{A^{T}t} Q e^{At} dt \right) x  \]
+  Portiamo le \(x\) dentro l'integrale:
+  \[ x^{T}Px = \int_{0}^{+\infty} x^{T} e^{A^{T}t} Q e^{At} x dt \]
+  Notiamo ora che a primo membro abbiamo \(x^{T} e^{A^{T} t} = \left(e^{At} x\right)^{T}\):
+  \[ x^{T}Px = \int_{0}^{+\infty} \left(e^{At} x\right)^{T} Q \left(e^{At} x\right) dt\]
+  Ora poniamo \(y = e^{At}x\), ci interessa dimostrare che:
+  \[ \int_{0}^{+\infty} y^{T} Q y dt > 0 \]
+  Ora noi sappiamo che \(Q\) è definita positiva,
+  dunque per definizione di matrice definita positiva si ha che:
+  \[ y^{T} Q y > 0 ,  \forall y \neq 0 \]
+  Il nostro problema è diventato dunque dimostrare che \(y \neq 0\) per ogni
+  \(x \neq 0\). Ricordiamo che l'esponenziale di 
+  matrice è sempre invertibile, dunque la dimensione del \(ker(e^{At})\) è nulla,
+  quindi \(y =e^{At}x \neq 0 \forall x \neq 0\). Dunque abbiamo dimostrato che:
+  \[ y^{T} Q y > 0 ,  \forall x \neq 0 \]
+  Quindi abbiamo dimostrato che l'integrando è sempre positivo per ogni \(t \ge 0\).
+  Ma se l'integrando è sempre positivo anche l'intergrale è
+  positivo dunque la matrice \(P\) è definita positiva.
+  Ora dimostriamo che questa \(P > 0\) soddisfa l'equazione di Lyapunov.
+  Calcoliamo:
+  \[A^{T} P + P A = 
+  A^{T} \int_{0}^{+\infty} e^{A^{T}t} Q e^{At} dt  +
+  \int_{0}^{+\infty} e^{A^{T}t} Q e^{At} dt  A\] 
+  Portando \(A^{T}\) e \(A\) dentro gli integrali, 
+  ed unendo gli integrali otteniamo:
+    \[A^{T} P + P A = 
+  \int_{0}^{+\infty}
+  A^{T} 
+  e^{A^{T}t} Q e^{At} dt  +
+  e^{A^{T}t} Q e^{At} dt  
+  A\] 
+  Ora notiamo che il termine all'interno dell'integrale
+  è la derivata di \(e^{A^{T}t} Q e^{At}\) rispetto a \(t\), dunque possiamo riscrivere:
+  \[A^{T} P + P A =  
+  \int_{0}^{+\infty} \frac{d}{dt} \left( e^{A^{T}t} Q e^{At} \right) dt
+  \]
+  Ma l'integrale della derivata è proprio la funzione valutata agli estremi:
+  \[ 
+  A^{T} P + P A= \left[ e^{A^{T}t} Q e^{At} \right]_{0}^{+\infty}
+  \]
+  Ma \[e^{A^{T}t} Q e^{At}\] valutata in \(0\) vale \(Q\), mentre
+  valutata in \(+\infty\) vale \(0\) (poichè il sistema è asintoticamente stabile),
+  dunque si ha:
+  \[ A^{T} P + P A = 0 - Q = -Q\]
+  Dunque abbiamo dimostrato che se il sistema è asintoticamente stabile
+  allora per ogni \(Q=Q^{T} > 0\) esiste una \(P=P^{T} > 0\)
+  che soddisfa l'equazione di Lyapunov. \\
+  Ora dimostriamo la \textbf{condizione sufficiente}, cioè
+  se \(\forall Q=Q^{T} >0\) esiste una \(P=P^{T} > 0\) che soddisfa l'equazione di Lyapunov
+  allora il sistema è asintoticamente stabile.
+  Per ipotesi dunque sappiamo che fissata una \(Q=Q^{T} > 0\) 
+  esiste almeno una \(P=P^{T} > 0\) che soddisfa l'equazione di Lyapunov,cioè:
+  \[ A^{T} P + P A = -Q \]
+  Il nostro obiettivo è dimostrare che il sistema è asintoticamente stabile,
+  dunque andiamo a considerare la funzione di Lyapunov:
+  \[ V(x) = x^{T} P x \]
+  Noi sappiamo che \(P\) è definita positiva, dunque \(V(x)\) è definita positiva.
+  Calcoliamo ora la derivata di \(V(x)\) lungo
+  le traiettorie del sistema (ricordiamo la regola 
+  della derivata di una forma quadratica):
+  \[ \dot{V}(x) = \dot{x}^{T} P x + x^{T} P \dot{x} \]
+  Ricordiamo che \(\dot{x} = Ax\), dunque sostituiamo:
+  \[ \dot{V}(x) = (Ax)^{T} P x + x^{T} P (Ax) \]
+  Facendo il trasposto a primo membro:
+  \[ \dot{V}(x) = x^{T} A^{T} P x + x^{T} P A x \]
+  Mettiamo in evidenza \(x^{T}\) e \(x\):
+  \[ \dot{V}(x) = x^{T} (A^{T} P + P A) x \]
+  Ora ricordiamo che \(A^{T} P + P A = -Q\), dunque sostituiamo:
+  \[ \dot{V}(x) = x^{T} (-Q) x \]
+  Ma \(Q\) è definita positiva, dunque \(-Q\)
+  è definita negativa, dunque anche \(\dot{V}(x)\) è definita negativa.
+  Quindi il sistema è asintoticamente stabile per il teorema di Lyapunov,
+  con funzione di Lyapunov \(V(x) = x^{T} P x\).
+\end{proof}
+
 
 \section{SVD (Singular Value Decomposition)}
 Consideriamo una matrice \(A \in \mathbb{R}^{m \times n}\).
