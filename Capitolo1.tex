@@ -391,14 +391,13 @@ Teorema di Lyapunov per sistemi LTI.
 Il sistema LTI:
 \[\dot{x} = Ax\]
 è stabile se e solo se per ogni matrice \(Q \) simmetrica definita positiva (\(Q=Q^{T} > 0\)),
-esiste una matrice simmetrica definita positiva \(P=P^{T} > 0\)
+esiste una matrice simmetrica definita positiva \(P \left(P=P^{T} > 0\right)\)
 tale che:
 \begin{equation}  
   A^{T}P + PA = -Q
 \end{equation}
 quest'ultima equazione prende il nome di \textbf{equazione di Lyapunov}.
 \end{teorema}
-Dimostriamo il seguente teorema.
 \begin{proof}
   Partiamo con il mostrare che l'esistenza di \(P\) 
   che soddisfa l'equazione di Lyapunov è una \textbf{condizione necessaria}
@@ -475,9 +474,7 @@ Dimostriamo il seguente teorema.
   dunque andiamo a considerare la funzione di Lyapunov:
   \[ V(x) = x^{T} P x \]
   Noi sappiamo che \(P\) è definita positiva, dunque \(V(x)\) è definita positiva.
-  Calcoliamo ora la derivata di \(V(x)\) lungo
-  le traiettorie del sistema (ricordiamo la regola 
-  della derivata di una forma quadratica):
+  Calcoliamo ora la derivata di \(V(x)\) nel tempo:
   \[ \dot{V}(x) = \dot{x}^{T} P x + x^{T} P \dot{x} \]
   Ricordiamo che \(\dot{x} = Ax\), dunque sostituiamo:
   \[ \dot{V}(x) = (Ax)^{T} P x + x^{T} P (Ax) \]
@@ -493,6 +490,112 @@ Dimostriamo il seguente teorema.
   con funzione di Lyapunov \(V(x) = x^{T} P x\).
 \end{proof}
 
+Notiamo che in realtà non è necessario che la la matrice \(P\) esista per ogni
+matrice \(Q\) definita positiva, ma basta che esista per una sola
+matrice \(Q\) definita positiva. Notiamo anche che la matrice \(P\)
+che soddisfa l'equazione di Lyapunov è unica per ogni \(Q\).
+\section{Stabilità Robusta}
+
+Supponiamo ora che il nostro sistema dinamico sia affetto da
+inceertezze parametriche, cioè che il modello matematico (dunque la matrice 
+delle dinamica \(A\)) abbia delle variazioni intorno al suo valore nominale.
+In questo caso il sistema dinamico si può scrivere come
+\begin{equation}
+    \dot{x}(t) = (A(p(t)))x(t)
+\end{equation}
+dove \(p(t) \) è un parametro incerto che varia nel tempo
+ed appartiene ad un insieme \(\mathcal{P}\).
+In generale si studiano sistemi di 3 tipologie:
+\begin{itemize}
+    \item \textbf{Sistemi Stazionari} : in cui il parametro \(p(t) = p \in \mathcal{P}\) non 
+    è funzione del tempo (ma rimane incerto).
+    \item \textbf{Sistemi Tempo-Varianti} : in cui il parametro \(p(t) \in \mathcal{P}\) 
+    varia nel tempo in modo arbitrario.
+    \item \textbf{Sistemi Quasi Stazionari} : in cui il parametro \(p(t) \in \mathcal{P}\)
+    varia nel tempo in modo "lento" ( caso per caso si definisce cosa significa lento).
+\end{itemize}
+Noi studieremo solo i sistemi stazionari e tempo-varianti.\\
+Partiamo con l'analizzare i \textbf{sistemi stazionari}.
+Dunque il nostro sistema dinamico si può scrivere come:
+\[\dot{x} = A(p) x\]
+con \(p \in \mathcal{P}\).
+Noi vogliamo studiare la stabilità del sistema per ogni
+valore del parametro incerto \(p\), 
+ma per fare questo ci basta studiare gli autovalori della matrice \(A\)
+al variare di \(p\). Dunque il sistema è asintoticamente stabile
+se e solo se per ogni \(p \in \mathcal{P}\)
+gli autovalori di \(A(p)\) hanno parte reale negativa.
+Potrei affrontare anche questo problema con un approccio alla 
+Lyapunov, ricordiamo che un sistema LTI è asintoticamente stabile
+se e solo se \(\forall Q=Q^{T} > 0\) esiste una \(P=P^{T} > 0\) 
+tale che:
+\[ A^{T}(p) P + P A(p) = -Q \]
+Quindi dovremmo andare a cercare una \(P\) che soddisfa questa equazione
+per ogni \(p \in \mathcal{P}\). 
+Sia con l'approccio agli autovalori che con l'approccio di Lyapunov
+il problema è che dobbiamo studiare un'infinità continua di casi,
+su questo problema ritorneremo a breve, diamo ora una veloce occhiata ai 
+sistemi in cui il parametro varia con il tempo.\\
+Andiamo ora a considerare i \textbf{sistemi tempo-varianti},
+dunque il nostro sistema dinamico si può scrivere come:
+\[\dot{x} = A(p(t)) x\]
+con \(p(t) \in \mathcal{P}\). Visto che il parametro varia nel tempo,
+non possiamo più studiare la stabilità del sistema
+andando a studiare gli autovalori di \(A(p(t))\),
+poichè si dimostra che anche se la matrice \(A(p(t))\)
+ha tutti gli autovalori con parte reale negativa per ogni \(t\),
+il sistema potrebbe essere instabile. Proviamo 
+ad affrontare il problema con il teorema di Lyapunov,
+ricordando che questo vale anche per sistemi tempo-varianti. 
+Il nostro è un sistema lineare tempo-variante, ci manca 
+solo la tempo-invarianza per usare il teorema di Lyapunov per sistemi LTI.
+Ma se trovassimo una matrice \(P\) 
+che soddisfa l'equazione di Lyapunov per tutti i possibili valori 
+di \(p \in \mathcal{P}\), cioè una \(P\) tale che:
+\[ A^{T}(p) P + P A(p) = -Q , \quad \forall p \in \mathcal{P} \]
+allora potremmo usare questa \(P\) 
+per costruire una funzione di Lyapunov per il sistema tempo-variante,
+che è identica a quella che useremmo per il sistema LTI, cioè:
+\[ V(x) = x^{T} P x \]
+Infatti se la \(P\) soddisfa l'equazione di Lyapunov per ogni \(p \in \mathcal{P}\),
+allora la derivata di \(V(x)\) nel tempo sarà:
+\[\dot{V}(x)  < 0,  \quad \forall p \in \mathcal{P} 
+\Longrightarrow \dot{V}(x)  < 0 \forall p \in \mathcal{P}, \quad \forall t\]
+dunque il sistema sarà asintoticamente stabile per il teorema di Lyapunov
+(non quello per i sistemi LTI, 
+con i sistmei LTI abbiamo in comune solo la forma della \(V(x)\)).
+Ma anche in questo caso dovremmo scrivere un infità continua di equazioni
+di Lyapunov, una per ogni \(p \in \mathcal{P}\).\\
+Dunque in entrambi i casi (sistemi stazionari e tempo-varianti)
+dobbiamo risolvere un'infinità continua di equazioni di Lyapunov,
+una per ogni \(p \in \mathcal{P}\), e questo è un problema.
+Per risolvere questo problema notiamo per prima cosa che per come 
+è costruita la funzione di Lyapunov \(V(x) = x^{T} P x\),
+non c'è bisogno che fissata una \(Q\) esista una \(P\) che
+soddisfa l'equazione di Lyapunov per ogni \(p \in \mathcal{P}\),
+ma in realtà ci basta trovare una \(P\) che soddisfa la
+seguente disuguaglianza per ogni \(p \in \mathcal{P}\):
+\[ A^{T}(p) P + P A(p) < 0 , \quad \forall p \in \mathcal{P} \]
+Infatti se questa disuguaglianza è soddisfatta, allora
+la derivata di \(V(x)\) nel tempo sarà:
+\[\dot{V}(x)  < 0,  \quad \forall p \in \mathcal{P} \]
+Dunque ora invece di avere un numero infinito di equazioni,
+abbiamo un numero infinito di disuguaglianze,
+una per ogni \(p \in \mathcal{P}\). Ora per portarci il problema 
+ad un numero finito di disuguaglianze,
+dobbiamo fare delle ipotesi sull'insieme \(\mathcal{P}\),
+cioè che l'insieme sia un iperettangolare, cioè:
+\[\mathcal{P} = \left[p^{min}_{1} , p^{max}_{1}\right] \times 
+\ldots \times \left[p^{min}_{m} , p^{max}_{m}\right]\]
+con \(m\) il numero di parametri incerti, e \(p \in \mathbb{R}^{m \times 1}\).
+Sotto questa ipotesi è possibile dimostrare che condizione sufficiente,
+affinchè la disualglianza 
+è soddisfatta per ogni \(p \in \mathcal{P}\), è che sia soddisfatta sui 
+vertici dell'iperettangolo, cioè ci basta trovare una \(P\) che soddisfa 
+le disuguaglianze solo sui vertici dell'iperettangolo:
+\[ A^{T}(p_{i}) P + P A(p_{i}) < 0 , \quad \forall p_{i} \in vertici(\mathcal{P}) 
+\Longrightarrow 
+A^{T}(p) P + P A(p) < 0 , \quad \forall p \in \mathcal{P} \]
 
 \section{SVD (Singular Value Decomposition)}
 Consideriamo una matrice \(A \in \mathbb{R}^{m \times n}\).

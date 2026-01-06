@@ -7,6 +7,7 @@
 \contentsline {section}{\numberline {1.4}Sistema nel dominio di Laplace}{4}{}%
 \contentsline {section}{\numberline {1.5}Stabilità tramite l'approccio alla Lyapunov}{5}{}%
 \contentsline {section}{\numberline {1.6}Lyapunov per Sistemi LTI}{6}{}%
-\contentsline {section}{\numberline {1.7}SVD (Singular Value Decomposition)}{9}{}%
-\contentsline {section}{\numberline {1.8}Guadagno}{11}{}%
-\contentsline {section}{\numberline {1.9}Poli e zeri per sistemi MIMO }{12}{}%
+\contentsline {section}{\numberline {1.7}Stabilità Robusta}{10}{}%
+\contentsline {section}{\numberline {1.8}SVD (Singular Value Decomposition)}{11}{}%
+\contentsline {section}{\numberline {1.9}Guadagno}{13}{}%
+\contentsline {section}{\numberline {1.10}Poli e zeri per sistemi MIMO }{14}{}%
