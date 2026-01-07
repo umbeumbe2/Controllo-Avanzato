@@ -1,0 +1,253 @@
+\chapter{Sistemi MIMO nel dominio di Laplace}
+
+Consideriamo il seguente sistema LTI 
+a più ingressi e più uscite (MIMO) descritto dalle seguenti equazioni:
+\begin{equation}
+    \begin{cases}
+        \dot{x}(t) = Ax(t) + Bu(t) \\
+        y(t) = Cx(t) + Du(t)
+    \end{cases}
+\end{equation}
+Il sistema è MIMO dunque \( u \in \mathbb{R}^{m \times 1}\),
+\(y \in \mathbb{R}^{p \times 1}\),
+\(B \in \mathbb{R}^{n \times m}\),
+\(C \in \mathbb{R}^{p \times n}\)
+e \(D \in \mathbb{R}^{p \times m}\).
+Il sistema può essere rappresentato nel dominio di Laplace come:
+\begin{equation}
+    Y(s) = G(s)U(s) 
+\end{equation}
+Con \( G(s) \in \mathbb{R}^{p \times m} \) matrice di trasferimento del sistema
+definita come:
+\begin{equation}
+    G(s) = C(sI - A)^{-1}B + D
+\end{equation}
+La matrice \(G(s)\) è composta da \(p \times m\) funzioni di trasferimento
+singole \(G_{ij}(s)\):
+\[G(s) = \begin{pmatrix}
+    G_{11}(s) & \ldots & G_{1m}(s) \\
+    \vdots & \vdots & \vdots \\
+    G_{p1}(s) & \ldots & G_{pm}(s)
+\end{pmatrix}\]
+dove ogni elemento \(G_{ij}(s)\) è una funzione polinomiale 
+fratta che rappresenta la funzione di trasferimento
+tra l'ingresso \(u_j\) e l'uscita \(y_i\).
+
+
+\section{SVD (Singular Value Decomposition)}
+Consideriamo una matrice \(A \in \mathbb{R}^{m \times n}\).
+Inoltre dati due vettori \(y \in \mathbb{R}^{m}\) 
+e \(x \in \mathbb{R}^{n}\) tali che vale la relazione:
+\[y = A x\]
+\[A = U \Sigma V^{T}\]
+\begin{itemize}
+  \item La matrice \(U \in \mathbb{R}^{m \times m}\) (matrice di rotazione delle uscite) 
+  è una matrice ortonormale
+  composta dai vettori colonna \(u_{1}, u_{2}, \ldots, u_{m}\),
+  si ha:
+  \[U  =\begin{pmatrix}
+    u_{1} & u_{2} & \ldots & u_{m}
+  \end{pmatrix}\]
+  \item La matrice \(V \in \mathbb{R}^{n \times n}\) 
+  (matrice di rotazione degli ingressi) 
+  è una matrice ortonormale
+  composta dai vettori colonna \(v_{1}, v_{2}, \ldots, v_{n}\),
+  si ha:
+  \[V  =\begin{pmatrix}
+    v_{1} & v_{2} & \ldots & v_{n}
+  \end{pmatrix}\]
+  \item La matrice \(\Sigma 
+  \in \mathbb{R}^{m \times n}\) (matrice dei valori singolari) 
+
+  \[p= min\left\{m,n\right\}\]
+   Dove si ha che:
+  \[\Sigma =  \begin{pmatrix}
+    \Sigma_{1} & 0
+  \end{pmatrix} , \hspace{10pt}
+    \textnormal{ se } p=m
+  \]
+  \[\Sigma = \begin{pmatrix}
+    \Sigma_{1} \\ 0
+  \end{pmatrix} , \hspace{10pt}
+    \textnormal{ se } p=n
+  \]
+\end{itemize}
+
+
+\[y = \begin{pmatrix}
+  u_{1} & u_{2} & \ldots & u_{m} 
+\end{pmatrix}
+  \begin{pmatrix}
+    \Sigma_{1} & 0 & \ldots & 0 \\
+    0 & \Sigma_{2} & \ldots & 0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & \ldots & \Sigma_{m} \\
+  \end{pmatrix}
+\begin{pmatrix}
+  v_{1}^{T} \\ 
+  v_{2}^{T} \\
+  \vdots \\
+  v_{n}^{T}
+\end{pmatrix}
+ \cdot x
+\]
+
+Se io prendo \(x=v_{i}\) si ha:
+\[
+  \begin{pmatrix}
+  v_{1}^{T} \\ 
+  v_{2}^{T} \\
+  \vdots \\
+  v_{n}^{T}
+\end{pmatrix}
+\cdot 
+x =
+  \begin{pmatrix}
+  v_{1}^{T} \\ 
+  v_{2}^{T} \\
+  \vdots \\
+  v_{n}^{T}
+\end{pmatrix}
+\cdot 
+v_{i} 
+\]
+Ricordando che \(V\) è ortonormale, si che le sue colonne 
+sono tra loro ortogonali e di norma 1, dunque si ha:
+\[ v^{T}_{j} \cdot v_{i} = 0 , \hspace{10pt} \textnormal{se } i \neq j \]
+\[ v^{T}_{j} \cdot v_{i} = 1 , \hspace{10pt} \textnormal{se } i = j \]
+Dunque si ha:
+\[
+  \begin{pmatrix}
+  v_{1}^{T} \\ 
+  v_{2}^{T} \\
+  \vdots \\
+  v_{i}^{T} \\
+  \vdots \\
+  v_{n}^{T}
+\end{pmatrix}
+\cdot 
+v_{i} 
+=
+  \begin{pmatrix}
+  0 \\ 
+  0 \\
+  \vdots \\
+  1 \\
+  \vdots \\
+  0
+\end{pmatrix}
+\]
+Dove l'uno è nella \(i\)-esima riga.
+Andiamo a calcolarci la norma 2 di \(A\):
+\[\left|\left|A \right|\right|_{2} = \sqrt{\lambda_{MAX}
+\left(A^{T} A\right) } \]
+Notiamo che per le proprietà della trasposta \(A^{T}= 
+\left( U \Sigma V\right)^{T}  =
+ V \Sigma^{T} U^{T} \)
+\[ \left|\left|A \right|\right|_{2} =
+\sqrt{\lambda_{MAX} \left(V 
+\Sigma^{T} U^{T} U \Sigma V^{T}\right)} \]
+Ora ricordando che \(U\) è ortonormale si ha \(U^{T} U = I\) 
+(\(U^{T} = U^{-1}\)):
+\[\left|\left|A \right|\right|_{2} 
+=
+\sqrt{\lambda_{MAX} \left(V \Sigma^{T} \Sigma  V^{T}\right)}\]
+Ora ricordando che \(\Sigma\) 
+e \(\Sigma^{T}\) sono diagonali si ha 
+che vale la proprietà commutativa tra le matrici, dunque possiamo scrivere:
+\[\left|\left|A \right|\right|_{2} 
+=
+\sqrt{\lambda_{MAX} \left(\Sigma^{T} \Sigma V V^{T}\right)}\]
+Ora ricordando che \(\Sigma\) è diagonale vale
+\(\Sigma^{T} = \Sigma\), dunque si ha:
+\[\left|\left|A \right|\right|_{2} = 
+\sqrt{\lambda_{MAX} \Sigma^{T} \Sigma }
+= \sqrt{\lambda_{MAX} \Sigma \Sigma }
+=  \sqrt{\lambda_{MAX} \Sigma^{2}}
+\]
+Come si vede la norma 2 di \(A\)
+è legata al valore singolare maggiore di \(A\).
+
+\begin{figure}[htbp] % [h] suggerisce a LaTeX di mettere la figura "qui" (here)
+    \centering
+\begin{tikzpicture}[x=2cm, y=2cm]
+        
+        % --- ASSI (Mantengo le frecce standard qui) ---
+        \draw[thick, ->] (-1.8,0) -- (1.8,0) node[right] {$x_1$};
+        \draw[thick, ->] (0,-1.8) -- (0,1.8) node[above] {$x_2$};
+
+        % Cerchio unitario (raggio matematico = 1)
+        \draw[thick, dashed, black] (0,0) circle (1);
+        \node[black, below right] at (-0.7, -0.7) {$r=1$};
+
+        % --- VETTORI CON NUOVE PUNTE ---
+        % Nota: Ho cambiato '->' in '-stealth' per le punte dei vettori
+
+        % Vettore x blu, NORMA MATEMATICA 1, Primo quadrante (60 gradi)
+        \draw[-stealth, very thick, blue] (0,0) -- (60:1) node[above right] {$\mathbf{x}$};
+
+        % --- MODIFICA QUI ---
+        % Vettore y rosso, NORMA MATEMATICA 1.25 (>1)
+        % Spostato nel SECONDO QUADRANTE (es. 135 gradi)
+        % x1 negativo, x2 positivo
+        \draw[-stealth, very thick, red] (0,0) -- (135:2) node[above left] {$\mathbf{y}$};
+
+    \end{tikzpicture}
+    \caption{Esempio di rotazione 
+    del vettore di ingresso \(x = v_{1}\)
+     nel vettore di uscita 
+    amplificato \(y = \sigma_{1} u_{1}\). In questo caso abbiamo preso \(m=n=2\),
+    dunque la matrice \(A\) è quadrata, mentre \(\Sigma\) è diagonale. Notiamo
+    che abbiamo potuto rappresentare tutto sullo stesso grafico solo 
+    perché \(m=n\).}
+    \label{fig:cerchio_assi}
+\end{figure}
+
+
+\section{Guadagno}
+Definiamo gli spazi \(L^{p}\)
+come gli spazi delle funzioni \(p\)-sommabili,
+cioè in cui esiste la norma \(p\)-esima finita:
+\[L^{p}(\mathbb{R^{n}}) = 
+\left\{f : \mathbb{R} \to \mathbb{R}^{n} : 
+\int_{-\infty}^{+\infty} \left|\left|f(\tau)
+\right|\right|^{p}_{p} \, d\tau < \infty \right\}\]
+Dove essendo \(f\) una funzione vettoriale a variabile reale
+la norma \(p\)-esima è definita come:
+\[\left|\left|f(\tau)\right|\right|_{p} =
+\left( \sum_{i=1}^{n} |f_{i}(\tau)|^{p} \right)^{\frac{1}{p}}\]
+Dove con \(f_{i}(\tau)\) si intende la \(i\)-esima componente del vettore
+\(f(\tau)\) (che è un vettore di \(n\) componenti in cui ognuna è una funzione 
+di \(\tau\))
+\section{Poli e zeri per sistemi MIMO }
+Ora ci poniamo il problema di definire poli e zeri per sistemi MIMO.
+Per i sistemi SISO i poli sono definiti come gli zeri del denominatore della 
+funzione di trasferimento, mentre gli zeri sono definiti come gli zeri del numeratore
+della funzione di trasferimento. Il problema è che per i sistemi MIMO
+ho una matrice di trasferimento \(G(s)\) composta da \(pm\) funzioni 
+di trasferimento singole \(G_{ij}(s)\), quindi bisogna dare una nuova 
+definizione di poli e zeri per sistemi MIMO.
+Per prima cosa diamo la definizione di polo per sistemi MIMO.
+
+\begin{definizione}
+    Un polo di un sistema MIMO è un valore di \(s\) tale che la matrice \(G(s)\)
+    diventa singolare, cioè il suo determinante è nullo, dunque per quel valore di \(s\)
+    la matrice \(G(s)\) non è invertibile.
+\end{definizione}
+
+
+\begin{definizione}
+    Si definisce rango nominale di una matrice di polinomi 
+    \(G(s)\), il rango della matrice che si ha per tutti i valori di 
+    \(s\) eccetto un numero finito di valori.
+\end{definizione}
+
+
+\begin{definizione}
+    Uno zero di un sistema MIMO è un valore di \(s\) tale 
+    che la matrice \(G(s)\)
+    perde rango, cioè il rango della matrice \(G(s)\) 
+    diminuisce rispetto al suo rango nominale (quello che ha per 
+    tutti gli altri valori di \(s\)).
+\end{definizione}
+
