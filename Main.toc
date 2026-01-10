@@ -1,5 +1,6 @@
 \babel@toc {italian}{}\relax 
 \babel@toc {italian}{}\relax 
-\contentsline {chapter}{\numberline {1}Stabilità per sistemi MIMO}{2}{}%
-\contentsline {section}{\numberline {1.1}Schema di retroazione con integratori}{2}{}%
+\contentsline {chapter}{\numberline {1}Controllo di sistemi MIMO}{2}{}%
+\contentsline {section}{\numberline {1.1}Schema di retroazione dell'uscita con integratori}{2}{}%
 \contentsline {section}{\numberline {1.2}Problema di Mixed sensitivity}{11}{}%
+\contentsline {section}{\numberline {1.3}Controllo \(H_{\infty }\)}{12}{}%

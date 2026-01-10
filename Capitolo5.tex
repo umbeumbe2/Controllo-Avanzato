@@ -1,9 +1,9 @@
-\chapter{Stabilità per sistemi MIMO}
+\chapter{Controllo di sistemi MIMO}
 
 
 
 
-\section{Schema di retroazione con integratori}
+\section{Schema di retroazione dell'uscita con integratori}
 
 \begin{equation}
     \begin{cases}
@@ -719,14 +719,17 @@ Quindi la matrice di raggiungibilità del sistema aumentato si può scrivere com
         baseline=(EqNode.base),
         % Stile base generico
         bracebase/.style={decorate, thick},
-        % Stile ROSSO PICCOLO: per le singole colonne
+        % Stile ROSSO PICCOLO: raise standard
         redbrace/.style={bracebase, red, decoration={brace, amplitude=6pt, raise=6pt}},
-        % Stile ROSSO GRANDE: per l'insieme delle colonne
-        grandbrace/.style={bracebase, red, decoration={brace, amplitude=10pt, raise=32pt}},
-        % Stile BLU: per le righe
+        % Stile ROSSO GRANDE: aumentato raise per evitare collisioni con i font più grandi
+        grandbrace/.style={bracebase, red, decoration={brace, amplitude=10pt, raise=38pt}},
+        % Stile BLU: raise standard
         bluebrace/.style={bracebase, blue, decoration={brace, amplitude=6pt, raise=18pt}},
-        % Stile per la matrice
-        mymatrix/.style={matrix of math nodes, left delimiter=(, right delimiter=), nodes={inner sep=5pt}, row sep=12pt, column sep=12pt, ampersand replacement=\&}
+        % Stile per la matrice: aggiunto font=\large e aumentata la spaziatura celle
+        mymatrix/.style={matrix of math nodes, left delimiter=(, right delimiter=), 
+                         nodes={inner sep=5pt, font=\large}, 
+                         row sep=15pt, column sep=18pt, 
+                         ampersand replacement=\&}
     ]
 
     % Definizione della matrice
@@ -736,8 +739,8 @@ Quindi la matrice di raggiungibilità del sistema aumentato si può scrivere com
     };
 
     % Etichetta dell'equazione a sinistra
-    % Assegnato il nome (EqNode) per il riferimento della baseline
-    \node (EqNode) [anchor=east, xshift=-10pt] at (M.west) {$M_{R}(\tilde{A},\tilde{C}) = \null$};
+    % Aumentato xshift a -15pt per distanziare l'uguale dalla parentesi
+    \node (EqNode) [anchor=east, xshift=-15pt] at (M.west) {$M_{R}(\tilde{A},\tilde{C}) = \null$};
 
     % --- Annotazioni Orizzontali (ROSSE PICCOLE) ---
     \foreach \col in {1,2,3,5} {
@@ -746,8 +749,9 @@ Quindi la matrice di raggiungibilità del sistema aumentato si può scrivere com
     }
 
     % --- Annotazione Orizzontale (ROSSA GRANDE - Totale) ---
+    % Aumentato 'above' a 50pt per scavalcare le etichette sottostanti
     \draw [grandbrace] (M-1-1.north west) -- (M-1-5.north east)
-        node [midway, above=44pt, red] { $\tilde{n}m$};
+        node [midway, above=50pt, red] { $\tilde{n}m$};
 
     % --- Annotazioni Verticali (BLU) ---
     \coordinate (Split) at ($(M-1-5.south)!0.5!(M-2-5.north)$);
@@ -763,16 +767,28 @@ Quindi la matrice di raggiungibilità del sistema aumentato si può scrivere com
     \end{tikzpicture}
     \end{equation}
 \end{figure}
+Andiamo ora ad enunciare il seguente lemma che lega la raggiungibilità
+del sistema aumentato con la raggiungibilità del sistema originale.
 
+\begin{lemma}\label{necc_orig_compl_ragg}
+Se il sistema aumentato è completamente raggiungibile
+allora il sistema originale è completamente raggiungibile.
+\end{lemma}
+
+\begin{proof}
+Noi abbiamo supposto che il sistema aumentato sia completamente raggiungibile,
+cioè che la matrice di raggiungibilità del sistema aumentato abbia rango pieno.
 Notiamo che la matrice di raggiungibilità del sistema aumentato ha \(n+p\)
-righe dunque per essere di rango pieno deve avere rango \(n+p\).
+righe dunque per essere di rango pieno deve avere rango \(n+p\):
+\[rank(M_{R}(\tilde{A}, \tilde{B})) = n+p\]
 Questo significa che tutte le righe della matrice di raggiungibilità
-devono essere linearmente indipendenti,
-quindi anche le prime \(n\) righe della matrice di raggiungibilità
-devono essere linearmente indipendenti, ma questo significa che il rango della matrice 
-di raggiunbilità è pieno se e solo se la
-seguente matrice costituita dalle prime \(n\) righe della matrice di raggiungibilità
-è di rango pieno:
+devono essere linearmente indipendenti 
+(infatti la matrice ha più colonne che righe, dunque il rango massimo è dato
+dal numero di righe). In particolare,
+ anche le prime \(n\) righe della matrice di raggiungibilità
+devono essere linearmente indipendenti, ma questo significa che la
+seguente matrice, costituita dalle prime \(n\) righe della matrice di raggiungibilità,
+è di rango pieno (cioè ha rango \(n\) ):
 \begin{equation}
     \begin{pmatrix}
         B & AB & A^{2}B & \ldots A^{n-1}B & \ldots & A^{\tilde{n}-1}B 
@@ -780,10 +796,10 @@ seguente matrice costituita dalle prime \(n\) righe della matrice di raggiungibi
     \label{raggiungibilita_A_B}
 \end{equation}
 Ma le colonne dopo la colonna \(n\)-esima (cioè le colonne da \(n+1\) a \(n+p\) )
-sono linearmente dipendenti dalle prime \(n\) righe
-per il teorema di Cayley-Hamilton. Quindi per studiare il rango
-della matrice \eqref{raggiungibilita_A_B} ci basta studiare il rango
-delle prime \(n\) colonne:
+sono linearmente dipendenti dalle prime \(n\) colonne
+per il teorema di Cayley-Hamilton. Quindi se la matrice \eqref{raggiungibilita_A_B}
+è di rango pieno \(n\) significa che le prime \(n\) colonne sono linearmente indipendenti,
+ma questo significa che la seguente matrice ha rango pieno \(n\):
 \begin{equation}
     \begin{pmatrix}
         B & AB & A^{2}B & \ldots A^{n-1}B 
@@ -791,14 +807,18 @@ delle prime \(n\) colonne:
     \label{raggiungibilita_A_B_lin_ind}
 \end{equation}
 Ma la matrice \eqref{raggiungibilita_A_B_lin_ind} è proprio la matrice di raggiungibilità
-del sistema originale definita dalla coppia \((A,B)\).
-Quindi condizione necessaria affinchè la matrice di raggiungibilità 
-del sistema aumentato sia a rango pieno è che la matrice \eqref{raggiungibilita_A_B_lin_ind}
-sia di rango pieno, che equivale a dire che la coppia \((A,B)\). 
+del sistema originale \((A,B)\). Dunque abbia dimostrato che
+se il sistema aumentato è completamente raggiungibile
+allora la matrice di raggiungibilità del sistema originale
+è di rango pieno, cioè che il sistema originale è completamente raggiungibile.
+\end{proof}
 Dunque condizione necessaria affinche il sistema aumentato sia completamente raggiungibile
 è che il sistema originale \((A,B)\) sia completamente raggiungibile.\\
+
 Andiamo ora a ricavare di nuovo 
 la condizione necessaria \eqref{rango_pieno_sigma} come abbiamo già detto all'inizio.
+
+
 Per prima cosa notiamo che la matrice di raggiungibilità del sistema aumentato
 \eqref{eq:matrix_MR} si può riscrivere come prodotto di matrici:
 \begin{equation}
@@ -841,12 +861,12 @@ M_{R} (\tilde{A} , \tilde{B}) = \tilde{\Sigma} Q
 Dimostriamo ora per assurdo che se la matrice \(\tilde{\Sigma}\) 
 non è di rango pieno allora la matrice di raggiungibilità del sistema aumentato
 non è di rango pieno, vogliamo dimostrare che:
-\begin{teorema}\label{necc_sigma_rango_pieno}
+\begin{lemma}\label{necc_sigma_rango_pieno}
 
 Se la matrice di raggiungibilità del sistema aumentato
 è di rango pieno allora la matrice \(\tilde{\Sigma}\)
 è di rango pieno.
-\end{teorema}
+\end{lemma}
 ogliamo quindi dimostrare che, affinché la matrice di raggiungibilità 
 del sistema aumentato sia di rango pieno, è necessario che
 \(\tilde{\Sigma}\) sia di rango pieno.
@@ -892,11 +912,11 @@ controllo sia risolvibile.
 Ora dimostriamo che se la matrice \(\Sigma\) è di rango pieno 
 e il sistema originale è completamente raggiungibile allora il sistema aumentato
 è completamente raggiungibile.
-\begin{teorema}\label{suff_sigma_rango_pieno_ragg}
+\begin{lemma}\label{suff_sigma_rango_pieno_ragg}
 Se la matrice \(\Sigma\) è di rango pieno e il sistema originale
 è completamente raggiungibile allora il sistema aumentato
 è completamente raggiungibile.
-\end{teorema}
+\end{lemma}
 \begin{proof}
     Vogiamo dimostrare che sotto le ipotesi del teorema
     la matrice di raggiungibilità del sistema aumentato 
@@ -928,6 +948,8 @@ Se la matrice \(\Sigma\) è di rango pieno e il sistema originale
     Quindi la matrice di raggiungibilità del sistema aumentato
     è di rango pieno, cioè il sistema aumentato è completamente raggiungibile.
 \end{proof}
+
+
 \section{Problema di Mixed sensitivity}
 
 \[E(s) = S(s) (R(s) - D(s)) + T(s) N(s)\]
@@ -970,3 +992,14 @@ Ricordnado che \(U(s) = K(s) Y(s)\)
     Y(s) = G_{21}(s) W(s) + G_{22}(s) K(s) Y(s) 
 \end{cases}
 \]
+
+Uniamo tutti i risultati ottenuti nei lemmi \ref{necc_orig_compl_ragg},
+\ref{necc_sigma_rango_pieno},\ref{suff_sigma_rango_pieno_ragg}
+    in un unico teorema che consiste in una condizione necessaria e sufficiente.
+\begin{teorema}\label{necc_suff_controllo_con_integratori}
+    Il sistema aumentato è completamente raggiungibile
+    se e solo se il sistema originale è completamente raggiungibile
+    e la matrice \(\Sigma\) è di rango pieno.
+\end{teorema}
+
+\section{Controllo \(H_{\infty}\)}
