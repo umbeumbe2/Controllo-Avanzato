@@ -1,0 +1,972 @@
+\chapter{Stabilità per sistemi MIMO}
+
+
+
+
+\section{Schema di retroazione con integratori}
+
+\begin{equation}
+    \begin{cases}
+        \dot{x}(t) = Ax(t) + Bu(t) + M d(t) \\
+        y(t) = Cx(t) + Nd(t)
+    \end{cases}
+\end{equation}
+
+L'integratore è necessario per eliminare l'errore a regime,
+ora daremo una giustificazione logica di questa affermazione.
+Consideriamo che al posto dell'integratore ci sia un blocco \(Z(s)\)
+generico come in figura \ref{fig:dim_integratore},
+seguiamo il seguente ragionameto:
+\begin{enumerate}
+    \item Noi vogliamo che l'uscita \(y(t)\) segua un
+     riferimento costante \(r(t) = \bar{r}\), quindi vogliamo 
+     che a regime valga \(y(t) \to \bar{y} = \bar{r} \), cioè:
+    \[\lim_{t \to +\infty} y(t) = \bar{y} = \bar{r}\]
+    \item Ma se l'uscita a regime è costante, allora per il teorema del valore finale 
+    \item 
+    per \(t \to +\infty\) che \(y(t) \to \bar{y} = \bar{r}\).
+    \item Ma se \(y(t) \) a regime è costante, allora
+    per il teorema del valore finale anche le \(u(t)\) e le \(v(t)\) 
+    a regime devono essere costanti.
+    \item Inoltre se la \(\bar{y} = \bar{r}\) si ha che a regime l'errore è nullo:
+    \[\bar{e} = \lim_{t \to +\infty} e(t) = \lim_{t \to +\infty} r(t) - y(t) = 
+    \bar{r} - \bar{y} = 0\]
+    \item Ma se l'errore è nullo a regime, allora si ha che in ingresso al blocco 
+    \(Z(s)\) si ha un ingresso nullo, quindi il blocco \(Z(s)\) a regime vede un ingresso nullo.
+    Quindi il blocco \(Z(s)\) deve essere un integratore, poichè è l'unico operatore che ad 
+    un ingresso nullo fornisce in uscita un segnale costante (diverso da zero).
+\end{enumerate}
+
+Quindi abbiamo dimostrato che per avere errore nullo a regime il blocco \(Z(s)\)
+deve essere proprio un integratore, cioè:
+\[Z(s) = \frac{1}{s}\]
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[auto, node distance=2cm, >=latex']
+
+        % Stili dei blocchi
+        \tikzstyle{block} = [draw, rectangle, minimum height=1cm, minimum width=1cm, align=center]
+        \tikzstyle{tallblock} = [draw, rectangle, minimum height=4cm, minimum width=1.5cm, align=center]
+        \tikzstyle{sum} = [draw, circle, minimum size=0.6cm, inner sep=0pt, thick]
+        \tikzstyle{input} = [coordinate]
+        \tikzstyle{output} = [coordinate]
+        \tikzstyle{integrator} = [draw, rectangle, minimum height=1cm, minimum width=1cm, align=center]
+        % NUOVO STILE per i puntini verticali estesi
+        \tikzstyle{vertical dots} = [draw, loosely dotted, very thick, shorten <=3pt, shorten >=3pt]
+    
+        % --- Riga Superiore (Indice 1) ---
+        \node [input] (r1) {};
+        \node [sum, right of=r1] (sum1) {};
+        % Simbolo di integrale
+        \node [integrator, right=1cm of sum1] (int1) {\Large $\displaystyle \int$};
+        
+        % Etichette segnali riga 1
+        \node [above left] at (r1) {$r_1$}; 
+        \node at ($(sum1)!0.5!(int1)$) [above] {$e_1$};
+        \node at ($(int1.east)+(0.5,0.2)$) {$v_1$}; 
+    
+        % --- Riga Inferiore (Indice p) ---
+        \node [input, below=3cm of r1] (rp) {};
+        \node [sum, right of=rp] (sump) {};
+        % Simbolo di integrale
+        \node [integrator, right=1cm of sump] (intp) {\Large $\displaystyle \int$};
+    
+        % Etichette segnali riga p
+        \node [above left] at (rp) {$r_p$};
+        \node at ($(sump)!0.5!(intp)$) [above] {$e_p$};
+        
+        % --- Blocchi Grandi (K'(s) e G(s)) ---
+        \node [tallblock, right=2cm of int1, yshift=-1.5cm] (K) {$K'(s)$};
+        \node [tallblock, right=2cm of K] (G) {$G(s)$};
+    
+        % --- Disturbo d ---
+        \draw [->] ($(G.north)+(0,0.8)$) -- (G.north) node[midway, right] {$d$};
+    
+        % --- Collegamenti Orizzontali ---
+        
+        % Input r1 -> Sum1
+        \draw [->] (r1) -- (sum1) node[pos=0.85, above left] {$+$};
+        \draw [->] (sum1) -- (int1);
+        \draw [->] (int1) -- (K.west |- int1);
+    
+        % Input rp -> Sump
+        \draw [->] (rp) -- (sump) node[pos=0.85, above left] {$+$};
+        \draw [->] (sump) -- (intp);
+        \draw [->] (intp) -- (K.west |- intp);
+    
+        % K'(s) -> G(s)
+        \draw [->] (K.east |- int1) -- node[midway, above] {$u_1$} (G.west |- int1);
+        \draw [->] (K.east |- intp) -- node[midway, above] {$u_m$} (G.west |- intp);
+    
+        % G(s) -> Output
+        \node [output, right=1.5cm of G.east |- int1] (y1) {};
+        \node [output, right=1.5cm of G.east |- intp] (yp) {};
+        \draw [->] (G.east |- int1) -- node[near end, above] {$y_1$} (y1);
+        \draw [->] (G.east |- intp) -- node[near end, above] {$y_p$} (yp);
+    
+        % --- PUNTINI VERTICALI ESTESI (Sostituiscono i precedenti) ---
+        
+        % 1. Sugli Input r
+        \draw [vertical dots] (r1) -- (rp);
+        
+        % 2. Sugli Errori (tra i sommatori)
+        \draw [vertical dots] (sum1) -- (sump);
+        
+        % 3. Tra gli integratori
+        \draw [vertical dots] (int1) -- (intp);
+
+        % 4. Zona V (tra Integratore e K) - Calcolo punti medi per allineamento
+        \path ($(int1.east)!0.5!(K.west |- int1)$) coordinate (v_mid_top);
+        \path ($(intp.east)!0.5!(K.west |- intp)$) coordinate (v_mid_bot);
+        \draw [vertical dots] (v_mid_top) -- (v_mid_bot);
+
+        % 5. Zona U (tra K e G)
+        \path ($(K.east |- int1)!0.5!(G.west |- int1)$) coordinate (u_mid_top);
+        \path ($(K.east |- intp)!0.5!(G.west |- intp)$) coordinate (u_mid_bot);
+        \draw [vertical dots] (u_mid_top) -- (u_mid_bot);
+
+        % 6. Sulle uscite y
+        \draw [vertical dots] (y1) -- (yp);
+
+        % --- Retroazione ---
+        % Loop superiore (alzato per evitare d)
+        \draw [->] ($(G.east |- int1)+(0.5,0)$) coordinate (tap1) 
+            -- ++(0,1.8) -| (sum1.north) node[pos=0.92, left] {$-$};
+    
+        % Loop inferiore
+        \draw [->] ($(G.east |- intp)+(0.5,0)$) coordinate (tapp) 
+            -- ++(0,-1.2) -| (sump.south) node[pos=0.92, left] {$-$};
+    
+    \end{tikzpicture}
+    \caption{Schema di retroazione dell'uscita con integratori}
+    \label{fig:control_scheme}
+\end{figure}
+
+
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[auto, node distance=2cm, >=latex']
+
+        % Stili dei blocchi (invariati)
+        \tikzstyle{block} = [draw, rectangle, minimum height=1cm, minimum width=1cm, align=center]
+        \tikzstyle{tallblock} = [draw, rectangle, minimum height=4cm, minimum width=1.5cm, align=center]
+        \tikzstyle{sum} = [draw, circle, minimum size=0.6cm, inner sep=0pt, thick]
+        \tikzstyle{input} = [coordinate]
+        \tikzstyle{output} = [coordinate]
+        \tikzstyle{integrator} = [draw, rectangle, minimum height=1cm, minimum width=1cm, align=center]
+        \tikzstyle{vertical dots} = [draw, loosely dotted, very thick, shorten <=3pt, shorten >=3pt]
+    
+        % --- Riga Superiore (Indice 1) ---
+        \node [input] (r1) {};
+        \node [sum, right of=r1] (sum1) {};
+        % Distanza aumentata a 2cm (già presente)
+        \node [integrator, right=2cm of sum1] (int1) {\large $Z(s)$};
+        
+        % Etichette segnali riga 1
+        \node [above left] at (r1) {$r_1 = \bar{r}_{1}$}; 
+        \node at ($(sum1)!0.5!(int1)$) [above] {$e_1 = 0$};
+        \node at ($(int1.east)+(0.8,0.3)$) {$v_1 = \bar{v}_{1}$}; 
+    
+        % --- Riga Inferiore (Indice p) ---
+        \node [input, below=3cm of r1] (rp) {};
+        \node [sum, right of=rp] (sump) {};
+        \node [integrator, right=2cm of sump] (intp) {\large $Z(s)$};
+    
+        % Etichette segnali riga p
+        \node [above left] at (rp) {$r_p = \bar{r}_{p}$};
+        \node at ($(sump)!0.5!(intp)$) [above] {$e_p = 0$};
+        \node at ($(intp.east)+(0.8,0.3)$) {$v_p = \bar{v}_{p}$}; 
+
+        % --- Blocchi Grandi (K'(s) e G(s)) ---
+        % MODIFICA IMPORTANTE: Aumentata la distanza da 2cm a 3.5cm
+        % Questo allunga la linea di v e sposta i puntini a destra
+        \node [tallblock, right=3.5cm of int1, yshift=-1.5cm] (K) {$K'(s)$};
+        
+        % Aumento leggermente anche lo spazio tra K e G per coerenza
+        \node [tallblock, right=2.5cm of K] (G) {$G(s)$};
+    
+        % --- Disturbo d ---
+        \draw [->] ($(G.north)+(0,0.8)$) -- (G.north) node[midway, right] {$d$};
+    
+        % --- Collegamenti Orizzontali ---
+        % Input r1 -> Sum1
+        \draw [->] (r1) -- (sum1) node[pos=0.85, above left] {$+$};
+        \draw [->] (sum1) -- (int1);
+        \draw [->] (int1) -- (K.west |- int1);
+    
+        % Input rp -> Sump
+        \draw [->] (rp) -- (sump) node[pos=0.85, above left] {$+$};
+        \draw [->] (sump) -- (intp);
+        \draw [->] (intp) -- (K.west |- intp);
+    
+        % K'(s) -> G(s)
+        \draw [->] (K.east |- int1) -- node[midway, above] {$u_1= \bar{u}_{1}$} (G.west |- int1);
+        \draw [->] (K.east |- intp) -- node[midway, above] {$u_m = \bar{u}_{m}$} (G.west |- intp);
+    
+        % G(s) -> Output
+        \node [output, right=1.5cm of G.east |- int1] (y1) {};
+        \node [output, right=1.5cm of G.east |- intp] (yp) {};
+        \draw [->] (G.east |- int1) -- node[near end, above] {$y_1 = \bar{y}_{1}$} (y1);
+        \draw [->] (G.east |- intp) -- node[near end, above] {$y_p = \bar{y}_{p}$} (yp);
+    
+        % --- PUNTINI VERTICALI ESTESI ---
+        \draw [vertical dots] (r1) -- (rp);
+        \draw [vertical dots] (sum1) -- (sump);
+        \draw [vertical dots] (int1) -- (intp);
+
+        % Zona V
+        % I puntini si posizionano automaticamente al centro della nuova linea allungata
+        \path ($(int1.east)!0.5!(K.west |- int1)$) coordinate (v_mid_top);
+        \path ($(intp.east)!0.5!(K.west |- intp)$) coordinate (v_mid_bot);
+        \draw [vertical dots] (v_mid_top) -- (v_mid_bot);
+
+        % Zona U
+        \path ($(K.east |- int1)!0.5!(G.west |- int1)$) coordinate (u_mid_top);
+        \path ($(K.east |- intp)!0.5!(G.west |- intp)$) coordinate (u_mid_bot);
+        \draw [vertical dots] (u_mid_top) -- (u_mid_bot);
+
+        % Uscite y
+        \draw [vertical dots] (y1) -- (yp);
+
+        % --- Retroazione ---
+        \draw [->] ($(G.east |- int1)+(0.5,0)$) coordinate (tap1) 
+            -- ++(0,1.8) -| (sum1.north) node[pos=0.92, left] {$-$};
+    
+        \draw [->] ($(G.east |- intp)+(0.5,0)$) coordinate (tapp) 
+            -- ++(0,-1.2) -| (sump.south) node[pos=0.92, left] {$-$};
+    
+    \end{tikzpicture}
+    \caption{Schema per la dimostrazione che l'unico blocco che garantisce errore nullo a 
+    regime è l'integratore }
+    \label{fig:dimostrazione_integratore}
+\end{figure}
+
+
+
+Supponiamo ora che il nostro controllore 
+\(K'(s)\) 
+riesca a stabilizzare il sistema,
+cioè che riesca a portare tutti a posizionare 
+tutti poli del sistema aumentato 
+in retroazione dell'uscita con integratori a sinistra 
+dell'asse immaginario (cioè con parte reale negativa).
+Supposto questo vogliamo andare a
+studiarci le condizioni necessarie affinchè il 
+sistema riesca a posizionare 
+l'uscita \(y(t)\) al valore di riferimento \(\bar{r}\).
+In termine formali vogliamo studiare le condizioni necessarie
+affinche a regime si abbia per ogni \(\bar{y}\)
+e \(\bar{d}\) (che rappresentano 
+rispettivamente il valore di uscita a regime e il disturbo a regime)
+
+\[\begin{cases}
+    0 = A \bar{x} + B \bar{u} + M \bar{d} \\
+    \bar{y} = C \bar{x} +  N\bar{d}
+\end{cases}\]
+
+
+\begin{equation}
+    \begin{pmatrix}
+        A & B \\ 
+        C & 0 
+    \end{pmatrix}
+    \begin{pmatrix}
+        \bar{x} \\ 
+        \bar{u}
+    \end{pmatrix} 
+    = 
+    \begin{pmatrix}
+        -M & 0 \\
+        -N & I
+    \end{pmatrix}
+    \begin{pmatrix}
+        \bar{d} \\
+        \bar{y}
+    \end{pmatrix}
+\label{sistema_integratori}    
+\end{equation}
+Questo è un sistema di \(n+p\) equazioni in \(n+m\) ( 
+\(\bar{x}\) e \(\bar{u}\) sono incognite ). Definiamo la matrice
+\(\Sigma\) come: 
+\begin{equation}    
+    \Sigma \coloneq \begin{pmatrix}
+        A & B \\
+        C & 0
+    \end{pmatrix} \in \mathbb{R}^{(n+p) \times (n+m)} 
+    \label{def_sigma}
+\end{equation}
+Quello che andremo a fare ora è determinare delle \textbf{condizioni necessarie}
+sulla matrice \(\Sigma\) affinchè il sistema 
+\eqref{sistema_integratori} ammetta soluzione
+\(\forall N\in\mathbb{R}^{p \times r},
+M\in\mathbb{R}^{n \times r}, \bar{d}\in \mathbb{R}^{r \times 1} , 
+\bar{y}\in\mathbb{R}^{p \times 1}\).
+Per determinare queste condizioni necessarie 
+andremo a trovare dei casi particolari di \(\Sigma\)
+in cui il sistema non ammette soluzione,
+dunque condizione necessaria alla soluzione del sistema
+è che la matrice \(\Sigma\) non cada in questi casi particolari.\\
+Il \textbf{primo caso} particolare che andremo a considerare
+è quando il numero di incognite \((n+m)\) del sistema è minore
+del numero di equazioni \((n+p)\) del sistema, cioè:
+ \begin{equation}
+    n + m <  n+p
+    \label{eqmagginco}
+ \end{equation}
+Questo equivale a dire che il numero di colonne della matrice \(\Sigma\)
+è minore del numero di righe della matrice \(\Sigma\). Ma questo significa 
+che la matrice \(\Sigma\) non può essere di rango pieno per righe
+(poichè ha più righe che colonne, ed il rango ha come massimo valore 
+dunque il numero di colonne). Se la matrice \(\Sigma\) non è di rango pieno per righe
+significa che esistono delle righe della matrice \(\Sigma\) che sono combinazioni lineari delle 
+altre righe, dunque facendo delle operazioni elementari sulle righe
+(ricordiamo che queste operazioni non cambiano lo spazio delle soluzioni del sistema)
+possiamo arrivare rendere nulle queste righe linearmente dipendenti. 
+Ma se una riga della matrice \(\Sigma\) è nulla significa che se a 
+destra il termine noto assume un valore diverso da zero
+il sistema non ammette soluzione. Ma noi vogliamo che il sistema
+ammetta soluzione \(\forall N\in\mathbb{R}^{p \times r},
+M\in\mathbb{R}^{n \times r}, \bar{d}\in \mathbb{R}^{r \times 1} , 
+\bar{y}\in\mathbb{R}^{p \times 1}\), questo significa che
+i termini noti possono assumere qualunque valore,
+quindi anche un valore diverso da zero. Quindi se scegliamo 
+le matrici \(M\) ed \(N\) e i vettori \(\bar{d}\) e \(\bar{y}\)
+in modo tale che il termine noto a destra della riga nulla sia diverso 
+da zero abbiamo che il sistema non ammette soluzione.  
+Dunque abbiamo trovato che nel caso particolare in cui:
+\[ n+m < n+p\]
+il sistema non ammette soluzione \(\forall N\in\mathbb{R}^{p \times r},
+M\in\mathbb{R}^{n \times r}, \bar{d}\in \mathbb{R}^{r \times 1} , 
+\bar{y}\in\mathbb{R}^{p \times 1}\). Quindi una condizione necessaria
+affinchè il sistema ammetta soluzione è che la condizione 
+\eqref{eqmagginco} non sia verificata,
+cioè si deve avere:
+\[n+m \ge n+p \Longleftrightarrow m \ge p\]
+cioè il numero di ingressi deve essere maggiore o uguale
+al numero di uscite, cosa che era già intuibile, infatti
+se voglio controlla \(p\) uscite dovrò avere un numero di ingressi 
+almeno maggiore o uguale a \(p\). Ad esempio se io ho 5 uscite da controllare
+almeno dovrò avere 5 ingressi per poter controllare tutte le uscite.\\
+Supponiamo ora di aver soddisfatto questa prima condizione necessaria,
+cioè di esserci messi nella condizione \(m \geq p\).
+Andiamo ora a cercare un \textbf{secondo caso particolare} in cui il sistema
+non ammette soluzione. Un'altro caso particolare in cui il sistema
+non ammette soluzione è quando il rango della matrice \(\Sigma\)
+non è massimo, cioè (poichè siamo nella condizione \(m \geq p\) ):
+\[rank(\Sigma) < min\{n+m, n+p\} = n+p\]
+Infatti essendo il numero di righe della matrice \(\Sigma\) uguale a \(n+p\),
+se il rango della matrice \(\Sigma\) è minore di \(n+p\) significa che esistono
+delle righe della matrice \(\Sigma\) che sono combinazioni lineari delle altre righe,
+dunque come prima facendo delle operazioni elementari sulle righe
+(possibili perchè non cambiano lo spazio delle soluzioni del sistema)
+possiamo arrivare rendere nulle queste righe linearmente dipendenti,
+e mettendo a destra del sistema il termine noto diverso da zero arriviamo ad un sistema
+che non ammette soluzione. Dunque abbiamo trovato un'altro caso particolare
+in cui il sistema non ammette soluzione \(\forall N\in\mathbb{R}^{p \times r},
+M\in\mathbb{R}^{n \times r}, \bar{d}\in \mathbb{R}^{r \times 1} , 
+\bar{y}\in\mathbb{R}^{p \times 1}\). Dunque affinche il sistema ammetta soluzione
+sicuramente dobbiamo evitare questo caso particolare, cioè dobbiamo fare in modo che
+il rango di \(\Sigma\) sia massimo, cioè dobbiamo avere:
+\[rank(\Sigma) = n+p\] 
+Quindi le \textbf{ condizioni necessarie} affinche il sistema ammetta soluzione
+\(\forall N\in\mathbb{R}^{p \times r},
+M\in\mathbb{R}^{n \times r}, \bar{d}\in \mathbb{R}^{r \times 1} , 
+\bar{y}\in\mathbb{R}^{p \times 1}\)
+\begin{enumerate}
+    \item[1)] Il numero di ingressi deve essere maggiore o uguale al numero di uscite:
+    \begin{equation}
+        m \geq p
+    \end{equation}
+    \item[2)] La matrice \(\Sigma\) deve essere di rango pieno:
+    \begin{equation}
+        rank(\Sigma) = min\left\{n+m, n+p\right\} = n+p
+        \label{rango_pieno_sigma}
+    \end{equation}
+\end{enumerate}
+La condizione \eqref{rango_pieno_sigma} si può determinare in un modo più formale 
+andando anche a considerare la stabilità del sistema in 
+retroazione con integratori 
+(cosa che fino ad ora abbiamo supposto).
+Questa condizione si può determinare andando a studiare il 
+sistema aumentato in retroazione con integratori.
+Ricordiamo il vettore di stato del sistema aumentato 
+è \(\begin{pmatrix}
+    x(t) & v(t)
+\end{pmatrix}^{T} \in \mathbb{R}^{(n+p) \times 1}\),
+dunque le derivate degli stati valgono:
+\[
+\begin{cases}
+    \dot{x}(t) = Ax(t) + Bu(t) + M d(t) \\
+    \dot{v}(t) = e(t) = r(t) - y(t) = 
+    r(t) - Cx(t) - Nd(t)
+\end{cases}
+\]
+Prendiamo come uscita del sistema aumentato \(\tilde{y}(t) = v(t)\), dunque
+si ha che la rappresentazione in forma matriciale 
+del sistema aumentato è:
+\[
+\begin{cases}
+    \begin{pmatrix}
+        \dot{x}(t) \\ 
+        \dot{v}(t)
+    \end{pmatrix}
+    = \begin{pmatrix}
+        A & 0 \\
+        -C & 0
+    \end{pmatrix}
+    \begin{pmatrix}
+        x(t) \\ 
+        v(t)
+    \end{pmatrix}
+    + \begin{pmatrix}
+        B \\ 
+        0
+    \end{pmatrix} u(t)
+    + \begin{pmatrix}
+        M \\ 
+        -N
+    \end{pmatrix}
+        d(t) \\
+    \tilde{y}(t) = \begin{pmatrix}
+        0 & I
+    \end{pmatrix}
+    \begin{pmatrix}
+        x(t) \\ 
+        v(t)
+    \end{pmatrix}
+\end{cases}
+\]
+Definiamo \(\tilde{n}\):
+\[ \tilde{n} \coloneq  n+p\]
+Dunque definiamo le seguenti matrici:
+\[\tilde{A} \coloneq \begin{pmatrix}
+    A & 0 \\
+    -C & 0
+\end{pmatrix}\in \mathbb{R}^{\tilde{n} \times \tilde{n}}, \quad
+\tilde{B} \coloneq \begin{pmatrix}
+    B \\ 
+    0
+\end{pmatrix} \in \mathbb{R}^{\tilde{n} \times m}, \quad
+\tilde{C} \coloneq \begin{pmatrix}
+    0 & I
+\end{pmatrix} \in \mathbb{R}^{p \times \tilde{n}}\]
+Che hanno gli ovvi significati nel sistema aumentato.
+Il nostro obiettivo iniziale era trovare un controllore 
+\(K'(s)\) che stabilizzasse il sistema in retroazione con integratori,
+cioè che rendesse asintoticamente stabile il sistema aumentato.
+Condizione necessaria affinchè esista un controllore \(K'(s)\)
+che stabilizzi il sistema aumentato è che il sistema aumentato
+sia:
+\begin{enumerate}
+    \item[1)] Completamente raggiunbile
+    \item[2)] Completamente osservabile
+\end{enumerate}
+Queste due condizioni equivalgono a dire che:
+\begin{enumerate}
+    \item[1)] La coppia \((\tilde{A} , \tilde{B})\) è completamente raggiunbile
+    \item[2)] La coppia \((\tilde{A} , \tilde{C})\) è completamente osservabile
+\end{enumerate}
+Quindi dobbiamo ora studiarci la raggiungibilità e l'osservabilità
+del sistema aumentato. Andiamo prima a studiare l'\textbf{osservabilità},
+cioè il rango della matrice di osservabilità
+(ricordiamo che affinchè il sistema sia completamente osservabile il rango 
+deve essere massimo cioè uguale a \(\tilde{n}\) ):
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[baseline=(current bounding box.center)]
+    % --- STILE ---
+    \tikzset{brace_style/.style={decoration={brace, amplitude=6pt, raise=6pt}, decorate, thick}}
+
+    % --- 1. NODO MATRICE (RHS) ---
+    % Contiene la colonna di blocchi C, CA, etc.
+    \node (matrix_node) [font=\large] {
+        $
+        \displaystyle
+        \begin{pmatrix}
+            \tilde{C} \\
+            \tilde{C} \tilde{A} \\
+            \vdots \\
+            \tilde{C} \tilde{A}^{\tilde{n}-1}
+        \end{pmatrix}
+        $
+    };
+
+    % --- 2. NODO EQUAZIONE (LHS) ---
+    % Allineato a sinistra della matrice
+    \node [anchor=east, font=\large] at (matrix_node.west) {
+        $M_{O}(\tilde{A}, \tilde{C}) =$
+    };
+
+    % --- 3. DISEGNO GRAFFE ---
+
+    % Graffa SOPRA (ROSSA) - n+p colonne
+    \draw [brace_style, red] (matrix_node.north west) -- (matrix_node.north east) 
+        node [pos=0.5, above=12pt, red, font=\large] {\footnotesize $n+p$ colonne};
+
+    % Graffa A DESTRA (BLU) - np righe
+    \draw [brace_style, blue] (matrix_node.north east) -- (matrix_node.south east) 
+        node [pos=0.5, right=12pt, blue, font=\large] {\footnotesize $np$ righe};
+
+\end{tikzpicture}
+\end{figure}
+Ricordando che \(\tilde{C} = \begin{pmatrix}
+    0 & I
+\end{pmatrix}\) e 
+\(\tilde{C}\tilde{A} = \begin{pmatrix}
+    A & 0 \\ 
+    -C & 0
+\end{pmatrix}\)si ha :
+
+\[\tilde{C}\tilde{A}^{2} = 
+\begin{pmatrix}
+    0 & I
+\end{pmatrix} \begin{pmatrix}
+    A & 0 \\ 
+    -C & 0
+\end{pmatrix} 
+\begin{pmatrix}
+    A & 0 \\ 
+    -C & 0
+\end{pmatrix} 
+=
+\begin{pmatrix}
+    0 & I
+\end{pmatrix} 
+\begin{pmatrix}
+    A^{2} & 0 \\ 
+    -CA & 0
+\end{pmatrix} = 
+\begin{pmatrix}
+    -CA & 0
+\end{pmatrix}\]
+L'espressione generale \(\forall k \in \mathbb{N}\) è:
+\[\tilde{C}\tilde{A}^{k} =
+\begin{pmatrix}
+    0 & I
+\end{pmatrix} 
+\begin{pmatrix}
+    A^{k} & 0 \\ 
+    -CA^{k-1} & 0
+\end{pmatrix}
+= 
+\begin{pmatrix}
+    -CA^{k-1} & 0
+\end{pmatrix}
+\]
+Quindi \(M_{O}(\tilde{A}, \tilde{C})\) si può scrivere come:
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+    % --- STILE ---
+    \tikzset{brace_style/.style={decoration={brace, amplitude=6pt, raise=8pt}, decorate, thick}}
+
+    % --- 1. DEFINIZIONE MATRICE (TikZ Matrix) ---
+    \matrix (M) [matrix of math nodes, 
+                 left delimiter={(}, 
+                 right delimiter={)}, 
+                 nodes={anchor=center, font=\large}, 
+                 column sep=25pt, 
+                 row sep=12pt
+                 ] {
+        0 & I \\
+        -C & 0 \\
+        -CA & 0 \\
+        \vdots & \vdots \\
+        -CA^{n-1} & 0 \\
+        \vdots & \vdots \\
+        -CA^{\tilde{n}-2} & 0 \\
+    };
+
+    % --- 2. NODO EQUAZIONE (LHS) ---
+    % Ho aggiunto xshift=-10pt per distanziarlo dalla parentesi sinistra
+    \node [anchor=east, xshift=-10pt] at (M.west) { \large $M_{O} (\tilde{A} , \tilde{C}) =$ };
+
+    % --- 3. CALCOLO DEI PUNTI DI DIVISIONE ---
+    \coordinate (split_col_X) at ($(M-7-1.east)!0.5!(M-7-2.west)$);
+    \coordinate (split_row_Y) at ($(M-1-2.south)!0.5!(M-2-2.north)$);
+
+    % --- PARAMETRO FESSURA GRAFFE ---
+    \def\gap{3pt}
+
+    % --- 4. DISEGNO GRAFFE SUPERIORI (ROSSE - COLONNE) ---
+    \draw [brace_style, red] (M.north west) -- ([xshift=-\gap] M.north -| split_col_X) 
+        node [midway, above=14pt, red] {\footnotesize $n$ colonne};
+
+    \draw [brace_style, red] ([xshift=\gap] M.north -| split_col_X) -- (M.north east) 
+        node [midway, above=14pt, red] {\footnotesize $p$ colonne};
+
+    % --- 5. DISEGNO GRAFFE LATERALI (BLU - RIGHE) ---
+    \draw [brace_style, blue] (M.north east) -- ([yshift=\gap] M.east |- split_row_Y) 
+        node [midway, right=14pt, blue] {\footnotesize $p$ righe};
+
+    \draw [brace_style, blue] ([yshift=-\gap] M.east |- split_row_Y) -- (M.south east) 
+        node [midway, right=14pt, blue] {\footnotesize $(n-1)p$ righe};
+
+\end{tikzpicture}
+\end{figure}
+
+Come si può vedere la matrice \(M_{O} (\tilde{A} , \tilde{C}) \)
+ha rango pieno \(rank(M_{O}(\tilde{A}, \tilde{C}) ) = n+p \)
+se e solo se la sottomatrice
+composta dalle seguenti righe:
+\begin{equation}
+    \begin{pmatrix}
+        -C \\
+        -CA\\
+        \vdots\\
+        -CA^{n-1} \\
+        \vdots   \\
+        -CA^{\tilde{n}-2} 
+    \end{pmatrix} 
+    \label{rango_max}    
+\end{equation}
+ha rango pieno, cioè ha rango \(n\). Ricordiamo
+che il rango è limitato superiormente dal minimo
+tra il numero
+di righe \((np)\) e
+il numero di colonne \((n)\), 
+quindi in questo caso il limite superiore è dato dal 
+numero di colonne. Ora notiamo
+che le righe aggiunte dopo la riga \(n\) (quella corrispondente a
+\(-CA^{n-1}\)) 
+sono linearmente dipendenti
+dalle prime \(n\) righe per il teorema di Cayley-Hamilton,
+quindi per andare a studiare il rango della matrice
+possiamo limitarci a studiare il rango delle righe:
+\begin{equation}
+    \begin{pmatrix}
+        -C \\
+        -CA\\
+        \vdots\\
+        -CA^{n-1} \\
+    \end{pmatrix}
+    \label{rango_max_lin_ind}
+\end{equation}
+Affinche la matrice \eqref{rango_max}
+abbiamo rango massimo (\(n\)) dobbiamo avere 
+che le righe in \eqref{rango_max_lin_ind}
+siano linearmente indipendenti, cioè dobbiamo avere che la
+matrice \eqref{rango_max_lin_ind} abbia rango \(n\).
+Ma questa condizione è proprio la condizione di completa 
+osservabilità della coppia \((A,C)\) del sistema 
+originale. Quindi il sistema aumentato è completamente osservabile
+se e solo se il sistema originale è completamente osservabile.\\
+Andiamo ora a studiarci la \textbf{raggiungibilità} 
+del sistema aumentato, cioè il rango della matrice di raggiungibilità
+(ricordiamo che affinchè il sistema sia completamente raggiungibile
+il rango deve essere massimo cioè uguale a \(\tilde{n}\) ):
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[baseline=(current bounding box.center)]
+    % --- STILE ---
+    \tikzset{brace_style/.style={decoration={brace, amplitude=6pt, raise=6pt}, decorate, thick}}
+
+    % --- 1. NODO MATRICE (RHS) ---
+    \node (matrix_node) [font=\large] {
+        $
+        \displaystyle
+        \begin{pmatrix}
+            \tilde{B} & \tilde{A} \tilde{B} & \ldots & \tilde{A}^{\tilde{n}-1} \tilde{B}
+        \end{pmatrix}
+        $
+    };
+
+    % --- 2. NODO EQUAZIONE (LHS) ---
+    \node [anchor=east, font=\large] at (matrix_node.west) {
+        $M_{R} (\tilde{A} , \tilde{B}) =$
+    };
+
+    % --- 3. DISEGNO GRAFFE ---
+
+    % Graffa SOPRA (ROSSA) - colonne
+    \draw [brace_style, red] (matrix_node.north west) -- (matrix_node.north east) 
+        node [pos=0.5, above=12pt, red, font=\large] {\footnotesize $\tilde{n}m$ colonne};
+
+    % Graffa A DESTRA (BLU) - righe
+    \draw [brace_style, blue] (matrix_node.north east) -- (matrix_node.south east) 
+        node [pos=0.5, right=12pt, blue, font=\large] {\footnotesize $n+p$ righe};
+
+\end{tikzpicture}
+\end{figure}
+
+L'espressione generale \(\forall k \in \mathbb{N}\) è:
+\[\tilde{A}^{k}\tilde{B} = 
+\begin{pmatrix}
+    A^{k} & 0 \\ 
+    -CA^{k-1} & 0
+\end{pmatrix}
+\begin{pmatrix}
+    B \\ 
+    0
+\end{pmatrix}
+= 
+\begin{pmatrix}
+    A^{k}B \\ 
+    -CA^{k-1}B
+\end{pmatrix}
+\]
+Quindi la matrice di raggiungibilità del sistema aumentato si può scrivere come:
+
+\begin{figure}[H]
+    \centering
+    \begin{equation} \label{eq:matrix_MR}
+    \begin{tikzpicture}[
+        % Allinea la baseline dell'intera figura con la baseline del nodo "EqNode" (l'equazione)
+        baseline=(EqNode.base),
+        % Stile base generico
+        bracebase/.style={decorate, thick},
+        % Stile ROSSO PICCOLO: per le singole colonne
+        redbrace/.style={bracebase, red, decoration={brace, amplitude=6pt, raise=6pt}},
+        % Stile ROSSO GRANDE: per l'insieme delle colonne
+        grandbrace/.style={bracebase, red, decoration={brace, amplitude=10pt, raise=32pt}},
+        % Stile BLU: per le righe
+        bluebrace/.style={bracebase, blue, decoration={brace, amplitude=6pt, raise=18pt}},
+        % Stile per la matrice
+        mymatrix/.style={matrix of math nodes, left delimiter=(, right delimiter=), nodes={inner sep=5pt}, row sep=12pt, column sep=12pt, ampersand replacement=\&}
+    ]
+
+    % Definizione della matrice
+    \matrix (M) [mymatrix] {
+        B \& AB \& A^{2}B \& \cdots \& A^{\tilde{n}-1}B \\
+        0 \& -CB \& -C A B \& \cdots \& -C A^{\tilde{n}-2} B \\
+    };
+
+    % Etichetta dell'equazione a sinistra
+    % Assegnato il nome (EqNode) per il riferimento della baseline
+    \node (EqNode) [anchor=east, xshift=-10pt] at (M.west) {$M_{R}(\tilde{A},\tilde{C}) = \null$};
+
+    % --- Annotazioni Orizzontali (ROSSE PICCOLE) ---
+    \foreach \col in {1,2,3,5} {
+         \draw [redbrace] (M-1-\col.north west) -- (M-1-\col.north east)
+            node [midway, above=12pt, red] {$m$};
+    }
+
+    % --- Annotazione Orizzontale (ROSSA GRANDE - Totale) ---
+    \draw [grandbrace] (M-1-1.north west) -- (M-1-5.north east)
+        node [midway, above=44pt, red] { $\tilde{n}m$};
+
+    % --- Annotazioni Verticali (BLU) ---
+    \coordinate (Split) at ($(M-1-5.south)!0.5!(M-2-5.north)$);
+    
+    % Graffa blu per la prima riga (n)
+    \draw [bluebrace] (M.north east) -- (M.north east |- Split) 
+        node [midway, right=25pt, blue] {$n$};
+
+    % Graffa blu per la seconda riga (p)
+    \draw [bluebrace] (M.north east |- Split) -- (M.south east) 
+        node [midway, right=25pt, blue] {$p$};
+
+    \end{tikzpicture}
+    \end{equation}
+\end{figure}
+
+Notiamo che la matrice di raggiungibilità del sistema aumentato ha \(n+p\)
+righe dunque per essere di rango pieno deve avere rango \(n+p\).
+Questo significa che tutte le righe della matrice di raggiungibilità
+devono essere linearmente indipendenti,
+quindi anche le prime \(n\) righe della matrice di raggiungibilità
+devono essere linearmente indipendenti, ma questo significa che il rango della matrice 
+di raggiunbilità è pieno se e solo se la
+seguente matrice costituita dalle prime \(n\) righe della matrice di raggiungibilità
+è di rango pieno:
+\begin{equation}
+    \begin{pmatrix}
+        B & AB & A^{2}B & \ldots A^{n-1}B & \ldots & A^{\tilde{n}-1}B 
+    \end{pmatrix}
+    \label{raggiungibilita_A_B}
+\end{equation}
+Ma le colonne dopo la colonna \(n\)-esima (cioè le colonne da \(n+1\) a \(n+p\) )
+sono linearmente dipendenti dalle prime \(n\) righe
+per il teorema di Cayley-Hamilton. Quindi per studiare il rango
+della matrice \eqref{raggiungibilita_A_B} ci basta studiare il rango
+delle prime \(n\) colonne:
+\begin{equation}
+    \begin{pmatrix}
+        B & AB & A^{2}B & \ldots A^{n-1}B 
+    \end{pmatrix}
+    \label{raggiungibilita_A_B_lin_ind}
+\end{equation}
+Ma la matrice \eqref{raggiungibilita_A_B_lin_ind} è proprio la matrice di raggiungibilità
+del sistema originale definita dalla coppia \((A,B)\).
+Quindi condizione necessaria affinchè la matrice di raggiungibilità 
+del sistema aumentato sia a rango pieno è che la matrice \eqref{raggiungibilita_A_B_lin_ind}
+sia di rango pieno, che equivale a dire che la coppia \((A,B)\). 
+Dunque condizione necessaria affinche il sistema aumentato sia completamente raggiungibile
+è che il sistema originale \((A,B)\) sia completamente raggiungibile.\\
+Andiamo ora a ricavare di nuovo 
+la condizione necessaria \eqref{rango_pieno_sigma} come abbiamo già detto all'inizio.
+Per prima cosa notiamo che la matrice di raggiungibilità del sistema aumentato
+\eqref{eq:matrix_MR} si può riscrivere come prodotto di matrici:
+\begin{equation}
+M_{R} (\tilde{A} , \tilde{B}) =
+ \begin{pmatrix}
+    A & B \\
+    -C & 0
+\end{pmatrix}
+\begin{pmatrix}
+    0 & B & AB & \ldots & A^{\tilde{n}-2}B \\
+    I & 0 & 0 & \ldots & 0
+\end{pmatrix}
+\label{matrix_MR_prodotto}
+\end{equation}
+Definiamo la matrice \(\tilde{\Sigma} \in \mathbb{R}^{(n+p) \times (n+m)}\) come:
+\begin{equation}
+\tilde{\Sigma} \coloneq \begin{pmatrix}
+    A & B \\
+    -C & 0
+\end{pmatrix}
+\label{def_tilde_sigma}
+\end{equation}
+Notiamo che questa matrice \(\tilde{\Sigma}\) ha lo stesso rango della matrice \(\Sigma\)
+definita in \eqref{def_sigma}
+Mentre chiamiamo la matrice a destra del prodotto in 
+\eqref{matrix_MR_prodotto} come \(Q \in \mathbb{R}^{(n+m) \times \tilde{n}m}\):
+\begin{equation}
+Q \coloneq \begin{pmatrix}
+    0 & B & AB & \ldots & A^{\tilde{n}-2}B \\
+    I & 0 & 0 & \ldots & 0
+\end{pmatrix}
+\label{def_Q}
+\end{equation}
+Quindi la \(M_{R}(\tilde{A}, \tilde{B})\) si può scrivere come:
+\begin{equation}
+M_{R} (\tilde{A} , \tilde{B}) = \tilde{\Sigma} Q
+\label{matrix_MR_prodotto_simplified}
+\end{equation}
+
+Dimostriamo ora per assurdo che se la matrice \(\tilde{\Sigma}\) 
+non è di rango pieno allora la matrice di raggiungibilità del sistema aumentato
+non è di rango pieno, vogliamo dimostrare che:
+\begin{teorema}\label{necc_sigma_rango_pieno}
+
+Se la matrice di raggiungibilità del sistema aumentato
+è di rango pieno allora la matrice \(\tilde{\Sigma}\)
+è di rango pieno.
+\end{teorema}
+ogliamo quindi dimostrare che, affinché la matrice di raggiungibilità 
+del sistema aumentato sia di rango pieno, è necessario che
+\(\tilde{\Sigma}\) sia di rango pieno.
+Ora dimostreremo il teorema \ref{necc_sigma_rango_pieno} per assurdo,
+cioè dimostreremo che il negato del teorema \ref{necc_sigma_rango_pieno} 
+implica una contraddizione. Notiamo che il negato del teorema \ref{necc_sigma_rango_pieno} 
+consiste nel provare a dimostrare che se la matrice \(M_{R}(\tilde{A}, \tilde{B})\)
+è di rango pieno allora la matrice \(\tilde{\Sigma}\)
+non è di rango pieno. 
+\begin{proof}
+La nostra ipotesi è che la matrice di raggiungibilità del sistema aumentato
+sia di rango pieno, cioè che:
+\[rank(M_{R}(\tilde{A}, \tilde{B})) = n+p\]
+Vogliamo dimostrare, come tesi, che questa ipotesi implica che la matrice \(\tilde{\Sigma}\)
+non sia di rango pieno:
+\[rank(\tilde{\Sigma}) < n+p\]
+Ma per la proprietà del prodotto delle matrici si ha che:
+\[rank(M_{R} (\tilde{A} , \tilde{B})) \leq min\{rank(\tilde{\Sigma}) , rank(Q)\}\]
+Cioè si ha che:
+\[n+p \leq min\{rank(\tilde{\Sigma}) , rank(Q)\}\]
+Ma notiamo che a destra il minimo tra i due ranghi è sicuramente minore o uguale
+al rango di \(\tilde{\Sigma}\), dunque si ha che:
+\[n+p \leq rank(\tilde{\Sigma})\]
+Ma noi avevamo supposto all'inizio che la matrice \(\tilde{\Sigma}\)
+non fosse di rango pieno, cioè si ha:
+\[n+p < n+p\]
+Ma questo è un assurdo. Dunque la nostra tesi iniziale deve essere falsa,
+cioè se la matrice di raggiungibilità del sistema aumentato
+è di rango pieno allora la matrice \(\tilde{\Sigma}\)
+è di rango pieno.
+\end{proof}
+
+Ora abbiamo dimostrato che affinche il sistema aumentato
+sia completamente raggiungibile (che ricordiamo essere 
+condizione necessaria e sufficiente, insieme alla 
+completa osservabilità, per la risoluzione del problema 
+di controllo) è necessario che la matrice \(\tilde{\Sigma}\)
+sia di rango pieno, ma questa matrice come abbiamo detto prima ha lo stesso rango
+della matrice \(\Sigma\) definita in \eqref{def_sigma}, dunque abbiamo 
+ridimostrato la condizione necessaria \eqref{rango_pieno_sigma},
+cioè che la matrice \(\Sigma\) deve essere di rango pieno affinche il problema di 
+controllo sia risolvibile.
+Ora dimostriamo che se la matrice \(\Sigma\) è di rango pieno 
+e il sistema originale è completamente raggiungibile allora il sistema aumentato
+è completamente raggiungibile.
+\begin{teorema}\label{suff_sigma_rango_pieno_ragg}
+Se la matrice \(\Sigma\) è di rango pieno e il sistema originale
+è completamente raggiungibile allora il sistema aumentato
+è completamente raggiungibile.
+\end{teorema}
+\begin{proof}
+    Vogiamo dimostrare che sotto le ipotesi del teorema
+    la matrice di raggiungibilità del sistema aumentato 
+    è di rango pieno, cioè che:
+    \[rank(M_{R}(\tilde{A}, \tilde{B})) = n+p\]
+    Per la proprietà del prodotto delle matrici si ha che:
+    \[rank(M_{R} (\tilde{A} , \tilde{B})) \leq min\{rank(\tilde{\Sigma}) , rank(Q)\}\]
+    Inoltre una nota disugualianza sui ranghi delle matrici dice che (
+        \(M_{R}(\tilde{A}, \tilde{B}) = \tilde{\Sigma} Q\)
+    ):
+    \[rank(M_{R}(\tilde{A}, \tilde{B})) \geq rank(\tilde{\Sigma}) + rank(Q) - (n+m)\]
+    Unendo le due disuguaglianze si ha che:
+    \begin{equation}    
+    rank(\tilde{\Sigma}) + rank(Q) - (n+m) 
+    \leq M_{R}(\tilde{A}, \tilde{B}) \leq min\{rank(\tilde{\Sigma}) , rank(Q)\} 
+    \label{disu_compl}
+    \end{equation}
+    Ma per ipotesi la matrice \(\Sigma\) è di rango pieno:
+    \[rank(\tilde{\Sigma}) =n+p\]
+    Il sistema originale è completamente raggiungibile,
+    dunque la matrice \(Q\) anche essa è di rango pieno:
+    \[rank(Q) = n+m\]
+    Dunque riscrivendo la disugualianza \eqref{disu_compl} si ha:
+    \[ (n+p) + (n+m) - (n+m) \leq rank(M_{R}(\tilde{A}, \tilde{B})) \leq min\{n+p , n+m\}\]
+    Da cui si ricava (dato che \(m \geq p\) ):
+    \[ n+p \leq rank(M_{R}(\tilde{A}, \tilde{B})) \leq n+p\]
+    Dunque si deve per forza avere:
+    \[ rank(M_{R}(\tilde{A}, \tilde{B})) = n+p\]
+    Quindi la matrice di raggiungibilità del sistema aumentato
+    è di rango pieno, cioè il sistema aumentato è completamente raggiungibile.
+\end{proof}
+\section{Problema di Mixed sensitivity}
+
+\[E(s) = S(s) (R(s) - D(s)) + T(s) N(s)\]
+\[U(s) K (s) S(s) \left(R(s) - D(s) - N(s)\right)\]
+
+\[
+\begin{cases}
+    \| S(s)\|_{\infty} \to 0 
+    \| T(s)\|_{\infty} \to 0 
+    
+\end{cases}
+\]
+E' impossibile minimizzare entrambe le quantità
+simultaneamente perchè:
+\[S(s) + T(s) = I\]
+
+In bassa frequenza vogliamo minimizzare \(S(s)\)
+(perchè il riferimento è un segnale a bassa frequenza), 
+in alta frequenza \(S(s)\) può avere un qualunque valore.
+
+Problema Mixed Sensitivity.
+\[ \| W_{S}(s) S(s) \|_{\infty}\]
+\[ \| W_{T}(s) T(s) \|_{\infty}\]
+\[ \| W_{K}(s) K(s) \|_{\infty}\]
+Un modo per risolvere questo problema è
+risolvere il problema \(H_{\infty}\)
+
+
+\begin{equation}
+\begin{cases}
+        Z(s) = G_{11}(s) W(s) + G_{12}(s) U(s) 
+        \\
+        Y(s) = G_{21}(s) W(s) + G_{22}(s) U(s) 
+\end{cases}
+\end{equation}
+Ricordnado che \(U(s) = K(s) Y(s)\)
+\[
+\begin{cases}
+    Z(s) = G_{11}(s) W(s) + G_{12}(s) K(s) Y(s) \\
+    Y(s) = G_{21}(s) W(s) + G_{22}(s) K(s) Y(s) 
+\end{cases}
+\]

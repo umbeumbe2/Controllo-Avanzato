@@ -189,8 +189,9 @@ sono matrici note, mentre \(X \in \mathbb{R}^{n \times m}\)
 è la matrice incognita da trovare. Andiamo ad analizzare 
 questa equazione:
 \begin{itemize}
-    \item \textbf{Unicità della soluzione}: L'equazione di Sylvester ammettete
-    una soluzione unica se e solo se gli insiemi degli spettri di \(A\) e \(-B\)
+    \item \textbf{Unicità della soluzione}: L'equazione di Sylvester ammette
+    una soluzione unica se e solo se gli spettri (cioè 
+    gli insiemi degli autovalori) delle matrici \(A\) e \(-B\)
     sono disgiunti, cioè hanno intersezione uguale all'insieme vuoto:
     \[\sigma(A) \cap \sigma(-B) = \emptyset \Longleftrightarrow 
     \lambda_{i}(A) + \lambda_{j}(B) \neq 0 \quad \forall i,j\]
@@ -275,7 +276,7 @@ obiettivo è trovare una matrice \(X\) con condizionamento il più basso possibi
 
 Andiamo ora trasformare la condizione di esistenza della soluzione
 dell'equazione di Sylvester in una condizione sulla coppia \((A,B)\).
-Nello specifico la soluzione dell'equazione di Sylvester esiste se e solo se
+Nello specifico la soluzione dell'equazione di Sylvester esiste ed è unica se e solo se
 la coppia \((A,B)\) è completamente raggiungibile.
 Infatti, se la coppia \((A,B)\) non è completamente raggiungibile,
 il sistema può essere portato nella forma di Kalman 
@@ -311,7 +312,7 @@ se non cambiamo gli autovalori della parte non controllabile del sistema.
 Facciamo ora una considerazione sulla scelta degli autovalori.
 Se siamo obbligati a scegliere autovalori di \(\Lambda\)
 uguali ad autovalori di \(A\),per soddisfare delle specifiche di progetto,
- allora l'equazione di Sylvester non ammette più soluzione unica,
+ allora l'equazione di Sylvester non ammette più \textbf{soluzione unica},
 e i casi possibili sono due:
 \begin{itemize}
     \item L'equazione di Sylvester non ammette soluzioni (il sistema non è raggiungibile)
