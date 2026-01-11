@@ -1,0 +1,25 @@
+\chapter{Appendici}
+
+\section{Uguaglianza matriciale 
+per dimostrare la relazione di \(T(s)\)}
+Per dimostrare che per la
+funzione di sensitività complementare \(T(s)\) vale la relazione:
+\[T(s) = \left(I + L(s)\right)^{-1}L(s) = L(s) \left(I + L(s)\right)^{-1}\]
+cioè che le matrici \(\left(I + L(s)\right)^{-1}\) e \(L(s)\) commutano,
+abbiamo usato la seguente identità matriciale:
+\[\left(I +AB\right)^{-1} A = A \left(I+BA\right)^{-1}\]
+\begin{proof}
+    Noi vogliamo dimostrare che:
+    \[\left(I +AB\right)^{-1} A = A \left(I+BA\right)^{-1}\]
+    Studiamoci la matricie differenza:
+    \[D \coloneq \left(I +AB\right)^{-1} A - A \left(I+BA\right)^{-1}\]
+    Se riusciamo a dimostrare che \(D=0\) allora abbiamo dimostrato l'uguaglianza.
+    Moltiplichiamo \(D\) a sinistra per \(\left(I +AB\right)\) e a destra per 
+    \(\left(I+BA\right)\), si ha:
+    \[(I+AB) D (I + BA)=(I+AB)\left(I +AB\right)^{-1} A (I+BA) -(I + AB)
+     A \left(I+BA\right)^{-1}(I+BA)\]
+    Notiamo che \(\left(I +AB\right)^{-1} A (I+BA) = I\) e \(\left(I+BA\right)^{-1}(I+BA) = I\),
+    quindi si ha:
+    \[(I+AB) D (I + BA)= A (I+BA) - (I + AB) A = A + ABA - A - ABA = 0\]
+    Abbiamo dimostrato \(D=0\), quindi anche l'uguaglianza iniziale.
+\end{proof}

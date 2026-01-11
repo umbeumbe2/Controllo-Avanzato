@@ -41,7 +41,7 @@ Quindi abbiamo dimostrato che per avere errore nullo a regime il blocco \(Z(s)\)
 deve essere proprio un integratore, cioè:
 \[Z(s) = \frac{1}{s}\]
 
-\begin{figure}[htbp]
+\begin{figure}[tbp]
     \centering
     \begin{tikzpicture}[auto, node distance=2cm, >=latex']
 
@@ -145,7 +145,7 @@ deve essere proprio un integratore, cioè:
 
 
 
-\begin{figure}[htbp]
+\begin{figure}[tbp]
     \centering
     \begin{tikzpicture}[auto, node distance=2cm, >=latex']
 
@@ -949,11 +949,114 @@ Se la matrice \(\Sigma\) è di rango pieno e il sistema originale
     è di rango pieno, cioè il sistema aumentato è completamente raggiungibile.
 \end{proof}
 
+Uniamo tutti i risultati ottenuti nei lemmi \ref{necc_orig_compl_ragg},
+\ref{necc_sigma_rango_pieno},\ref{suff_sigma_rango_pieno_ragg}
+    in un unico teorema che consiste in una condizione necessaria e sufficiente.
+\begin{teorema}\label{necc_suff_controllo_con_integratori}
+    Il sistema aumentato è completamente raggiungibile
+    se e solo se il sistema originale è completamente raggiungibile
+    e la matrice \(\Sigma\) è di rango pieno.
+\end{teorema}
 
-\section{Problema di Mixed sensitivity}
+\section{Problema di Mixed Sensitivity Design}
 
-\[E(s) = S(s) (R(s) - D(s)) + T(s) N(s)\]
+Il nostro obiettivo ora è andare a formulare le seguente specifiche
+di progetto:
+\begin{itemize}
+    \item Stabilità 
+    \item Stabilità robusta 
+    \item Performance inseguimento/disturbo
+    \item Limitazione controllo
+\end{itemize}
+sulle funzione di sensitività \(S(s)\) e sensitività complementare \(S'(s)\).
+
+\[E(s) = R(s) - Y(s) =  S(s) (R(s) - D(s)) + T(s) N(s)\]
 \[U(s) K (s) S(s) \left(R(s) - D(s) - N(s)\right)\]
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[auto, node distance=2cm, >=latex, thick]
+        % Stili
+        \tikzstyle{block} = [draw, rectangle, minimum height=1.2cm, minimum width=1.5cm, align=center]
+        \tikzstyle{sum} = [draw, circle, inner sep=2pt]
+        \tikzstyle{coord} = [coordinate]
+        \tikzstyle{dot} = [fill=black, circle, inner sep=1.5pt]
+
+        % --- Catena Diretta (Forward Path) ---
+        \node [coord] (input) {};
+        
+        % Sommatore Errore
+        \node [sum, right of=input, node distance=1.5cm] (sum1) {};
+        
+        % Controllore K(s)
+        \node [block, right of=sum1, node distance=2.5cm] (controller) {$K(s)$};
+        
+        % Sommatore Disturbo su U
+        \node [sum, right of=controller, node distance=2.5cm] (sum_u) {};
+        
+        % Processo G(s)
+        \node [block, right of=sum_u, node distance=2.5cm] (plant) {$G(s)$};
+        
+        % Sommatore Disturbo su Y
+        \node [sum, right of=plant, node distance=3.0cm] (sum_y) {};
+        
+        % Punto di prelievo (Measure Point) - Un po' più avanti del sommatore
+        \node [dot, right of=sum_y, node distance=2cm] (measure_point) {};
+        
+        % Uscita finale
+        \node [coord, right of=measure_point, node distance=1.5cm] (output) {};
+
+        % --- Nodi per i Disturbi ---
+        \node [above of=sum_u, node distance=1.5cm] (du) {$D_u$};
+        \node [above of=sum_y, node distance=1.5cm] (dy) {$D_y$};
+
+        % --- Retroazione ---
+        % Sommatore per il Rumore N(s) - Allineato verticalmente sotto il punto di prelievo
+        \node [sum, below of=measure_point, node distance=2.5cm] (sum_noise) {};
+        % Rumore N(s)
+        \node [right of=sum_noise, node distance=1.5cm] (noise) {$N(s)$};
+
+        % --- Collegamenti ---
+        
+        % Ingresso -> Sommatore 1
+        \draw [->] (input) -- node {$R(s)$} node[pos=0.9, above] {$+$} (sum1);
+        
+        % Sommatore 1 -> K(s)
+        \draw [->] (sum1) -- node {$E(s)$} (controller);
+        
+        % K(s) -> Sommatore Du
+        \draw [->] (controller) -- node {$U(s)$} (sum_u);
+        
+        % Disturbo Du -> Sommatore Du
+        \draw [->] (du) -- node[pos=0.9, right] {$+$} (sum_u);
+        
+        % Sommatore Du -> G(s)
+        \draw [->] (sum_u) -- (plant);
+        
+        % G(s) -> Sommatore Dy
+        \draw [->] (plant) -- node[pos=0.9, below] {$+$} (sum_y);
+        
+        % Disturbo Dy -> Sommatore Dy
+        \draw [->] (dy) -- node[pos=0.9, right] {$+$} (sum_y);
+        
+        % Sommatore Dy -> Punto di prelievo -> Uscita
+        \draw [->] (sum_y) -- (measure_point) -- node [name=y_out] {$Y(s)$} (output);
+
+        % --- Collegamenti Retroazione ---
+        % Scende dal punto di prelievo (measure_point) verso il sommatore del rumore
+        \draw [->] (measure_point) -- (sum_noise) node[pos=0.9, left]{ $+$};
+        
+        % Rumore -> Sommatore Rumore
+        \draw [->] (noise) -- (sum_noise) node[pos=0.8, above] {$+$};
+        
+        % Ritorno al primo sommatore
+        \draw [->] (sum_noise) -| (sum1) node[pos=0.96, left] {$-$};
+
+    \end{tikzpicture}
+    \label{sistema_mimo_retroazione2}
+\end{figure}
+
+
 
 \[
 \begin{cases}
@@ -978,13 +1081,7 @@ Un modo per risolvere questo problema è
 risolvere il problema \(H_{\infty}\)
 
 
-\begin{equation}
-\begin{cases}
-        Z(s) = G_{11}(s) W(s) + G_{12}(s) U(s) 
-        \\
-        Y(s) = G_{21}(s) W(s) + G_{22}(s) U(s) 
-\end{cases}
-\end{equation}
+
 Ricordnado che \(U(s) = K(s) Y(s)\)
 \[
 \begin{cases}
@@ -993,13 +1090,155 @@ Ricordnado che \(U(s) = K(s) Y(s)\)
 \end{cases}
 \]
 
-Uniamo tutti i risultati ottenuti nei lemmi \ref{necc_orig_compl_ragg},
-\ref{necc_sigma_rango_pieno},\ref{suff_sigma_rango_pieno_ragg}
-    in un unico teorema che consiste in una condizione necessaria e sufficiente.
-\begin{teorema}\label{necc_suff_controllo_con_integratori}
-    Il sistema aumentato è completamente raggiungibile
-    se e solo se il sistema originale è completamente raggiungibile
-    e la matrice \(\Sigma\) è di rango pieno.
-\end{teorema}
 
-\section{Controllo \(H_{\infty}\)}
+
+
+
+
+\section{Problema \(H_{\infty}\) in forma standard}
+
+Consideriamo il sistema in Figura \ref{fig:sistema_H_infinito},
+questo sistema rappresenta il sistema di base per andare a formulare
+il \textbf{problema di controllo
+\(H_{\infty}\) in forma standard}. Notiamo che \(w,u,z,y\) possono 
+essere vettori.
+Andiamo ad analizzare questo sistema, nello specifico notiamo che la 
+relazione ingresso uscita del sistema è data da:
+\[ 
+\begin{pmatrix}
+    Z(s)\\
+    Y(s)
+\end{pmatrix}
+=
+G(s)
+\begin{pmatrix}
+    W(s)\\
+    U(s)
+\end{pmatrix}\]
+La matrice di trasferimento \(G(s)\) si può scomporre in quattro sottomatrici:
+\[
+G(s) = \begin{pmatrix}
+    G_{11}(s) & G_{12}(s) \\
+    G_{21}(s) & G_{22}(s)
+\end{pmatrix}
+\]
+
+
+\begin{figure}[tbp]
+    \centering
+    \begin{tikzpicture}[>=latex, thick]
+        % Definizione del blocco principale G(s)
+        \node[draw, rectangle, minimum width=4cm, minimum height=3cm, align=center] (G) {\Large $G(s)$};
+
+        % Coordinate degli ingressi (lato sinistro)
+        % w (sopra) e mu (sotto)
+        \draw[->] ([yshift=0.8cm]G.west) +(-2.5,0) node[left] {\Large $w$} -- ([yshift=0.8cm]G.west);
+        \draw[->] ([yshift=-0.8cm]G.west) +(-2.5,0) node[left] {\Large $u$} -- ([yshift=-0.8cm]G.west);
+
+        % Coordinate delle uscite (lato destro)
+        % z (sopra) e y (sotto)
+        \draw[->] ([yshift=0.8cm]G.east) -- +(2.5,0) node[right] {\Large $z$};
+        \draw[->] ([yshift=-0.8cm]G.east) -- +(2.5,0) node[right] {\Large $y$};
+    \end{tikzpicture}
+    \caption{Sistema generale per il controllo \(H_{\infty}\)}
+    \label{fig:sistema_H_infinito}
+\end{figure}
+
+
+
+\begin{figure}[tbp]
+    \centering
+    \begin{tikzpicture}[>=latex, thick]
+        % Blocco principale G(s)
+        \node[draw, rectangle, minimum width=4cm, minimum height=2.5cm, align=center] (G) {\Large $G(s)$};
+
+        % Blocco controllore K(s) posizionato sotto
+        \node[draw, rectangle, minimum width=2.5cm, minimum height=1.2cm, below=2cm of G] (K) {\Large $K(s)$};
+
+        % Coordinate per gli offset degli ingressi/uscite (superiori e inferiori)
+        % yshift positivo per w/z, negativo per mu/y
+        
+        % Ingresso w (In alto a sinistra)
+        \draw[->] ([yshift=0.7cm]G.west) +(-2.5,0) node[left] {\Large $w$} -- ([yshift=0.7cm]G.west);
+
+        % Uscita z (In alto a destra)
+        \draw[->] ([yshift=0.7cm]G.east) -- +(2.5,0) node[right] {\Large $z$};
+
+        % Uscita y (In basso a destra) e connessione al feedback
+        \draw[->] ([yshift=-0.7cm]G.east) -- +(2.5,0) node[right] {\Large $y$};
+        % Ramificazione verso K(s)
+        \draw[->] ([yshift=-0.7cm]G.east) ++(1.5,0) |- (K.east);
+
+        % Uscita dal controllore K(s) verso l'ingresso mu (In basso a sinistra)
+        % Percorso: Esce da K a sinistra -> va a sinistra -> sale -> entra in G
+        \draw[->] (K.west) -| ([xshift=-1.5cm, yshift=-0.7cm]G.west) -- ([yshift=-0.7cm]G.west) node[midway, above] {\Large $u$};
+
+    \end{tikzpicture}
+    \caption{Problema di controllo \(H_{\infty}\) in forma standard}
+    \label{fig:sistema_H_infinito_feedback}
+\end{figure}
+
+Con questa scomposizione si ha che la relazione ingresso uscita
+del sistema si può scrivere come:
+\begin{equation}
+\begin{cases}
+        Z(s) = G_{11}(s) W(s) + G_{12}(s) U(s) 
+        \\
+        Y(s) = G_{21}(s) W(s) + G_{22}(s) U(s) 
+\end{cases}
+\label{eq:relazione_ingresso_uscita_H_infinito}
+\end{equation}
+Ora consideriamo il sistema in Figura \ref{fig:sistema_H_infinito_feedback},
+dove abbiamo inserito un controllore \(K(s)\) in feedback, si ha:
+\[U(s) = K(s)Y(s)\]
+Andando a sostituire nel sistema \eqref{eq:relazione_ingresso_uscita_H_infinito}
+si ottiene:
+\[
+\begin{cases}
+        Z(s) = G_{11}(s) W(s) + G_{12}(s) Y(s)
+        \\
+        Y(s) = G_{21}(s) W(s) + G_{22}(s) Y(s)
+\end{cases}
+\]
+
+Quella che vogliamo andarci a ricavare noi ora è la 
+funzione di trasferimento ad anello chiuso tra l'ingresso \(W(s)\)
+e l'uscita \(Z(s)\), andiamo quindi a ricavarci \(Y(s)\)
+in funzione di \(W(s)\) nella seconda equazione:
+\[
+\begin{cases}
+        Z(s) = G_{11}(s) W(s) + G_{12}(s) Y(s)
+        \\
+        Y(s) -G_{22}(s) Y(s) = G_{21}(s) W(s)
+\end{cases}
+\]
+Mettendo in evidenza \(Y(s)\) nella seconda equazione si ha:
+\[
+\begin{cases}
+        Z(s) = G_{11}(s) W(s) + G_{12}(s) Y(s)
+        \\
+        (1 - G_{22}(s))Y(s) = G_{21}(s) W(s)
+\end{cases}
+\]
+Moltiplicando ambo i membri della seconda equazione per
+\((1 - G_{22}(s))^{-1}\) si ottiene:
+\[
+\begin{cases}
+        Z(s) = G_{11}(s) W(s) + G_{12}(s) Y(s)
+        \\
+        Y(s) = (1 - G_{22}(s))^{-1} G_{21}(s) W(s)
+\end{cases}
+\]
+Sostituendo l'espressione di \(Y(s)\) nella prima equazione
+si ottiene:
+\[ 
+Z(s) = G_{11}(s) W(s) + G_{12}(s) (1 - G_{22}(s))^{-1} G_{21}(s) W(s)
+\]
+Mettendo in evidenza \(W(s)\) si ha:
+\[    Z(s) = \left(G_{11}(s) + G_{12}(s) (1 - G_{22}(s))^{-1} G_{21}(s)\right) W(s)\]
+Quindi la funzione di trasferimento ad anello chiuso tra l'ingresso \(W(s)\)
+e l'uscita \(Z(s)\) è data da:
+\begin{equation}
+    T_{zw}(s) = G_{11}(s) + G_{12}(s) (1 - G_{22}(s))^{-1} G_{21}(s)
+    \label{funzione_trasferimento_H_infinito}
+\end{equation}

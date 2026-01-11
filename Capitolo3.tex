@@ -1,5 +1,8 @@
 \chapter{Sistemi MIMO nel dominio di Laplace}
 
+\section{Rappresentazione di un sistema MIMO nel dominio di Laplace}
+
+
 Consideriamo il seguente sistema LTI 
 a più ingressi e più uscite (MIMO) descritto dalle seguenti equazioni:
 \begin{equation}
@@ -32,6 +35,125 @@ singole \(G_{ij}(s)\):
 dove ogni elemento \(G_{ij}(s)\) è una funzione polinomiale 
 fratta che rappresenta la funzione di trasferimento
 tra l'ingresso \(u_j\) e l'uscita \(y_i\).
+
+\section{Sistema con retroazione dell'uscita MIMO}
+Consideriamo lo schema di controllo a retroazione
+dell'uscita per un sistema MIMO mostrato in Figura \ref{fig:sistema_mimo_retroazione}.
+Andiamo ora a ricavarci le funzioni di trasferimento del sistema considerando come 
+uscite i due vettori \(Y(s) \in \mathbb{R}^{p}\) e
+\(U(s) \in \mathbb{R}^{m}\), e come ingresso i quattro vettori 
+\(R(s), D_u(s), D_y(s), N(s)\). Per prima cosa diciamo che la funzione 
+d'anello aperto \(L(s)\) è definita come:
+\[L(s) = G(s)K(s)\]
+Notiamo che \(K(s)G(s)\) a priori è diverso poichè stiamo parlando di matrici
+ed il prodotto tra matrici non è commutativo.
+Andiamo a trovarci le funzioni di trasferimento tra le uscite e gli ingressi,
+nello specifico saranno otto funzioni di trasferimento:
+\begin{enumerate}
+  \item Funzione di trasferimento tra \(R(s)\) a \(Y(s)\), che vale:
+  \[T(s) \coloneq \left(1 + L(s)\right)^{-1}L(s) \]
+  Questa funzione
+  prende il nome di funzione di sensitività complementare.
+  \item Funzione di trasferimento tra \(Y(s)\) e \(D_u(s)\), che vale:
+  \[ \left(1 + L(s)\right)^{-1}G(s) \]
+  \item Funzione di trasferimento tra \(Y(s)\) e \(D_y(s)\), che vale:
+  \[ \left(1 + L(s)\right)^{-1} \]
+  \item Funzione di trasferimento tra  \(Y(s)\) e \(N(s)\) , che vale:
+  \[ -\left(1 + L(s)\right)^{-1}L(s) \]
+  \item Funzione di trasferimento tra  \(U(s)\) e \(R(s)\), che vale:
+  \[ \left(1 + K(s) G(s)\right)^{-1} K(s)\]
+  \item Funzione di trasferimento tra \(U(s)\) e \(D_u(s)\), che vale:
+  \[ \left(1 + K(s) G(s)\right)^{-1} \]
+  \item Funzione di trasferimento tra \(U(s)\) e \(D_y(s)\), che vale:
+  \[ -\left(1 + K(s) G(s)\right)^{-1} K(s) \]
+  \item Funzione di trasferimento tra \(U(s)\) e \(N(s)\), che vale:
+  \[ -\left(1 + K(s) G(s)\right)^{-1} K(s)\]
+\end{enumerate}
+\begin{figure}[tbp]
+    \centering
+    \begin{tikzpicture}[auto, node distance=2cm, >=latex, thick]
+        % Stili
+        \tikzstyle{block} = [draw, rectangle, minimum height=1.2cm, minimum width=1.5cm, align=center]
+        \tikzstyle{sum} = [draw, circle, inner sep=2pt]
+        \tikzstyle{coord} = [coordinate]
+        \tikzstyle{dot} = [fill=black, circle, inner sep=1.5pt]
+
+        % --- Catena Diretta (Forward Path) ---
+        \node [coord] (input) {};
+        
+        % Sommatore Errore
+        \node [sum, right of=input, node distance=1.5cm] (sum1) {};
+        
+        % Controllore K(s)
+        \node [block, right of=sum1, node distance=2.5cm] (controller) {$K(s)$};
+        
+        % Sommatore Disturbo su U
+        \node [sum, right of=controller, node distance=2.5cm] (sum_u) {};
+        
+        % Processo G(s)
+        \node [block, right of=sum_u, node distance=2.5cm] (plant) {$G(s)$};
+        
+        % Sommatore Disturbo su Y
+        \node [sum, right of=plant, node distance=3.0cm] (sum_y) {};
+        
+        % Punto di prelievo (Measure Point) - Un po' più avanti del sommatore
+        \node [dot, right of=sum_y, node distance=2cm] (measure_point) {};
+        
+        % Uscita finale
+        \node [coord, right of=measure_point, node distance=1.5cm] (output) {};
+
+        % --- Nodi per i Disturbi ---
+        \node [above of=sum_u, node distance=1.5cm] (du) {$D_u$};
+        \node [above of=sum_y, node distance=1.5cm] (dy) {$D_y$};
+
+        % --- Retroazione ---
+        % Sommatore per il Rumore N(s) - Allineato verticalmente sotto il punto di prelievo
+        \node [sum, below of=measure_point, node distance=2.5cm] (sum_noise) {};
+        % Rumore N(s)
+        \node [right of=sum_noise, node distance=1.5cm] (noise) {$N(s)$};
+
+        % --- Collegamenti ---
+        
+        % Ingresso -> Sommatore 1
+        \draw [->] (input) -- node {$R(s)$} node[pos=0.9, above] {$+$} (sum1);
+        
+        % Sommatore 1 -> K(s)
+        \draw [->] (sum1) -- node {$E(s)$} (controller);
+        
+        % K(s) -> Sommatore Du
+        \draw [->] (controller) -- node {$U(s)$} (sum_u);
+        
+        % Disturbo Du -> Sommatore Du
+        \draw [->] (du) -- node[pos=0.9, right] {$+$} (sum_u);
+        
+        % Sommatore Du -> G(s)
+        \draw [->] (sum_u) -- (plant);
+        
+        % G(s) -> Sommatore Dy
+        \draw [->] (plant) -- node[pos=0.9, below] {$+$} (sum_y);
+        
+        % Disturbo Dy -> Sommatore Dy
+        \draw [->] (dy) -- node[pos=0.9, right] {$+$} (sum_y);
+        
+        % Sommatore Dy -> Punto di prelievo -> Uscita
+        \draw [->] (sum_y) -- (measure_point) -- node [name=y_out] {$Y(s)$} (output);
+
+        % --- Collegamenti Retroazione ---
+        % Scende dal punto di prelievo (measure_point) verso il sommatore del rumore
+        \draw [->] (measure_point) -- (sum_noise) node[pos=0.9, left]{ $+$};
+        
+        % Rumore -> Sommatore Rumore
+        \draw [->] (noise) -- (sum_noise) node[pos=0.8, above] {$+$};
+        
+        % Ritorno al primo sommatore
+        \draw [->] (sum_noise) -| (sum1) node[pos=0.96, left] {$-$};
+
+    \end{tikzpicture}
+    \caption{Schema a blocchi di un sistema MIMO con retroazione dell'uscita.}
+    \label{fig:sistema_mimo_retroazione}
+\end{figure}
+
+
 
 
 \section{SVD (Singular Value Decomposition)}
