@@ -42,33 +42,40 @@ dell'uscita per un sistema MIMO mostrato in Figura \ref{fig:sistema_mimo_retroaz
 Andiamo ora a ricavarci le funzioni di trasferimento del sistema considerando come 
 uscite i due vettori \(Y(s) \in \mathbb{R}^{p}\) e
 \(U(s) \in \mathbb{R}^{m}\), e come ingresso i quattro vettori 
-\(R(s), D_u(s), D_y(s), N(s)\). Per prima cosa diciamo che la funzione 
+\(R(s), D_u(s), D_y(s), N(s)\). Per prima cosa definiamo la funzione 
 d'anello aperto \(L(s)\) è definita come:
-\[L(s) = G(s)K(s)\]
+\[L(s) \coloneq G(s)K(s)\]
 Notiamo che \(K(s)G(s)\) a priori è diverso poichè stiamo parlando di matrici
-ed il prodotto tra matrici non è commutativo.
+ed il prodotto tra matrici non è commutativo. Definiamo anche la \textbf{funzione di sensibilità}:
+\[S(s) \coloneq \left(I + L(s)\right)^{-1}\]
+e la \textbf{funzione di sensibilità complementare}:
+\[T(s) \coloneq\left(I + L(s)\right)^{-1} L(s)  \]
 Andiamo a trovarci le funzioni di trasferimento tra le uscite e gli ingressi,
 nello specifico saranno otto funzioni di trasferimento:
 \begin{enumerate}
   \item Funzione di trasferimento tra \(R(s)\) a \(Y(s)\), che vale:
-  \[T(s) \coloneq \left(1 + L(s)\right)^{-1}L(s) \]
-  Questa funzione
-  prende il nome di funzione di sensitività complementare.
+  \[K_{YR} = T(s) = \left(I + L(s)\right)^{-1} L(s)  \]
   \item Funzione di trasferimento tra \(Y(s)\) e \(D_u(s)\), che vale:
-  \[ \left(1 + L(s)\right)^{-1}G(s) \]
+  \[ K_{YD_{u}}(s) \coloneq \left(I + L(s)\right)^{-1}G(s) = S(s) G(s) \]
   \item Funzione di trasferimento tra \(Y(s)\) e \(D_y(s)\), che vale:
-  \[ \left(1 + L(s)\right)^{-1} \]
+  \[ K_{Y D_{y}}(s) \coloneq \left(I + L(s)\right)^{-1} = S(s) \]
   \item Funzione di trasferimento tra  \(Y(s)\) e \(N(s)\) , che vale:
-  \[ -\left(1 + L(s)\right)^{-1}L(s) \]
+  \[ K_{YN}(s) \coloneq -\left(I + L(s)\right)^{-1}L(s) = -T(s) \]
   \item Funzione di trasferimento tra  \(U(s)\) e \(R(s)\), che vale:
-  \[ \left(1 + K(s) G(s)\right)^{-1} K(s)\]
+  \[ K_{UR}(s) \left(I + K(s) G(s)\right)^{-1} K(s)\]
   \item Funzione di trasferimento tra \(U(s)\) e \(D_u(s)\), che vale:
-  \[ \left(1 + K(s) G(s)\right)^{-1} \]
+  \[ \left(I + K(s) G(s)\right)^{-1} \]
   \item Funzione di trasferimento tra \(U(s)\) e \(D_y(s)\), che vale:
-  \[ -\left(1 + K(s) G(s)\right)^{-1} K(s) \]
+  \[ -\left(I + K(s) G(s)\right)^{-1} K(s) \]
   \item Funzione di trasferimento tra \(U(s)\) e \(N(s)\), che vale:
-  \[ -\left(1 + K(s) G(s)\right)^{-1} K(s)\]
+  \[ -\left(I + K(s) G(s)\right)^{-1} K(s)\]
 \end{enumerate}
+
+Dunque il legame tra \(Y(s)\) e \(U(s)\) con gli ingressi
+\(R(s), D_u(s), D_y(s), N(s)\) è dato da:
+\[Y(s) = S(s)G(s) D_{u}(s) + S(s) D_{y}(s) - T(s) N(s) + T(s) R(s) \]
+\[U(s) = \left(I + L_{u}\right) ^{-1}K(s) (R(s) - D_{y}(s) - N(s))  +
+\left(I+ L_{u}(s)\right)^{-1} D_{u}(s)\]
 \begin{figure}[tbp]
     \centering
     \begin{tikzpicture}[auto, node distance=2cm, >=latex, thick]

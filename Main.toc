@@ -4,11 +4,12 @@
 \contentsline {section}{\numberline {1.1}Rappresentazione di un sistema MIMO nel dominio di Laplace}{2}{}%
 \contentsline {section}{\numberline {1.2}Sistema con retroazione dell'uscita MIMO}{2}{}%
 \contentsline {section}{\numberline {1.3}SVD (Singular Value Decomposition)}{4}{}%
-\contentsline {section}{\numberline {1.4}Guadagno}{6}{}%
+\contentsline {section}{\numberline {1.4}Guadagno}{5}{}%
 \contentsline {section}{\numberline {1.5}Poli e zeri per sistemi MIMO }{6}{}%
 \contentsline {chapter}{\numberline {2}Controllo di sistemi MIMO}{7}{}%
 \contentsline {section}{\numberline {2.1}Schema di retroazione dell'uscita con integratori}{7}{}%
 \contentsline {section}{\numberline {2.2}Problema di Mixed Sensitivity Design}{16}{}%
-\contentsline {section}{\numberline {2.3}Problema \(H_{\infty }\) in forma standard}{17}{}%
-\contentsline {chapter}{\numberline {3}Appendici}{20}{}%
-\contentsline {section}{\numberline {3.1}Uguaglianza matriciale per dimostrare la relazione di \(T(s)\)}{20}{}%
+\contentsline {section}{\numberline {2.3}Problema \(H_{\infty }\) in forma standard}{19}{}%
+\contentsline {subsection}{\numberline {2.3.1}Costruzione \(W_{S}(s)\)}{21}{}%
+\contentsline {chapter}{\numberline {3}Appendici}{23}{}%
+\contentsline {section}{\numberline {3.1}Uguaglianza matriciale per dimostrare la relazione di \(T(s)\)}{23}{}%

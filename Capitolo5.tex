@@ -1053,30 +1053,163 @@ sulle funzione di sensitività \(S(s)\) e sensitività complementare \(S'(s)\).
         \draw [->] (sum_noise) -| (sum1) node[pos=0.96, left] {$-$};
 
     \end{tikzpicture}
+    \caption{Sistema di controllo MIMO con retroazione negativa e disturbi}
     \label{sistema_mimo_retroazione2}
 \end{figure}
 
 
 
-\[
-\begin{cases}
-    \| S(s)\|_{\infty} \to 0 
-    \| T(s)\|_{\infty} \to 0 
-    
-\end{cases}
-\]
-E' impossibile minimizzare entrambe le quantità
-simultaneamente perchè:
+
+\begin{equation}
+    \begin{cases}
+        \| S(s)\|_{\infty} \to 0  \\
+        \| T(s)\|_{\infty} \to 0 
+    \end{cases}
+    \label{norma_infinito_specifiche_iniziali}
+\end{equation}
+
+E' impossibile realizzare la condizione precedente poichè 
+vale la relazione
 \[S(s) + T(s) = I\]
+Questo problema si può risolvere ricordando 
+che gli ingressi del sistema sono di solito segnali
+presenti a frequenze diverse:
+\begin{itemize}
+    \item Il riferimento \(R(s)\) è a bassa frequenza
+    \item Il disturbo \(D(s)\) è a bassa frequenza
+    \item Il rumore \(N(s)\) è ad alta frequenza
+\end{itemize}
+
+Con queste considerazioni possiamo andare a formulare
+le specifiche di progetto in modo diverso, infatti 
+la specifica  è potente 
+ma non necessaria, infatti possiamo accontentarci delle seguenti specifiche:
+\begin{equation}
+    \begin{cases}
+        \| S(s)(R(s) - D(s))\|_{2} \to 0  \\
+        \| T(s) N(s)\|_{2} \to 0 
+    \end{cases}
+    \label{norma-2}
+\end{equation}
+dove notiamo che \(S(s)(R(s) - D(s))\) e \(T(s) N(s)\)
+sono vettori, quindi la norma \(2\) si intende come norma vettoriale.
+Infatti se sono vere le \eqref{norma-2} si ha che per la disuguaglianza
+triangolare:
+\[
+\|E(s)\|_{2} \leq \| S(s)(R(s) - D(s))\|_{2} + \| T(s) N(s)\|_{2} \to 0 
+\Longrightarrow \|E(s)\|_{2} \to 0
+\]
+Ma cosa hanno di differente le specifiche \eqref{norma-2} rispetto alle spefiche 
+\eqref{norma_infinito_specifiche_iniziali}, la differenza principale sta nel 
+fatto che ora possiamo andare ad esplicitare le caratteristiche spettrali
+dei segnali \(R(s)\), \(D(s)\) e \(N(s)\), infatti possiamo dire che:
+\begin{itemize}
+    \item Visto che \(R(s)\) e \(D(s)\) sono segnali a bassa frequenza,
+    per soddisfare la prima specifica di \eqref{norma-2} ci basta che \(S(s)\)
+    tenda a zero in bassa frequenza, mentre in alta frequenza ci penseranno i segnali 
+    \(R(s)\) e \(D(s)\) a far si che la norma vada a zero. Questo si traduce in 
+    una specifica sulla norma infinito non più di \(S(s)\) ma di una funzione 
+    \(W_{S}(s) S(s)\):
+    \[\| W_{S}(s) S(s) \|_{\infty} \to 0\]
+    dove \(W_{S}(s)\) è una funzione di peso che ha un valore alto in bassa frequenza
+    e un valore basso in alta frequenza, cosichè per soddisfare la specifica
+    la funzione \(S(s)\) deve essere piccola in bassa frequenza, come richiesto.
+    L'introduzione di questa funzione di peso ci permette di non imporre vincoli in alta 
+    frequenza su \(S(s)\), andando quindi a permetterci di imporrre vincoli sulla \(T(s)\),
+    continuando però a rispettare l'identità \(S(s) + T(s) = I\).
+    Una possibile scelta per \(W_{S}(s)\) per un sistema SISO
+     è in Figura \ref{fig:Ws_plot}.
+    \item Visto che \(N(s)\) è un segnale ad alta frequenza,
+    per soddisfare la seconda specifica di \eqref{norma-2} ci basta che \(T(s)\)
+    tenda a zero in alta frequenza, mentre in bassa frequenza ci penserà il segnale
+    \(N(s)\) a far si che la norma vada a zero. Questo si traduce in 
+    una specifica sulla norma infinito non più di \(T(s)\) ma di una funzione
+    \(W_{T}(s) T(s)\):
+    \[\| W_{T}(s) T(s) \|_{\infty} \to 0\]
+    dove \(W_{T}(s)\) è una funzione di peso che ha un valore basso in bassa frequenza
+    e un valore alto in alta frequenza, cosichè per soddisfare la specifica
+    la funzione \(T(s)\) deve essere piccola in alta frequenza, mentre in bassa frequenza
+    non ci sono vincoli su \(T(s)\), poichè la funzione di peso \(W_{T}(s)\) 
+    si occuperà di far andare a zero la norma infinito. 
+    Una possibile scelta per \(W_{T}(s)\) per un sistema SISO
+     è in Figura \ref{fig:Wt_plot}.
+     \item E' possibile definire anche una funzione di peso \(W_{K}(s)\)
+     per limitare l'azione di controllo \(U(s)\). Infatti andando 
+     a gestire la norma infinito di \(W_{K}(s) K(s) S(s)\):
+    \[\| W_{K}(s) K(s) S(s) \|_{\infty} \to 0 \]
+    possiamo limitare l'azione di controllo andando a scegliere
+    opportunamente la funzione di peso \(W_{K}(s)\). 
+    Per un sistema SISO una possibile \(W_{K}(s)\)
+    è costante in un largo intervallo di frequenze (quelle 
+    possibili per il nostro ingresso di controllo \(U(s)\) ), e va a zero
+    in alta frequenza ed in bassa frequenza. Modificando opportunamente il valore costante 
+    possiamo andare a limitare l'azione di controllo. Ad esempio aumentando il valore costante
+    andremo ad abbassare il valore di \(\left|K(s)S(s)\right|\) (per un sistema SISO 
+    \(K(s)S(s)\) è uno scalare e quindi si può parlare di modulo), e di conseguenza 
+    andremo ad abbassare il valore di \(\left|U(s)\right|\).
+\end{itemize}
+
+Il problema che si occupa di trovare le espressioni delle funzioni di peso 
+\(W_{S}(s)\), \(W_{T}(s)\) e \(W_{K}(s)\) prende il nome di 
+\textbf{Mixed Sensitivity Design}.
+
+\begin{figure}[tbp]
+    \centering
+    % --- PRIMA IMMAGINE (SINISTRA): W_S Passa-Basso ---
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \begin{semilogxaxis}[
+                width=\linewidth, height=6cm,
+                ticks=none,
+                axis lines=left,
+                xlabel={$\omega$},
+                ylabel={$|W_S(j\omega)|_{dB}$},
+                xmin=0.01, xmax=1000,
+                ymin=-20, ymax=60,
+                every axis x label/.style={at={(ticklabel* cs:1)}, anchor=west},
+                every axis y label/.style={at={(ticklabel* cs:1)}, anchor=south},
+            ]
+                \addplot[domain=0.01:1000, samples=300, very thick, black] 
+                {20*log10(100 / sqrt(x^2 + 1))};
+            \end{semilogxaxis}
+        \end{tikzpicture}
+        \caption{Funzione peso $W_S(s)$ }
+        \label{fig:Ws_plot}
+    \end{subfigure}
+    \hfill % Spazio tra le due figure
+    % --- SECONDA IMMAGINE (DESTRA): W_T Passa-Alto ---
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \begin{semilogxaxis}[
+                width=\linewidth, height=6cm,
+                ticks=none,
+                axis lines=left,
+                xlabel={$\omega$},
+                ylabel={$|W_T(j\omega)|_{dB}$},
+                xmin=0.01, xmax=1000,
+                ymin=-50, ymax=30,
+                every axis x label/.style={at={(ticklabel* cs:1)}, anchor=west},
+                every axis y label/.style={at={(ticklabel* cs:1)}, anchor=south},
+            ]
+                \addplot[domain=0.01:1000, samples=300, very thick, black] 
+                {20*log10( 20 * x / sqrt(x^2 + 10^2) )};
+            \end{semilogxaxis}
+        \end{tikzpicture}
+        \caption{Funzione peso $W_T(s)$ }
+        \label{fig:Wt_plot}
+    \end{subfigure}
+    
+    \caption{Andamenti tipici delle funzioni peso per sistemi SISO}
+    \label{fig:weights_combined}
+\end{figure}
+
 
 In bassa frequenza vogliamo minimizzare \(S(s)\)
 (perchè il riferimento è un segnale a bassa frequenza), 
 in alta frequenza \(S(s)\) può avere un qualunque valore.
 
-Problema Mixed Sensitivity.
-\[ \| W_{S}(s) S(s) \|_{\infty}\]
-\[ \| W_{T}(s) T(s) \|_{\infty}\]
-\[ \| W_{K}(s) K(s) \|_{\infty}\]
 Un modo per risolvere questo problema è
 risolvere il problema \(H_{\infty}\)
 
@@ -1242,3 +1375,96 @@ e l'uscita \(Z(s)\) è data da:
     T_{zw}(s) = G_{11}(s) + G_{12}(s) (1 - G_{22}(s))^{-1} G_{21}(s)
     \label{funzione_trasferimento_H_infinito}
 \end{equation}
+
+
+La sequenza di passi per andare a formulare e risolvere
+un problema di \(H_{\infty}\) standard
+è la seguente:
+\begin{itemize}
+    \item Definizione dell'impianto \(G(s)\)
+    \item Traduzione delle specifiche di progetto in termini di funzioni di peso 
+    \(W_{S}(s), W_{T}(s), W_{K}(s)\)
+    \item Definire \(\bar{G}(s)\) del sistema in forma standard per il problema 
+    \(H_{\infty}\)
+    \item Risolvere il problema di controllo \(H_{\infty}\)
+\end{itemize}
+
+
+
+\[
+\left\|
+\begin{pmatrix}
+    W_{S}(s) S(s) \\
+    W_{T}(s) T(s) \\
+    W_{K}(s) K(s) S(s)
+\end{pmatrix}
+\right\|_\infty < \gamma
+ \]
+
+ Per noi il problema di mixed sensitivity è considerato risolto
+ se e solo se \(\gamma < 1\).
+
+
+\subsection{Costruzione \(W_{S}(s)\)}
+Notiamo che le progettazioni sulle funzioni di peso che effettueremo 
+ora valgono per sistemi SISO, dunque le funzioni di trasferimento
+che andremo a considerare sono tutte funzioni scalari.\\
+Ricordiamo che l'errore è dato da:
+\[E(s) = S(s) \left(R(s) - D(s)\right) + T(s) N(s)\]
+
+Per quanto riguarda le specifiche sulll'inseguimento del riferimento 
+\(R(s)\) le specifiche possibili sono le seguenti:
+\begin{itemize}
+    \item Errore a regime \(\le \bar{e}_{\infty}\). Ricordiamo che l'errore a regime 
+    vale:
+    \[e_{\infty} = \lim_{t \to \infty} e(t) = \lim_{s \to 0} s E(s)\]
+    se il riferimento è un gradino \(R(s) = \displaystyle 
+    \frac{1}{s}\) allora si ha 
+    (ricordiamo che stiamo considerando i disturbi nulli \(D(s) = 0\) e \(N(s) = 0\) ):
+    \[e_{\infty} = \lim_{t \to \infty} e(t) = \lim_{s \to 0} s E(s) =
+    S(0)\]
+    Quindi la specifica sull'errore a regime si può riscrivere come:
+    \[S(0) \le \bar{e}_{\infty}\]
+    Ora il nostro obiettivo è convertire questa specifica su \(S(0)\) in 
+    una specifica su \(W_{S}(s)\), in modo tale che se la specifica su \(W_{S}(s)\)
+    è soddisfatta allora anche la specifica su \(S(0)\) è soddisfatta.
+    Partiamo con il ricordare che per noi il 
+    \(H_{\infty}\) associato al problema di mixed sensitivity
+    è risolto se e solo se:
+    \[\| W_{S}(s) S(s) \|_{\infty} < 1  \]
+    Ma per definizione della norma \(H_{\infty}\) si ha che la disugualianza è 
+    vera \(\forall s\), quindi in particolare per \(s = 0\):
+    \[\left|W_{S}(0)\right| 
+    \left|S(0)\right| < 1  
+    \Longleftrightarrow \left|S(0)\right| < \frac{1}{\left|W_{S}(0)\right|}\]
+    Ora se imponiamo la seguente condizione su \(W_{S}(0)\):
+    \[\frac{1}{\left|W_{S}(0)\right|} \le \bar{e}_{\infty}\]
+    si il risultato voluto, cioè una specifica su \(W_{S}(s)\) 
+    che implica la specifica su \(S(0)\):
+    \[\left|S(0)\right| < \frac{1}{\left|W_{S}(0)\right|} \le \bar{e}_{\infty} 
+    \Longrightarrow \left|S(0)\right| < \bar{e}_{\infty}\]
+    Quindi la specifica sull'errore a regime si può tradurre
+    in una specifica su \(W_{S}(0)\):
+    \begin{equation}-+    
+        \frac{1}{\left|W_{S}(0)\right|} \le \bar{e}_{\infty}  \Longrightarrow 
+        \left|W_{S}(0)\right| \ge \frac{1}{\bar{e}_{\infty}}
+    \end{equation}
+    \item Tempo di assestamento 
+    \item Sovraelongazione
+\end{itemize}
+
+
+\[\| W_{S}(s) S(s)\|_{\infty} < 1 \textnormal{ Disturbi in ingresso}\]
+\[\| W_{T}(s) T(s)\|_{\infty} < 1 \textnormal{ Riferimenti in ingresso}\]
+Teorema del piccolo guadagno.
+\[ \| W_{K}(s) K(s) S(s)\|_{\infty} < 1 \]
+
+\[W_{S} =  \frac{\displaystyle \frac{s}{M_{P}} + \omega_{c}}{s + A \omega_{c}}\]
+
+\begin{itemize}
+    \item Fattore di riduzione \(M_{R}\) 
+    \item \(\omega_{~}\) di attenuazione
+\end{itemize}
+
+\[W_{T} = \displaystyle \frac{\displaystyle \frac{s}{M_{P}} + \omega_{c}}{s + A \omega_{c}}\]
+
