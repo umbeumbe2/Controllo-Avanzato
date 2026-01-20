@@ -1,16 +1,30 @@
 \babel@toc {italian}{}\relax 
 \babel@toc {italian}{}\relax 
-\contentsline {chapter}{\numberline {1}Sistemi MIMO nel dominio di Laplace}{2}{}%
-\contentsline {section}{\numberline {1.1}Rappresentazione di un sistema MIMO nel dominio di Laplace}{2}{}%
-\contentsline {section}{\numberline {1.2}Sistema con retroazione dell'uscita MIMO}{2}{}%
-\contentsline {section}{\numberline {1.3}SVD (Singular Value Decomposition)}{4}{}%
-\contentsline {section}{\numberline {1.4}Guadagno}{5}{}%
-\contentsline {section}{\numberline {1.5}Poli e zeri per sistemi MIMO }{6}{}%
-\contentsline {chapter}{\numberline {2}Controllo di sistemi MIMO}{7}{}%
-\contentsline {section}{\numberline {2.1}Schema di retroazione dell'uscita con integratori}{7}{}%
-\contentsline {section}{\numberline {2.2}Problema di Mixed Sensitivity Design}{16}{}%
-\contentsline {section}{\numberline {2.3}Problema \(H_{\infty }\) in forma standard}{19}{}%
-\contentsline {section}{\numberline {2.4}Problema di Mixed Sensitivity come problema \(H_{\infty }\) in forma standard}{20}{}%
-\contentsline {subsection}{\numberline {2.4.1}Costruzione \(W_{S}(s)\)}{22}{}%
-\contentsline {chapter}{\numberline {3}Appendici}{25}{}%
-\contentsline {section}{\numberline {3.1}Uguaglianza matriciale per dimostrare la relazione di \(T(s)\)}{25}{}%
+\contentsline {chapter}{\numberline {1}Stabilità nei sistemi dinamici}{2}{}%
+\contentsline {section}{\numberline {1.1}Sistema dinamico e punti di equilibrio}{2}{}%
+\contentsline {section}{\numberline {1.2}Stabilità e Convergenza}{2}{}%
+\contentsline {section}{\numberline {1.3}Stabilità nei sistemi lineari}{3}{}%
+\contentsline {section}{\numberline {1.4}Sistema nel dominio di Laplace}{4}{}%
+\contentsline {section}{\numberline {1.5}Stabilità tramite l'approccio alla Lyapunov}{5}{}%
+\contentsline {section}{\numberline {1.6}Lyapunov per Sistemi LTI}{6}{}%
+\contentsline {section}{\numberline {1.7}Stabilità Robusta}{10}{}%
+\contentsline {chapter}{\numberline {2}Sistemi MIMO nel dominio di Laplace}{12}{}%
+\contentsline {section}{\numberline {2.1}Rappresentazione di un sistema MIMO nel dominio di Laplace}{12}{}%
+\contentsline {section}{\numberline {2.2}Sistema con retroazione dell'uscita MIMO}{12}{}%
+\contentsline {section}{\numberline {2.3}Guadagno}{14}{}%
+\contentsline {section}{\numberline {2.4}Poli e zeri per sistemi MIMO }{14}{}%
+\contentsline {chapter}{\numberline {3}Assegnamento degli autovalori con feedback di stato}{15}{}%
+\contentsline {section}{\numberline {3.1}Caso MIMO}{15}{}%
+\contentsline {section}{\numberline {3.2}Metodo della forma canonica di controllabilità}{15}{}%
+\contentsline {section}{\numberline {3.3}Metodo dell'equazione di Sylvester}{17}{}%
+\contentsline {section}{\numberline {3.4}Metodo di Kautsky-Nichols-Van Dooren}{19}{}%
+\contentsline {chapter}{\numberline {4}Controllo di sistemi MIMO}{21}{}%
+\contentsline {section}{\numberline {4.1}Schema di retroazione dell'uscita con integratori}{21}{}%
+\contentsline {section}{\numberline {4.2}Problema di Mixed Sensitivity Design}{30}{}%
+\contentsline {section}{\numberline {4.3}Problema \(H_{\infty }\) in forma standard}{33}{}%
+\contentsline {section}{\numberline {4.4}Problema di Mixed Sensitivity come problema \(H_{\infty }\) in forma standard}{34}{}%
+\contentsline {subsection}{\numberline {4.4.1}Costruzione \(W_{S}(s)\)}{36}{}%
+\contentsline {chapter}{\numberline {5}Appendici}{39}{}%
+\contentsline {section}{\numberline {5.1}SVD (Singular Value Decomposition)}{39}{}%
+\contentsline {section}{\numberline {5.2}Diagonalizzare}{40}{}%
+\contentsline {section}{\numberline {5.3}Uguaglianza matriciale per dimostrare la relazione di \(T(s)\)}{41}{}%

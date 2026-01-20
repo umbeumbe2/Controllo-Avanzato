@@ -361,40 +361,4 @@ Il metodo di Kautsky-Nichols-Van Dooren consiste dei seguenti passaggi:
     \[ K = - F X^{-1} \]
 \end{enumerate}
 
-\section{Diagonalizzare}
-
-Sia dato un sistema LTI descritto dalle equazioni di stato:
-\[
-\dot{x}(t) = Ax(t) + Bu(t)
-\]
-quando noi diamo un sistema in questa forma diamo per assodato che il vettore 
-\(x\) sia scritto nella base canonica di \(\mathbb{R}^{n}\).
-Se la matrice \(A\) è diagonalizzabile, ci poniamo il problema di portare \(x\)
-in un nuovo stato \(\hat{x}\) in cui \(A\) è diagonale. 
-Dunque cerchiamo una matrice di trasformazione \(T\) tale che:
-\[ x = T \hat{x} \Longrightarrow
-\hat{A} = T^{-1} A T \textnormal{ è diagonale}\] 
-Ma come si può immediatamente notare la matrice \(T\) è la matrice del cambiamento 
-di base dalla base canonica alla base che diagonalizza \(A\).
-Quindi a noi basta trovare la matrice che permette di portare il vettore \(\hat{x}\),
-scritto nella base che diagonalizza \(A\), 
-nel vettore \(x\) scritto nella base canonica.
-Ma la base che diagonalizza \(A\) è formata dagli autovettori di \(A\),
-dunque scegliamo un insieme di autovettori linearmente indipendenti di \(A\):
-\[ \hat{B} = \left\{v_{1}, v_{2}, \ldots, v_{n}\right\} \] 
-Per calcolare \(T\) dobbiamo ricordare che la matrice del cambiamento di base
-si calcola attraverso l'applicazione identità (che è un applicazione lineare),
-dunque applichiamo l'identità agli autovettori scelti:
-\[ id(\hat{B}) =\left\{v_{1} , v_{2} , \ldots , v_{n}\right\} \]
-Ora scomponiamo i vettori rispetto alla base canonica 
-ed incolonniamoli come colonne della matrice \(T\)(
-la base canonica è molto comoda perchè ci permette di scrivere i vettori
-proprio come sono), dunque la matrice \(T\) vale:
-\[ T = \begin{pmatrix}
-    v_{1} & v_{2} & \ldots & v_{n}
-\end{pmatrix}\]
-In cui i vettori \(v_{1}, v_{2}, \ldots , v_{n} \in \mathbb{R}^{n \times 1}\)
-sono vettori colonna \(n \times 1\), dunque la matrice \(T \in \mathbb{R}^{n \times n}\).
-
-
 
