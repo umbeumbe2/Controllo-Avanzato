@@ -1060,6 +1060,9 @@ sulle funzione di sensitività \(S(s)\) e sensitività complementare \(S'(s)\).
 
 
 
+
+
+
 \begin{equation}
     \begin{cases}
         \| S(s)\|_{\infty} \to 0  \\
@@ -1080,6 +1083,12 @@ presenti a frequenze diverse:
     \item Il rumore \(N(s)\) è ad alta frequenza
 \end{itemize}
 
+
+
+
+
+
+
 Con queste considerazioni possiamo andare a formulare
 le specifiche di progetto in modo diverso, infatti 
 le specifiche \ref{norma_infinito_specifiche_iniziali} sono potenti,
@@ -1097,6 +1106,62 @@ più deboli ma sufficienti a soddisfare le nostre esigenze
 \end{equation}
 dove notiamo che \(S(s)(R(s) - D(s))\) e \(T(s) N(s)\)
 sono vettori, quindi la norma \(2\) si intende come norma vettoriale.
+
+
+
+\begin{figure}[t]
+    \centering
+    % --- PRIMA IMMAGINE (SINISTRA): W_S Passa-Basso ---
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \begin{semilogxaxis}[
+                width=\linewidth, height=6cm,
+                ticks=none,
+                axis lines=left,
+                xlabel={$\omega$},
+                ylabel={$|W_S(j\omega)|_{dB}$},
+                xmin=0.01, xmax=1000,
+                ymin=-20, ymax=60,
+                every axis x label/.style={at={(ticklabel* cs:1)}, anchor=west},
+                every axis y label/.style={at={(ticklabel* cs:1)}, anchor=south},
+            ]
+                \addplot[domain=0.01:1000, samples=300, very thick, black] 
+                {20*log10(100 / sqrt(x^2 + 1))};
+            \end{semilogxaxis}
+        \end{tikzpicture}
+        \caption{Funzione peso $W_S(s)$ }
+        \label{fig:Ws_plot}
+    \end{subfigure}
+    \hfill % Spazio tra le due figure
+    % --- SECONDA IMMAGINE (DESTRA): W_T Passa-Alto ---
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \begin{semilogxaxis}[
+                width=\linewidth, height=6cm,
+                ticks=none,
+                axis lines=left,
+                xlabel={$\omega$},
+                ylabel={$|W_T(j\omega)|_{dB}$},
+                xmin=0.01, xmax=1000,
+                ymin=-50, ymax=30,
+                every axis x label/.style={at={(ticklabel* cs:1)}, anchor=west},
+                every axis y label/.style={at={(ticklabel* cs:1)}, anchor=south},
+            ]
+                \addplot[domain=0.01:1000, samples=300, very thick, black] 
+                {20*log10( 20 * x / sqrt(x^2 + 10^2) )};
+            \end{semilogxaxis}
+        \end{tikzpicture}
+        \caption{Funzione peso $W_T(s)$ }
+        \label{fig:Wt_plot}
+    \end{subfigure}
+    
+    \caption{Andamenti tipici delle funzioni peso per sistemi SISO}
+    \label{fig:weights_combined}
+\end{figure}
+
+
 Infatti se sono vere le \eqref{norma-2} si ha che per la disuguaglianza
 triangolare:
 \[
@@ -1157,57 +1222,6 @@ Il problema che si occupa di trovare le espressioni delle funzioni di peso
 \(W_{S}(s)\), \(W_{T}(s)\) e \(W_{K}(s)\) prende il nome di 
 \textbf{Mixed Sensitivity Design}.
 
-\begin{figure}[tbp]
-    \centering
-    % --- PRIMA IMMAGINE (SINISTRA): W_S Passa-Basso ---
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \begin{tikzpicture}
-            \begin{semilogxaxis}[
-                width=\linewidth, height=6cm,
-                ticks=none,
-                axis lines=left,
-                xlabel={$\omega$},
-                ylabel={$|W_S(j\omega)|_{dB}$},
-                xmin=0.01, xmax=1000,
-                ymin=-20, ymax=60,
-                every axis x label/.style={at={(ticklabel* cs:1)}, anchor=west},
-                every axis y label/.style={at={(ticklabel* cs:1)}, anchor=south},
-            ]
-                \addplot[domain=0.01:1000, samples=300, very thick, black] 
-                {20*log10(100 / sqrt(x^2 + 1))};
-            \end{semilogxaxis}
-        \end{tikzpicture}
-        \caption{Funzione peso $W_S(s)$ }
-        \label{fig:Ws_plot}
-    \end{subfigure}
-    \hfill % Spazio tra le due figure
-    % --- SECONDA IMMAGINE (DESTRA): W_T Passa-Alto ---
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \begin{tikzpicture}
-            \begin{semilogxaxis}[
-                width=\linewidth, height=6cm,
-                ticks=none,
-                axis lines=left,
-                xlabel={$\omega$},
-                ylabel={$|W_T(j\omega)|_{dB}$},
-                xmin=0.01, xmax=1000,
-                ymin=-50, ymax=30,
-                every axis x label/.style={at={(ticklabel* cs:1)}, anchor=west},
-                every axis y label/.style={at={(ticklabel* cs:1)}, anchor=south},
-            ]
-                \addplot[domain=0.01:1000, samples=300, very thick, black] 
-                {20*log10( 20 * x / sqrt(x^2 + 10^2) )};
-            \end{semilogxaxis}
-        \end{tikzpicture}
-        \caption{Funzione peso $W_T(s)$ }
-        \label{fig:Wt_plot}
-    \end{subfigure}
-    
-    \caption{Andamenti tipici delle funzioni peso per sistemi SISO}
-    \label{fig:weights_combined}
-\end{figure}
 
 
 Un modo per risolvere questo problema è
@@ -1246,7 +1260,7 @@ G(s) = \begin{pmatrix}
 \]
 
 
-\begin{figure}[tbp]
+\begin{figure}[t]
     \centering
     \begin{tikzpicture}[>=latex, thick]
         % Definizione del blocco principale G(s)
@@ -1268,7 +1282,7 @@ G(s) = \begin{pmatrix}
 
 
 
-\begin{figure}[tbp]
+\begin{figure}[t]
     \centering
     \begin{tikzpicture}[>=latex, thick]
         % Blocco principale G(s)
