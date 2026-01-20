@@ -1082,12 +1082,16 @@ presenti a frequenze diverse:
 
 Con queste considerazioni possiamo andare a formulare
 le specifiche di progetto in modo diverso, infatti 
-la specifica  è potente 
-ma non necessaria, infatti possiamo accontentarci delle seguenti specifiche:
+le specifiche \ref{norma_infinito_specifiche_iniziali} sono potenti,
+ma non necessarie, possiamo accontentarci delle seguenti specifiche, 
+più deboli ma sufficienti a soddisfare le nostre esigenze 
+(e più che altro realizzabili):
 \begin{equation}
     \begin{cases}
-        \| S(s)(R(s) - D(s))\|_{2} \to 0  \\
-        \| T(s) N(s)\|_{2} \to 0 
+        \| S(s)(R(s) - D(s))\|_{2} \to 0, & \forall R,D \textnormal{ reali (cioè stiamo considerando} \\
+        & \textnormal{il comportamento frequenziale di } R(s) \textnormal{ e } D(s)) \\[1ex]
+        \| T(s) N(s)\|_{2} \to 0, & \forall N \textnormal{ reale (cioè stiamo considerando} \\
+        & \textnormal{il comportamento frequenziale di } N(s))
     \end{cases}
     \label{norma-2}
 \end{equation}
@@ -1206,23 +1210,8 @@ Il problema che si occupa di trovare le espressioni delle funzioni di peso
 \end{figure}
 
 
-In bassa frequenza vogliamo minimizzare \(S(s)\)
-(perchè il riferimento è un segnale a bassa frequenza), 
-in alta frequenza \(S(s)\) può avere un qualunque valore.
-
 Un modo per risolvere questo problema è
 risolvere il problema \(H_{\infty}\)
-
-
-
-Ricordnado che \(U(s) = K(s) Y(s)\)
-\[
-\begin{cases}
-    Z(s) = G_{11}(s) W(s) + G_{12}(s) K(s) Y(s) \\
-    Y(s) = G_{21}(s) W(s) + G_{22}(s) K(s) Y(s) 
-\end{cases}
-\]
-
 
 
 
@@ -1375,6 +1364,164 @@ e l'uscita \(Z(s)\) è data da:
     T_{zw}(s) = G_{11}(s) + G_{12}(s) (1 - G_{22}(s))^{-1} G_{21}(s)
     \label{funzione_trasferimento_H_infinito}
 \end{equation}
+Ora siamo in grado di formulare il problema di controllo \(H_{\infty}\)
+su un sistema in forma standard come quello in Figura \ref{fig:sistema_H_infinito},
+che però ha una forma diversa dal nostro sistema in retroazione di uscità.
+Nella prossima sezione andremo a vedere come utilizzare i risultati ottenuti per il 
+problema di controllo \(H_{\infty}\) in forma standard per risolvere
+il problema di mixed sensitivity design.
+
+
+\section{Problema di 
+Mixed Sensitivity come problema \(H_{\infty}\) in forma standard}
+Ricordiamo che il nostro schema di retroazione dell'uscita
+è quello in Figura \ref{fig:sistema_mimo_retroazione2}, e 
+la funzione di cui vogliamo minimizzare la norma infinito
+è la seguente:
+\[\min_{K(s)}
+\left\|
+\begin{pmatrix}
+    W_{S}(s) S(s) \\
+    W_{T}(s) T(s) \\
+    W_{K}(s) K(s) S(s)
+\end{pmatrix}
+\right\|_{\infty}
+\]
+Ma se riuscissimo a portare il sistema in Figura \ref{fig:sistema_mimo_retroazione2}
+nella forma del sistema in Figura \ref{fig:sistema_H_infinito}
+in modo tale che la funzione di trasferimento \(T_{zw}(s)\)
+sia uguale a:
+\[
+T_{zw}(s) = 
+\begin{pmatrix}
+    W_{S}(s) S(s) \\
+    W_{T}(s) T(s) \\
+    W_{K}(s) K(s) S(s)
+\end{pmatrix}
+\]
+allora potremmo tradurre la risoluzione del problema di mixed sensitivity
+design in un problema di controllo \(H_{\infty}\) in forma standard.
+Ora andremo a costruirci un sistema fittizio a partire dal sistema in Figura 
+\ref{fig:sistema_mimo_retroazione2} in modo tale che sia equivalente 
+al sistema in Figura \ref{fig:sistema_H_infinito} e con una funzione di trasferimento
+\(T_{zw}(s)\) uguale a quella desiderata.
+Il sistema fittizio è mostrato in Figura \ref{fig:sistema_mimo_retroazione_H_infinito},
+questo sistema ha come ingressi i segnali \(w\) e \(u\) e come uscite i segnali
+\(z_{1}\), \(z_{2}\), \(z_{3}\) e \(y\). Poniamo \(z\) come:
+\[
+z = \begin{pmatrix}
+    z_{1} \\
+    z_{2} \\
+    z_{3}
+\end{pmatrix}
+\]
+Ora quello che noi vogliamo andare a trovare è la funzione di trasferimento
+\(\bar{G}(s)\) che lega:
+\[
+\begin{pmatrix}
+    Z(s)\\
+    Y(s)
+\end{pmatrix}
+=
+\bar{G}(s)
+\begin{pmatrix}
+    W(s)\\
+    U(s)
+\end{pmatrix}
+\]
+
+
+\[\bar{G}(s) = \begin{pmatrix}
+    G_{11}(s) & G_{12}(s) \\
+    G_{21}(s) & G_{22}(s)
+\end{pmatrix} 
+\]
+
+\[Z_{1}(s) = W_{S}(s) Y(s) = W_{S}(s) \left(W(s) - G(s)U(s)\right) \]
+\[Z_{2}(s) = W_{K}(s) U(s) \]
+\[Z_{3}(s) = W_{T}(s) G(s) U(s)\]
+
+
+\[\bar{G}(s)= \begin{pmatrix}
+    W_{S}(s)  & -W_{S}(s) G(s) \\
+    0  & W_{K}(s) \\
+    0  & W_{T}(s) G(s) \\
+    I & -G(s)
+\end{pmatrix}\]
+
+
+
+Ora una volta ricavata la funzione di trasferimento \(\bar{G}(s)\),
+quello che vogliamo andare a dimostrare è che il nostro problema \(H_{\infty}\)
+standard è equivalente al problema di mixed sensitivity design,
+cioè che la funzione di trasferimento ad anello chiuso
+tra l'ingresso \(W(s)\) e l'uscita \(Z(s)\) sia uguale a:
+\[
+T_{zw}(s) =
+\begin{pmatrix}
+    W_{S}(s) S(s) \\
+    W_{T}(s) T(s) \\
+    W_{K}(s) K(s) S(s)
+\end{pmatrix}
+\]
+
+\begin{figure}[tbp]
+\centering
+\begin{tikzpicture}[auto, node distance=2cm, >=latex']
+    % Definition of styles
+    \tikzstyle{block} = [draw, rectangle, minimum height=2.5em, minimum width=3.5em]
+    \tikzstyle{sum} = [draw, circle, inner sep=0pt, minimum size=6mm, node distance=1cm]
+    \tikzstyle{input} = [coordinate]
+    \tikzstyle{output} = [coordinate]
+
+    % Placement of nodes
+    \node [input] (input) {};
+    \node [sum, right of=input, node distance=1.5cm] (sum) {};
+    \node [block, right of=sum, node distance=2.5cm] (K) {$K(s)$};
+    \node [block, right of=K, node distance=3.5cm] (G) {$G(s)$};
+    
+    % Weights positioned on the right
+    % WT (basso)
+    \node [block, right of=G, node distance=4cm, yshift=1.2cm] (WT) {$W_T$};
+    % WK (medio)
+    \node [block, above of=WT, node distance=2cm] (WK) {$W_K$};
+    % WS (alto)
+    \node [block, above of=WK, node distance=2cm] (WS) {$W_S$};
+    
+    % Nodes for weight outputs
+    \node [output, right of=WT, node distance=1.5cm] (outT) {};
+    \node [output, right of=WK, node distance=1.5cm] (outK) {};
+    \node [output, right of=WS, node distance=1.5cm] (outS) {};
+
+    % Main Connections
+    \draw [->] (input) -- node {$w$} node[pos=1.1, anchor=south east] {$+$} (sum);
+    \draw [->] (input) -- node {$w$} (sum);
+    \draw [->] (sum) -- node [name=y] {$y$} (K);
+    \draw [->] (K) -- node [name=u] {$u$} (G);
+
+    % Connection to WT: Right, then Up, then Right
+    \draw [->] (G.east) -- ++(1,0) |- (WT.west);
+    
+    % Connections to weights WS and WK
+    \draw [->] ($(sum)!0.6!(K)$) |- (WS);
+    \draw [->] ($(K)!0.6!(G)$) |- (WK);
+    
+    % Output lines from weights with labels z1, z2, z3 (Top to Bottom)
+    \draw [->] (WS) -- node [near end] {$z_1$} (outS);
+    \draw [->] (WK) -- node [near end] {$z_2$} (outK);
+    \draw [->] (WT) -- node [near end] {$z_3$} (outT);
+
+    % Feedback Loop
+    \draw [->] (G.east) ++(0.5,0) -- ++(0,-3.5) -| node[pos=0.96, anchor=south west] {$-$} (sum);
+
+\end{tikzpicture}
+\caption{Sistema fittizio per trasformare 
+il problema di mixed sensitivity in un problema \(H_{\infty}\) standard. Notiamo 
+che la \(y\) non è l'uscita del sistema in retroazione, ma è l'errore 
+\(y(t)= e(t)\)}
+\label{sistema_mimo_retroazione2}
+\end{figure}
+
 
 
 La sequenza di passi per andare a formulare e risolvere
@@ -1390,8 +1537,11 @@ un problema di \(H_{\infty}\) standard
 \end{itemize}
 
 
-
-\[
+Risolvere il problema di \(H_{\infty}\) ci da un uscita:
+\begin{itemize}
+    \item Il controllo \(K(s)\)
+    \item Un valore \(\gamma >0\) tale che:
+    \[\| T_{zw}(s) \|_{\infty} < \gamma \Longrightarrow 
 \left\|
 \begin{pmatrix}
     W_{S}(s) S(s) \\
@@ -1400,11 +1550,20 @@ un problema di \(H_{\infty}\) standard
 \end{pmatrix}
 \right\|_\infty < \gamma
  \]
-
- Per noi il problema di mixed sensitivity è considerato risolto
- se e solo se \(\gamma < 1\).
-
-
+\end{itemize}
+Andiamo a ricordare che noi vogliamo usare il problema \(H_{\infty}\)
+per risolvere il problema di mixed sensitivity. Per noi il problema 
+di \(H_{\infty}\) associato al problema di mixed sensitivity
+è risolto se e solo se \(\gamma < 1\), quindi si ha:
+    \[\| T_{zw}(s) \|_{\infty} < 1 \Longrightarrow 
+\left\|
+\begin{pmatrix}
+    W_{S}(s) S(s) \\
+    W_{T}(s) T(s) \\
+    W_{K}(s) K(s) S(s)
+\end{pmatrix}
+\right\|_\infty < 1
+ \]
 \subsection{Costruzione \(W_{S}(s)\)}
 Notiamo che le progettazioni sulle funzioni di peso che effettueremo 
 ora valgono per sistemi SISO, dunque le funzioni di trasferimento
@@ -1449,8 +1608,27 @@ Per quanto riguarda le specifiche sulll'inseguimento del riferimento
         \frac{1}{\left|W_{S}(0)\right|} \le \bar{e}_{\infty}  \Longrightarrow 
         \left|W_{S}(0)\right| \ge \frac{1}{\bar{e}_{\infty}}
     \end{equation}
-    \item Tempo di assestamento 
-    \item Sovraelongazione
+    \item Tempo di assestamento, abbiamo delle specifiche ad esempio
+    su \(t_{a5}\) o \(t_{a1}\), ricordiamo:
+    \[t_{a5} = 3 \tau  \frac{3}{\omega_{c}}\] 
+    \[t_{a1} = 4.6 \tau  \frac{3}{\omega_{c}}\] 
+    In letteratura si trova spesso la specifica sul tempo di assestamento 
+    espressa come:
+    \[t_{a} \approx \frac{4}{\omega_{c}}\]
+    Ricordiamo che la frequenza \(\omega_{c}\) è il valore di frequenza
+    in cui la \(L(j\omega_{c})\) in \(dB\) ha modulo \(0 dB\), cioè:
+    \[\left|L(j\omega_{c})\right|_{dB} = 0 dB \Longleftrightarrow
+    \left|L(j\omega_{c})\right| = 1\]
+    Questo implica che la funzione di sensitività deve avere:
+    \[\left|L(j\omega_{c})\right| = 1 
+    \Longrightarrow
+    \left|S(j \omega_{c})\right|=\frac{1}{2}\]
+    \item Sovraelongazione, che ricordiamo essere legata al 
+    modulo di picco della \(S(j\omega)\):
+    \[M_{p}\left(S(j\omega)\right) = max_{\omega}
+    \left|S(j \omega)\right| \]
+    \[\left|W_{S}(j \omega)\right| \textnormal{ in alta frequenza }
+    \]
 \end{itemize}
 
 

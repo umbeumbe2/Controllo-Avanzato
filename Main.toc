@@ -9,7 +9,8 @@
 \contentsline {chapter}{\numberline {2}Controllo di sistemi MIMO}{7}{}%
 \contentsline {section}{\numberline {2.1}Schema di retroazione dell'uscita con integratori}{7}{}%
 \contentsline {section}{\numberline {2.2}Problema di Mixed Sensitivity Design}{16}{}%
-\contentsline {section}{\numberline {2.3}Problema \(H_{\infty }\) in forma standard}{19}{}%
-\contentsline {subsection}{\numberline {2.3.1}Costruzione \(W_{S}(s)\)}{21}{}%
-\contentsline {chapter}{\numberline {3}Appendici}{23}{}%
-\contentsline {section}{\numberline {3.1}Uguaglianza matriciale per dimostrare la relazione di \(T(s)\)}{23}{}%
+\contentsline {section}{\numberline {2.3}Problema \(H_{\infty }\) in forma standard}{18}{}%
+\contentsline {section}{\numberline {2.4}Problema di Mixed Sensitivity come problema \(H_{\infty }\) in forma standard}{20}{}%
+\contentsline {subsection}{\numberline {2.4.1}Costruzione \(W_{S}(s)\)}{22}{}%
+\contentsline {chapter}{\numberline {3}Appendici}{25}{}%
+\contentsline {section}{\numberline {3.1}Uguaglianza matriciale per dimostrare la relazione di \(T(s)\)}{25}{}%
