@@ -949,8 +949,8 @@ Se la matrice \(\Sigma\) è di rango pieno e il sistema originale
     è di rango pieno, cioè il sistema aumentato è completamente raggiungibile.
 \end{proof}
 
-Uniamo tutti i risultati ottenuti nei lemmi \ref{necc_orig_compl_ragg},
-\ref{necc_sigma_rango_pieno},\ref{suff_sigma_rango_pieno_ragg}
+Uniamo tutti i risultati ottenuti nei Lemmi \ref{necc_orig_compl_ragg},
+ \ref{necc_sigma_rango_pieno}, \ref{suff_sigma_rango_pieno_ragg}
     in un unico teorema che consiste in una condizione necessaria e sufficiente.
 \begin{teorema}\label{necc_suff_controllo_con_integratori}
     Il sistema aumentato è completamente raggiungibile
@@ -1474,11 +1474,82 @@ tra l'ingresso \(W(s)\) e l'uscita \(Z(s)\) sia uguale a:
 T_{zw}(s) =
 \begin{pmatrix}
     W_{S}(s) S(s) \\
-    W_{T}(s) T(s) \\
-    W_{K}(s) K(s) S(s)
+        W_{K}(s) K(s) S(s) \\
+    W_{T}(s) T(s) 
 \end{pmatrix}
 \]
-
+Andiamoci quindi a calcolare la funzione di trasferimento ad anello chiuso
+tra l'ingresso \(W(s)\) e l'uscita \(Z(s)\), ricordando
+che vale \ref{funzione_trasferimento_H_infinito}:
+\[
+    T_{zw}(s) = \bar{G}_{11}(s) + \bar{G}_{12}(s) 
+    (1 - \bar{G}_{22}(s))^{-1} \bar{G}_{21}(s)
+    = 
+    \begin{pmatrix}
+        W_{S}(s) \\
+        0 \\
+        0
+    \end{pmatrix}
+    +
+    \begin{pmatrix}
+        -W_{S}(s) G(s) \\
+        W_{K}(s) \\
+        W_{T}(s) G(s)
+    \end{pmatrix}
+    K(s)
+    (I + G(s) K(s))^{-1}
+\]
+Ricordando che \(S(s) = \left(1 + G(s)K(s)\right)^{-1}\),
+si ha:
+\[T_{zw}(s) = 
+    \begin{pmatrix}
+        W_{S}(s) \\
+        0 \\
+        0
+    \end{pmatrix}
+    +
+    \begin{pmatrix}
+        -W_{S}(s) G(s) K(s)S(s) \\
+        W_{K}(s) K(s) S(s) \\
+        W_{T}(s) G(s) K(s) S(s)
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        W_{S}(s) -W_{S}(s) G(s) K(s) S(s) \\
+        W_{K}(s) K(s) S(s) \\
+        W_{T}(s) G(s) K(s) S(s)
+    \end{pmatrix}
+\]
+Ricorndano che \(T(s) = G(s) K(s) S(s)\), si ha:
+\[T_{zw}(s) = 
+    \begin{pmatrix}
+        W_{S}(s) -W_{S}(s) G(s) K(s)S(s) \\
+        W_{K}(s) K(s) S(s) \\
+        W_{T}(s) T(s)
+    \end{pmatrix}
+\]
+Mettendo in evidenza \(W_{S}(s)\) nella prima riga si ha:
+\[T_{zw}(s) = 
+    \begin{pmatrix}
+        W_{S}(s) (I - G(s)K(s) S(s)) \\
+        W_{K}(s) K(s) S(s) \\
+        W_{T}(s) T(s)
+    \end{pmatrix}
+\]
+Ricordando che \(T(s) = G(s) K(s) S(s)\), 
+e che \(T(s) + S(s) = I\), si ha:
+\[T_{zw}(s) = 
+    \begin{pmatrix}
+        W_{S}(s) S(s) \\
+        W_{K}(s) K(s) S(s) \\
+        W_{T}(s) T(s)
+    \end{pmatrix}
+\]
+Quindi abbiamo dimostrato che il problema di \(H_{\infty}\)
+associato al sistema fittizio è uguale 
+al problema di mixed sensitivity design. Quindi possiamo andare a risolvere
+il problema di mixed sensitivity design risolvendo il problema
+\(H_{\infty}\) sul sistema fittizio.\\
 \begin{figure}[tbp]
 \centering
 \begin{tikzpicture}[auto, node distance=2cm, >=latex']
@@ -1537,10 +1608,9 @@ che la \(y\) non è l'uscita del sistema in retroazione, ma è l'errore
 \end{figure}
 
 
-
-La sequenza di passi per andare a formulare e risolvere
-un problema di \(H_{\infty}\) standard
-è la seguente:
+Ora andiamo a riassumere la sequenza di passi per andare a formulare
+il problema di \(H_{\infty}\) standard associato al 
+problema di mixed sensitivity design:
 \begin{itemize}
     \item Definizione dell'impianto \(G(s)\)
     \item Traduzione delle specifiche di progetto in termini di funzioni di peso 
@@ -1550,10 +1620,9 @@ un problema di \(H_{\infty}\) standard
     \item Risolvere il problema di controllo \(H_{\infty}\)
 \end{itemize}
 
-
-Risolvere il problema di \(H_{\infty}\) ci da un uscita:
+La soluzione del problema \(H_{\infty}\) ci da in uscita:
 \begin{itemize}
-    \item Il controllo \(K(s)\)
+    \item Il controllore \(K(s)\)
     \item Un valore \(\gamma >0\) tale che:
     \[\| T_{zw}(s) \|_{\infty} < \gamma \Longrightarrow 
 \left\|
@@ -1565,11 +1634,13 @@ Risolvere il problema di \(H_{\infty}\) ci da un uscita:
 \right\|_\infty < \gamma
  \]
 \end{itemize}
-Andiamo a ricordare che noi vogliamo usare il problema \(H_{\infty}\)
-per risolvere il problema di mixed sensitivity. Per noi il problema 
-di \(H_{\infty}\) associato al problema di mixed sensitivity
-è risolto se e solo se \(\gamma < 1\), quindi si ha:
-    \[\| T_{zw}(s) \|_{\infty} < 1 \Longrightarrow 
+Ora per noi il problema di mixed sensitivity design 
+è risolto se e solo se il valore di \(\gamma >0\) in 
+uscita dal problema \(H_{\infty}\) (associato al
+ problema di mixed sensitivity) è minore di 1:
+\[\gamma < 1 
+\Longrightarrow 
+    \| T_{zw}(s) \|_{\infty} < 1 \Longrightarrow 
 \left\|
 \begin{pmatrix}
     W_{S}(s) S(s) \\
@@ -1577,7 +1648,12 @@ di \(H_{\infty}\) associato al problema di mixed sensitivity
     W_{K}(s) K(s) S(s)
 \end{pmatrix}
 \right\|_\infty < 1
- \]
+\]
+
+\section{Progettazione delle funzioni di peso}
+Andiamo ora a vedere come progettare le funzioni di peso
+\(W_{S}(s)\), \(W_{T}(s)\) e \(W_{K}(s)\) a partire dalle specifiche
+di progetto.
 \subsection{Costruzione \(W_{S}(s)\)}
 Notiamo che le progettazioni sulle funzioni di peso che effettueremo 
 ora valgono per sistemi SISO, dunque le funzioni di trasferimento
