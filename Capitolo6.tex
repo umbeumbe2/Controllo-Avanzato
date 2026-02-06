@@ -28,29 +28,30 @@ detta anche norma indotta o norma operazionale, a partire
 dalla definizione di norma di un vettore. 
 Consideriamo 
 un operatore (operatore è sinonimo di funzione) 
-\(S: \mathbb{R}^{m} \to \mathbb{R}^{p}\).
+\(S: \mathbb{R}^{m} \to \mathbb{R}^{n}\).
 Detta \(y\) l'immagine del vettore \(u\) attraverso \(S\),
 cioè:
 \[y = S(u)\]
 La \(p\)-norma indotta di \(S\) è definita come:
 \[\left|\left| S \right|\right|_{p} =
-\sup_{\left|\left|u\right|\right|_{p} \neq 0}
+\sup_{u \neq 0}
 \frac{\left|\left| y \right|\right|_{p}}
 {\left|\left| u \right|\right|_{p}}
 \]
 Se \(S\) è un operatore lineare 
-allora è rappresentato dalla matrice \(A \in \mathbb{R}^{p \times m}\),
+allora è rappresentato dalla matrice \(A \in \mathbb{R}^{n \times m}\),
 e si ha:
 \[y = A u\]
 La \(p\)-norma indotta di \(A\) si scrive come:
 \[\left|\left| A \right|\right|_{p} =
-\sup_{\left|\left|u\right|\right|_{p} \neq 0}
+\sup_{u \neq 0}
 \frac{\left|\left| A u \right|\right|_{p}}
 {\left|\left| u \right|\right|_{p}}
 \]
 Ora riscriviamo la \(p\)-norma indotta di \(A\) in un altro modo.
 Partiamo dal dire che \(\forall u \in \mathbb{R}^{n}\) esistono
-almeno un \(\rho\) ed un \(\bar{u}\) tali che:
+almeno un \(\rho \in \mathbb{R}\) ed un \(\bar{u} \in \mathbb{R}^{n}\) 
+tali che:
 \begin{equation}
   u = \rho \bar{u}
   \label{u_riscritta}
@@ -97,12 +98,62 @@ il sup si può riscrivere come:
 
 
 \[\left|\left| A \right|\right|_{p} =
-\sup_{\left|\left|u\right|\right|_{p} \neq 0}
+\sup_{u \neq 0}
 \frac{\left|\left| A u \right|\right|_{p}}
 {\left|\left| u \right|\right|_{p}}
 = \sup_{\left|\left|\bar{u}\right|\right|_{p} = 1} 
 \left|\left| A \bar{u} \right|\right|_{p}
 \]
+
+Andiamo a caratterizzarci alcuni casi particolari di norme indotte:
+
+\begin{itemize}
+  \item Norma 1 indotta: \(\left|\left| A \right|\right|_{1}\):
+\[
+\left|\left| A \right|\right|_{1} =
+\sup_{\left|\left|\bar{u}\right|\right|_{1} = 1} 
+\left|\left| A \bar{u} \right|\right|_{1} 
+\]
+Se indichiamo con \(a_{ij}\) l'elemento nella riga \(i\)-esima
+e colonna \(j\)-esima della matrice \(A\),
+allora si ha che la norma 1 indotta di \(A\) vale:
+\[
+\left|\left| A \right|\right|_{1} =
+\sup_{\left|\left|\bar{u}\right|\right|_{1} = 1} 
+\left|  \sum_{j=1}^{m} A(:,j) \bar{u}_{j} \right|_{1}
+\]
+dove con \(A(:, j)\) indichiamo la \(j\)-esima colonna di \(A\).
+Per la disuguaglianza triangolare si ha:
+\[ 
+\left|  \sum_{j=1}^{m} A(:,j) \bar{u}_{j} \right|_{1}
+\le \sum_{j=1}^{m} \left| A(:,j) \bar{u}_{j} \right|_{1} 
+= \sum_{j=1}^{m} \left| \bar{u}_{j} \right| \left| A(:,j) \right|_{1},
+\qquad \forall \bar{u} : \left|\left|\bar{u}\right|\right|_{1} = 1
+\]
+Praticamente stiamo dicendo che 
+per ogni vettore \(\bar{u}\) la sommatoria è 
+minore uguale della combinazione lineare, con 
+coefficienti \(\left| \bar{u}_{j} \right|\),
+ delle norme 1 delle colonne di \(A\). Possiamo quindi 
+ scrivere che:
+\[ 
+\sum_{j=1}^{m} \left| \bar{u}_{j} \right| \left| A(:,j) \right|_{1}
+\le \max_{j=1, \dots, m} \left| A(:,j) \right|_{1} \]
+Dunque si ha che il \(\sup\) è proprio:
+\[
+\left|\left| A \right|\right|_{1} =
+\sup_{\left|\left|\bar{u}\right|\right|_{1} = 1} 
+\left|\left| A \bar{u} \right|\right|_{1} 
+= \max_{j=1, \dots, m} \left| A(:,j) \right|_{1}
+= \max_{j=1, \dots, m} \sum_{i=1}^{n} |a_{ij}|
+\]
+
+\item Norma 2 indotta: \(\left|\left| A \right|\right|_{2}\):
+
+
+\item Norma infinito indotta: \(\left|\left| A \right|\right|_{\infty}\):
+
+\end{itemize}
 
 \section{SVD (Singular Value Decomposition)}
 Consideriamo una matrice \(A \in \mathbb{R}^{m \times n}\).

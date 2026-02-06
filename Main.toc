@@ -9,6 +9,6 @@
 \contentsline {subsection}{\numberline {1.5.1}Costruzione \(W_{S}(s)\)}{18}{}%
 \contentsline {chapter}{\numberline {2}Appendici}{21}{}%
 \contentsline {section}{\numberline {2.1}Norme}{21}{}%
-\contentsline {section}{\numberline {2.2}SVD (Singular Value Decomposition)}{22}{}%
+\contentsline {section}{\numberline {2.2}SVD (Singular Value Decomposition)}{23}{}%
 \contentsline {section}{\numberline {2.3}Diagonalizzare}{24}{}%
 \contentsline {section}{\numberline {2.4}Uguaglianza matriciale per dimostrare la relazione di \(T(s)\)}{25}{}%
