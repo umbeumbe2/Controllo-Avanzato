@@ -1,14 +1,14 @@
 \babel@toc {italian}{}\relax 
 \babel@toc {italian}{}\relax 
-\contentsline {chapter}{\numberline {1}Sistemi MIMO nel dominio di Laplace}{2}{}%
-\contentsline {section}{\numberline {1.1}Rappresentazione di un sistema MIMO nel dominio di Laplace}{2}{}%
-\contentsline {section}{\numberline {1.2}Sistema con retroazione dell'uscita MIMO}{2}{}%
-\contentsline {section}{\numberline {1.3}Guadagno}{4}{}%
-\contentsline {section}{\numberline {1.4}Poli e zeri per sistemi MIMO }{4}{}%
-\contentsline {chapter}{\numberline {2}Controllo di sistemi MIMO}{5}{}%
-\contentsline {section}{\numberline {2.1}Schema di retroazione dell'uscita con integratori}{5}{}%
-\contentsline {section}{\numberline {2.2}Problema di Mixed Sensitivity Design}{14}{}%
-\contentsline {section}{\numberline {2.3}Problema \(H_{\infty }\) in forma standard}{17}{}%
-\contentsline {section}{\numberline {2.4}Problema di Mixed Sensitivity come problema \(H_{\infty }\) in forma standard}{18}{}%
-\contentsline {section}{\numberline {2.5}Progettazione delle funzioni di peso}{21}{}%
-\contentsline {subsection}{\numberline {2.5.1}Costruzione \(W_{S}(s)\)}{21}{}%
+\contentsline {chapter}{\numberline {1}Controllo di sistemi MIMO}{2}{}%
+\contentsline {section}{\numberline {1.1}Schema di retroazione dell'uscita con integratori}{2}{}%
+\contentsline {section}{\numberline {1.2}Problema di Mixed Sensitivity Design}{11}{}%
+\contentsline {section}{\numberline {1.3}Problema \(H_{\infty }\) in forma standard}{14}{}%
+\contentsline {section}{\numberline {1.4}Problema di Mixed Sensitivity come problema \(H_{\infty }\) in forma standard}{15}{}%
+\contentsline {section}{\numberline {1.5}Progettazione delle funzioni di peso}{18}{}%
+\contentsline {subsection}{\numberline {1.5.1}Costruzione \(W_{S}(s)\)}{18}{}%
+\contentsline {chapter}{\numberline {2}Appendici}{21}{}%
+\contentsline {section}{\numberline {2.1}Norme}{21}{}%
+\contentsline {section}{\numberline {2.2}SVD (Singular Value Decomposition)}{22}{}%
+\contentsline {section}{\numberline {2.3}Diagonalizzare}{24}{}%
+\contentsline {section}{\numberline {2.4}Uguaglianza matriciale per dimostrare la relazione di \(T(s)\)}{25}{}%

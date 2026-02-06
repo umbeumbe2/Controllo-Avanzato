@@ -2,7 +2,107 @@
 
 
 
+\section{Norme}
+Andiamo ora a definire le norme utilizzate in questi appunti.
+Per prima andiamo a definire le norme su vettori di 
+\(\mathbb{R}^{n}\). Dato un vettore \(x \in \mathbb{R}^{n}\),
+la norma \(p\) di \(x\) (i vettori li consideriamo 
+vettori colonna \(x \in \mathbb{R}^{n \times 1}\)) è definita come:
+\[\left|\left| x \right|\right|_{p} =
+\left( \sum_{i=1}^{n} |x_{i}|^{p} \right)^{\frac{1}{p}} \]
+Norme molto usate sono la norma 1:
+\[\left|\left| x \right|\right|_{1} =
+\sum_{i=1}^{n} |x_{i}| \]
+e la norma 2:
+\[\left|\left| x \right|\right|_{2} =
+\sqrt{ \sum_{i=1}^{n} |x_{i}|^{2} } = \sqrt{x^{T} \cdot x}\]
+Come possiamo vedere maggiore è il valore di \(p\) 
+maggiore è il peso dato agli elementi di \(x\) con 
+valore assoluto maggiore. Portando \(p\) a infinito 
+si definisce la norma infinito come:
+\[\left|\left| x \right|\right|_{\infty} =
+\max_{i} |x_{i}| \]
 
+Andiamo ora a definire la norma di un operatore, 
+detta anche norma indotta o norma operazionale, a partire 
+dalla definizione di norma di un vettore. 
+Consideriamo 
+un operatore (operatore è sinonimo di funzione) 
+\(S: \mathbb{R}^{m} \to \mathbb{R}^{p}\).
+Detta \(y\) l'immagine del vettore \(u\) attraverso \(S\),
+cioè:
+\[y = S(u)\]
+La \(p\)-norma indotta di \(S\) è definita come:
+\[\left|\left| S \right|\right|_{p} =
+\sup_{\left|\left|u\right|\right|_{p} \neq 0}
+\frac{\left|\left| y \right|\right|_{p}}
+{\left|\left| u \right|\right|_{p}}
+\]
+Se \(S\) è un operatore lineare 
+allora è rappresentato dalla matrice \(A \in \mathbb{R}^{p \times m}\),
+e si ha:
+\[y = A u\]
+La \(p\)-norma indotta di \(A\) si scrive come:
+\[\left|\left| A \right|\right|_{p} =
+\sup_{\left|\left|u\right|\right|_{p} \neq 0}
+\frac{\left|\left| A u \right|\right|_{p}}
+{\left|\left| u \right|\right|_{p}}
+\]
+Ora riscriviamo la \(p\)-norma indotta di \(A\) in un altro modo.
+Partiamo dal dire che \(\forall u \in \mathbb{R}^{n}\) esistono
+almeno un \(\rho\) ed un \(\bar{u}\) tali che:
+\begin{equation}
+  u = \rho \bar{u}
+  \label{u_riscritta}
+\end{equation}
+con \(\left|\left| \bar{u} \right|\right|_{p} = 1\) 
+( infatti basta prendere \(\rho = \left|\left| u \right|\right|_{p}\)
+e \(\bar{u} = \frac{u}{\left|\left| u \right|\right|_{p}}\)).
+Andiamo ora a vedere
+che la funzione di cui stiamo andando a cercare l'estremo 
+superiore non varia al variare di \(\rho\):
+\[
+\frac{\left|\left| A \rho \bar{u} \right|\right|_{p}}
+{\left|\left| \rho \bar{u} \right|\right|_{p}} 
+\]
+Il fattore \(\rho\) è uno scalare e dunque può essere
+portato fuori dalla norma, e dopo si può semplificare,
+dunque si ha:
+\[
+\frac{\left|\left| A \rho \bar{u} \right|\right|_{p}}
+{\left|\left| \rho \bar{u} \right|\right|_{p}}  
+= 
+\frac{\left|\left| A \bar{u} \right|\right|_{p}}
+{\left|\left| \bar{u} \right|\right|_{p}} 
+\]
+inoltre vale \(\left|\left| \bar{u} \right|\right|_{p} = 1\), dunque si ha:
+\[
+\frac{\left|\left| A \rho \bar{u} \right|\right|_{p}}
+{\left|\left| \rho \bar{u} \right|\right|_{p}} 
+=
+\left|\left| A \bar{u} \right|\right|_{p}
+\]
+Dunque come possiamo vedere due vettori che hanno lo stesso 
+\(\bar{u}\) ma con \(\rho\) diverso 
+(dunque due vettori 
+con stessa direzione ma lunghezza diversa) 
+danno lo stesso valore 
+alla funzione di cui stiamo cercando l'estremo superiore.
+Dunque invece di cercare l'estremo superiore su tutti i vettori 
+\(u\) con norma diversa da zero, ci basta prendere 
+un solo rappresentante per ogni \(\bar{u}\).
+Prendiamo come rappresentante proprio il vettore \(u\)
+che ha \(\rho = 1\) (dunque vale \(u = \bar{u}\)),
+il sup si può riscrivere come:
+
+
+\[\left|\left| A \right|\right|_{p} =
+\sup_{\left|\left|u\right|\right|_{p} \neq 0}
+\frac{\left|\left| A u \right|\right|_{p}}
+{\left|\left| u \right|\right|_{p}}
+= \sup_{\left|\left|\bar{u}\right|\right|_{p} = 1} 
+\left|\left| A \bar{u} \right|\right|_{p}
+\]
 
 \section{SVD (Singular Value Decomposition)}
 Consideriamo una matrice \(A \in \mathbb{R}^{m \times n}\).
@@ -244,3 +344,5 @@ abbiamo usato la seguente identità matriciale:
     \[(I+AB) D (I + BA)= A (I+BA) - (I + AB) A = A + ABA - A - ABA = 0\]
     Abbiamo dimostrato \(D=0\), quindi anche l'uguaglianza iniziale.
 \end{proof}
+
+
